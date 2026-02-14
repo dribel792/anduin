@@ -20,6 +20,10 @@ contract OracleGuard {
         uint256 referencePrice;         // Last known good price (for band checks)
         uint256 referencePriceTimestamp;
         uint8 decimals;
+        // Oracle Failover (VS-H004)
+        uint256 lastValidPrice;         // Last successfully fetched price
+        uint256 lastValidTimestamp;     // When lastValidPrice was recorded
+        uint256 maxFallbackAge;         // Max age for fallback (e.g., 300 = 5 min)
     }
     
     // ──────────────────────────── State ────────────────────────────
@@ -34,6 +38,7 @@ contract OracleGuard {
     event OracleConfigured(bytes32 indexed symbolId, OracleType oracleType, address oracleAddress);
     event ReferencePriceUpdated(bytes32 indexed symbolId, uint256 price, uint256 timestamp);
     event PriceBandUpdated(bytes32 indexed symbolId, uint256 bandBps);
+    event OracleFallbackUsed(bytes32 indexed symbolId, uint256 price, uint256 age);
     
     // ──────────────────────────── Errors ───────────────────────────
 
@@ -65,29 +70,80 @@ contract OracleGuard {
 
     // ──────────────────────────── View Functions ───────────────────
 
-    /// @notice Get current price with validation
+    /// @notice Get current price with validation and failover (VS-H004)
     /// @return price The validated price (scaled to 8 decimals)
     /// @return timestamp When the price was recorded
-    function getValidatedPrice(bytes32 symbolId) external view returns (uint256 price, uint256 timestamp) {
+    /// @return usedFallback True if fallback price was used
+    function getValidatedPrice(bytes32 symbolId) external view returns (uint256 price, uint256 timestamp, bool usedFallback) {
         OracleConfig storage cfg = oracles[symbolId];
         if (!cfg.exists) revert OracleNotConfigured();
         
-        (price, timestamp) = _fetchPrice(cfg);
+        // Try to fetch and validate fresh price
+        (bool success, uint256 fetchedPrice, uint256 fetchedTimestamp) = _tryFetchPrice(cfg);
+        
+        if (success) {
+            return (fetchedPrice, fetchedTimestamp, false);
+        }
+        
+        // Fresh price failed - use fallback to last valid price
+        if (cfg.lastValidPrice == 0) {
+            revert OracleCallFailed();
+        }
+        
+        uint256 fallbackAge = block.timestamp - cfg.lastValidTimestamp;
+        
+        if (fallbackAge > cfg.maxFallbackAge) {
+            revert PriceStale(); // Fallback too old
+        }
+        
+        // Note: Can't emit in view function - caller should check usedFallback flag
+        return (cfg.lastValidPrice, cfg.lastValidTimestamp, true);
+    }
+    
+    /// @notice Try to fetch and validate price without reverting
+    function _tryFetchPrice(OracleConfig storage cfg) internal view returns (bool success, uint256 price, uint256 timestamp) {
+        // Directly fetch price - if it fails, catch and use fallback
+        if (cfg.oracleType == OracleType.CHAINLINK) {
+            try this._fetchChainlinkPriceView(cfg.oracleAddress, cfg.decimals) returns (uint256 p, uint256 t) {
+                price = p;
+                timestamp = t;
+            } catch {
+                return (false, 0, 0);
+            }
+        } else if (cfg.oracleType == OracleType.PYTH) {
+            try this._fetchPythPriceView(cfg.oracleAddress, cfg.pythPriceId) returns (uint256 p, uint256 t) {
+                price = p;
+                timestamp = t;
+            } catch {
+                return (false, 0, 0);
+            }
+        } else {
+            return (false, 0, 0);
+        }
         
         // Staleness check
         if (block.timestamp - timestamp > cfg.maxStalenessSeconds) {
-            revert PriceStale();
+            return (false, 0, 0);
         }
         
         // Price band check (if reference exists)
         if (cfg.referencePrice > 0) {
             uint256 deviation = _calculateDeviationBps(price, cfg.referencePrice);
             if (deviation > cfg.priceBandBps) {
-                revert PriceOutsideBand();
+                return (false, 0, 0);
             }
         }
         
-        return (price, timestamp);
+        return (true, price, timestamp);
+    }
+    
+    /// @notice External view wrappers for try/catch
+    function _fetchChainlinkPriceView(address aggregator, uint8 decimals) external view returns (uint256, uint256) {
+        return _fetchChainlinkPrice(aggregator, decimals);
+    }
+    
+    function _fetchPythPriceView(address pythContract, bytes32 priceId) external view returns (uint256, uint256) {
+        return _fetchPythPrice(pythContract, priceId);
     }
     
     /// @notice Check if a price is valid without reverting
@@ -95,7 +151,7 @@ contract OracleGuard {
         OracleConfig storage cfg = oracles[symbolId];
         if (!cfg.exists) return (false, "Oracle not configured");
         
-        try this.getValidatedPrice(symbolId) returns (uint256, uint256) {
+        try this.getValidatedPrice(symbolId) returns (uint256, uint256, bool) {
             return (true, "");
         } catch Error(string memory err) {
             return (false, err);
@@ -130,7 +186,10 @@ contract OracleGuard {
             priceBandBps: priceBandBps,
             referencePrice: 0,
             referencePriceTimestamp: 0,
-            decimals: decimals
+            decimals: decimals,
+            lastValidPrice: 0,
+            lastValidTimestamp: 0,
+            maxFallbackAge: 300 // Default 5 min fallback window
         });
         
         emit OracleConfigured(symbolId, OracleType.CHAINLINK, aggregator);
@@ -153,13 +212,16 @@ contract OracleGuard {
             priceBandBps: priceBandBps,
             referencePrice: 0,
             referencePriceTimestamp: 0,
-            decimals: 8  // Pyth uses 8 decimals
+            decimals: 8, // Pyth uses 8 decimals
+            lastValidPrice: 0,
+            lastValidTimestamp: 0,
+            maxFallbackAge: 300 // Default 5 min fallback window
         });
         
         emit OracleConfigured(symbolId, OracleType.PYTH, pythContract);
     }
     
-    /// @notice Update reference price (called periodically or on significant moves)
+    /// @notice Update reference price and last valid price (VS-H004)
     function updateReferencePrice(bytes32 symbolId) external onlyOperator {
         OracleConfig storage cfg = oracles[symbolId];
         if (!cfg.exists) revert OracleNotConfigured();
@@ -169,6 +231,8 @@ contract OracleGuard {
         
         cfg.referencePrice = price;
         cfg.referencePriceTimestamp = timestamp;
+        cfg.lastValidPrice = price;
+        cfg.lastValidTimestamp = timestamp;
         
         emit ReferencePriceUpdated(symbolId, price, timestamp);
     }
@@ -184,6 +248,12 @@ contract OracleGuard {
     function setMaxStaleness(bytes32 symbolId, uint256 maxSeconds) external onlyOperator {
         if (!oracles[symbolId].exists) revert OracleNotConfigured();
         oracles[symbolId].maxStalenessSeconds = maxSeconds;
+    }
+    
+    /// @notice Update max fallback age (VS-H004)
+    function setMaxFallbackAge(bytes32 symbolId, uint256 maxAge) external onlyOperator {
+        if (!oracles[symbolId].exists) revert OracleNotConfigured();
+        oracles[symbolId].maxFallbackAge = maxAge;
     }
     
     function setOperator(address _operator) external onlyAdmin {

@@ -146,6 +146,35 @@ function executeDetokenize(address user, address token, uint256 amount, bytes32 
 
 ---
 
+## Safety Features
+
+Volera implements enterprise-grade safety mechanisms to protect against edge cases and attacks:
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| **Circuit Breaker** | ✅ | Auto-pause if settlement volume spikes (prevents runaway settlements) |
+| **Underwater Accounts** | ✅ | Insurance fund + socialized loss tracking for insufficient collateral |
+| **Oracle Failover** | ✅ | Graceful degradation to last-known-good price (max 5 min age) |
+| **Timelock Controller** | ✅ | 24h delay on critical admin changes (prevents instant key compromise) |
+| **Withdrawal Cooldown** | ✅ | Configurable delay prevents flash loan attacks (default: disabled) |
+| **Missing Events** | ✅ | Complete event coverage for monitoring and compliance |
+| **Multi-Collateral** | ⏸️ | Haircuts for ETH/WBTC collateral (design complete, deferred to post-MVP) |
+| **Withdrawal Queue** | ⏸️ | Handle broker insolvency edge cases (design complete, deferred) |
+
+**[Full Documentation](docs/edge-cases.md)**
+
+### Production Deployment Checklist
+
+Before going live:
+- ✅ Configure circuit breaker threshold for expected volumes
+- ✅ Set withdrawal cooldown (recommended: 1 block minimum)
+- ✅ Fund insurance pool with appropriate reserves
+- ✅ Deploy TimelockController and transfer admin
+- ✅ Configure oracle failover max age (recommended: 5 min)
+- ✅ Set up monitoring for CircuitBreakerTriggered and Shortfall events
+
+---
+
 ## Why Base L2
 
 - **Low fees:** Settlements cost fractions of a cent

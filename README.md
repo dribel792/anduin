@@ -175,6 +175,122 @@ Before going live:
 
 ---
 
+## Insurance Fund
+
+Volera includes a built-in **insurance fund** to handle underwater accounts and prevent socialized losses.
+
+### How It Works
+
+When a trader loses more than their deposited collateral, the system follows this waterfall:
+
+1. **User collateral** — Seize available collateral first
+2. **Insurance fund** — Cover shortfall from insurance reserves
+3. **Socialized losses** — Track remaining loss (requires admin intervention)
+
+```
+User collateral:     $1,000
+Trading loss:        $5,000
+Insurance fund:      $50,000
+
+Result:
+├─ Seized:           $1,000 (from user)
+├─ Insurance used:   $4,000 (from fund)
+└─ Broker pool:      +$5,000 (fully covered)
+```
+
+### Admin Functions
+
+- `depositInsuranceFund(amount)` — Replenish reserves
+- `withdrawInsuranceFund(amount)` — Extract reserves
+- `seizeCollateralCapped(user, amount, refId)` — Auto-uses insurance if needed
+
+**Events:**
+- `Shortfall(user, amount, coveredByInsurance, socialized)` — When insurance is used
+- `InsuranceFundDeposited(amount)` — When admin adds funds
+- `InsuranceFundWithdrawn(amount)` — When admin withdraws
+
+**Monitoring:**
+- Track `insuranceFund` balance (recommend 5-10% of total collateral)
+- Alert on `totalSocializedLosses > 0`
+- Watch `Shortfall` events for underwater accounts
+
+**[Full Documentation](docs/INSURANCE_FUND.md)** — Detailed waterfall, scenarios, integration guide
+
+---
+
+## Exchange Integrations
+
+Volera connects to **8 trading venues** via a modular adapter system:
+
+| Venue | Type | Markets | Integration |
+|-------|------|---------|-------------|
+| **Bybit** | CEX | BTC/ETH perpetuals | WebSocket |
+| **Kraken** | CEX | Spot + Futures | WebSocket |
+| **OKX** | CEX | USDT/Coin perpetuals | WebSocket |
+| **Bitget** | CEX | USDT futures | WebSocket |
+| **MEXC** | CEX | Perpetuals | WebSocket |
+| **KuCoin** | CEX | Futures | WebSocket (token) |
+| **HTX** | CEX | Linear swaps | WebSocket (gzip) |
+| **MetaTrader 5** | CFD | Forex, Gold, Indices | REST (EA bridge) |
+
+### Architecture
+
+```
+Exchange WebSocket
+        ↓
+  VenueAdapter (normalize data)
+        ↓
+  PriceAggregator (best bid/ask across all venues)
+        ↓
+  SettlementBridge (map position close → on-chain action)
+        ↓
+  UnifiedAccountVault (creditPnl / seizeCollateral)
+```
+
+### Features
+
+- **Real-time price aggregation** — Get best bid/ask across all venues
+- **Position monitoring** — Automatically settle when positions close
+- **Auto-reconnection** — Exponential backoff on WebSocket disconnects
+- **Idempotent settlement** — `refId = keccak256(venue + positionId)` prevents duplicates
+- **Easy onboarding** — Add new exchange in <100 lines of code
+
+### Quick Example
+
+```typescript
+import { AdapterFactory, PriceAggregator, SettlementBridge } from '@volera/integrations';
+
+// Create adapters
+const bybit = AdapterFactory.createAdapter('bybit');
+const kraken = AdapterFactory.createAdapter('kraken');
+
+// Set up price aggregation
+const aggregator = new PriceAggregator();
+aggregator.addAdapter(bybit);
+aggregator.addAdapter(kraken);
+await aggregator.connectAll(['BTCUSDT', 'ETHUSDT']);
+
+// Subscribe to best prices
+aggregator.onAggregatedPrice((price) => {
+  console.log(`${price.symbol} Best: ${price.bestBid}/${price.bestAsk}`);
+});
+
+// Handle position closes
+const bridge = new SettlementBridge();
+bybit.onPositionClose(async (position) => {
+  const action = bridge.mapPositionToSettlement(position, userAddress, true);
+  if (action.type === 'credit') {
+    await vault.creditPnl(action.user, action.amount, action.refId);
+  } else {
+    await vault.seizeCollateralCapped(action.user, action.amount, action.refId);
+  }
+});
+```
+
+**[Full Documentation](docs/EXCHANGE_INTEGRATIONS.md)** — All 8 venues, adapter pattern, onboarding guide
+
+---
+
 ## Why Base L2
 
 - **Low fees:** Settlements cost fractions of a cent
@@ -226,6 +342,18 @@ A broker could fork the contracts. They can't fork:
 
 ---
 
+## Documentation
+
+**📖 [Full Documentation Index](docs/INDEX.md)** — Complete technical documentation
+
+Key docs:
+- **[Insurance Fund](docs/INSURANCE_FUND.md)** — Underwater account handling, safety waterfall
+- **[Exchange Integrations](docs/EXCHANGE_INTEGRATIONS.md)** — 8 venues, adapter pattern, onboarding guide
+- **[Architecture](docs/ARCHITECTURE.md)** — System overview
+- **[Edge Cases](docs/edge-cases.md)** — Safety features, production checklist
+
+---
+
 ## Project Structure
 
 ```
@@ -243,6 +371,7 @@ volera-settlement/
 │   ├── indexer/                      # Event indexer
 │   ├── recon/                        # Reconciliation
 │   ├── api/                          # API Gateway
+│   ├── integrations/                 # Exchange adapters (Bybit, Kraken, etc.)
 │   └── mock-broker/                  # Mock broker for testing
 ├── frontend/                         # Next.js dashboard
 ├── tickets/                          # Backlog

@@ -5,72 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anduin - Partner Pitch Deck</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root {
             --primary: #6366f1;
             --secondary: #0ea5e9;
             --accent: #22c55e;
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --text: #e2e8f0;
-            --text-muted: #94a3b8;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
             --gradient: linear-gradient(135deg, #6366f1, #0ea5e9);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
         .deck { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
-        .slides { flex: 1; position: relative; overflow: hidden; }
+        .slides { flex: 1; position: relative; overflow: hidden; background: var(--bg); }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 80px; display: none; flex-direction: column; justify-content: center; opacity: 0; transition: opacity 0.5s ease; }
         .slide.active { display: flex; opacity: 1; }
-        .slide h1 { font-size: 4rem; font-weight: 800; margin-bottom: 32px; line-height: 1.1; }
-        .slide h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 40px; }
+        .slide h1 { font-size: 4rem; font-weight: 700; margin-bottom: 32px; line-height: 1.1; }
+        .slide h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 40px; }
         .slide h3 { font-size: 1.75rem; font-weight: 600; margin-bottom: 24px; }
-        .slide p { font-size: 1.5rem; color: var(--text-muted); max-width: 900px; line-height: 1.6; }
+        .slide p { font-size: 1.4rem; color: var(--text-muted); max-width: 900px; line-height: 1.6; }
         .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo { font-size: 2rem; font-weight: 700; margin-bottom: 48px; }
-        .logo-icon { color: var(--primary); }
-        .slide.title { text-align: center; background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.2), transparent 60%); }
+        .logo { font-size: 1.75rem; font-weight: 700; margin-bottom: 48px; display: flex; align-items: center; gap: 12px; }
+        .slide.title { text-align: center; background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08), transparent 60%); }
         .slide.title h1 { font-size: 5rem; }
         .tagline { font-size: 2rem; color: var(--text-muted); margin-bottom: 60px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px; margin-top: 40px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; }
-        .card { background: var(--bg-alt); border: 1px solid #334155; border-radius: 16px; padding: 40px; }
-        .card.highlight { border-color: var(--primary); background: linear-gradient(180deg, rgba(99, 102, 241, 0.1), transparent); }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 40px; }
+        .card { background: var(--bg); border: 2px solid var(--border); border-radius: 16px; padding: 40px; transition: all 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card:hover { border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .card.highlight { border-color: var(--primary); background: var(--bg-alt); }
         .card.featured { border: 3px solid var(--primary); transform: scale(1.05); }
-        .card-icon { font-size: 3rem; margin-bottom: 24px; }
+        .icon-wrapper { width: 64px; height: 64px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--primary); }
+        .icon-wrapper svg { width: 32px; height: 32px; }
         .card h3 { margin-bottom: 16px; }
         .card p { font-size: 1.1rem; }
-        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 60px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; margin-top: 60px; }
         .stat { text-align: center; }
-        .stat-value { font-size: 5rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-value { font-size: 5rem; font-weight: 700; color: var(--primary); }
         .stat-label { font-size: 1.25rem; color: var(--text-muted); margin-top: 8px; }
-        .check-list { list-style: none; font-size: 1.5rem; }
+        .check-list { list-style: none; font-size: 1.4rem; }
         .check-list li { padding: 16px 0; padding-left: 48px; position: relative; }
-        .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-size: 1.5rem; }
-        .problem-list { list-style: none; font-size: 1.5rem; }
+        .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-size: 2rem; font-weight: 700; }
+        .problem-list { list-style: none; font-size: 1.4rem; }
         .problem-list li { padding: 16px 0; padding-left: 48px; position: relative; color: var(--text-muted); }
-        .problem-list li::before { content: "✗"; position: absolute; left: 0; color: #ef4444; font-size: 1.5rem; }
-        .roi-box { background: var(--bg-alt); border-radius: 16px; padding: 40px; margin-top: 40px; }
-        .roi-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #334155; font-size: 1.25rem; }
-        .roi-row:last-child { border-bottom: none; }
-        .roi-value { color: var(--accent); font-weight: 600; }
-        .roi-result { font-size: 3rem; font-weight: 700; color: var(--accent); }
+        .problem-list li::before { content: "✗"; position: absolute; left: 0; color: #ef4444; font-size: 2rem; font-weight: 700; }
+        .comparison { background: var(--bg-alt); border-radius: 16px; padding: 40px; margin-top: 40px; }
+        .comparison-row { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--border); font-size: 1.3rem; align-items: center; }
+        .comparison-row:last-child { border-bottom: none; }
+        .comparison-label { font-weight: 500; flex: 2; }
+        .comparison-before { color: #ef4444; flex: 1; text-align: center; }
+        .comparison-after { color: var(--accent); font-weight: 600; flex: 1; text-align: center; }
+        .result-value { font-size: 3rem; font-weight: 700; color: var(--accent); }
         .slide.cta { text-align: center; background: var(--gradient); }
-        .slide.cta h1 { color: white; }
-        .slide.cta p { color: rgba(255,255,255,0.9); margin: 0 auto 40px; }
-        .contact-info { font-size: 1.5rem; margin-top: 40px; }
+        .slide.cta h1, .slide.cta h2 { color: white; }
+        .slide.cta p { color: rgba(255,255,255,0.95); margin: 0 auto 40px; }
+        .contact-info { font-size: 1.5rem; margin-top: 40px; color: white; }
         .contact-info a { color: white; text-decoration: underline; }
-        .nav { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.9); border-top: 1px solid #334155; }
-        .nav-logo { font-size: 1.25rem; font-weight: 700; }
+        .nav { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-alt); border-top: 1px solid var(--border); }
+        .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--text); }
         .nav-controls { display: flex; gap: 16px; align-items: center; }
-        .nav-btn { padding: 10px 20px; background: var(--bg-alt); border: 1px solid #334155; border-radius: 8px; color: var(--text); cursor: pointer; font-size: 1rem; transition: all 0.2s; }
-        .nav-btn:hover { border-color: var(--primary); }
+        .nav-btn { padding: 10px 20px; background: var(--bg); border: 2px solid var(--border); border-radius: 8px; color: var(--text); cursor: pointer; font-size: 1rem; transition: all 0.2s; font-weight: 500; }
+        .nav-btn:hover { border-color: var(--primary); background: var(--bg-alt); }
         .slide-counter { color: var(--text-muted); min-width: 60px; text-align: center; }
-        .flow-steps { display: flex; justify-content: space-between; margin-top: 60px; align-items: center; }
-        .flow-step { text-align: center; flex: 1; }
-        .flow-number { background: var(--primary); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 2rem; font-weight: 700; }
-        .flow-arrow { font-size: 3rem; color: var(--primary); }
+        .flow-diagram { max-width: 900px; margin: 40px auto; }
+        .products-showcase { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; }
+        .product-box { background: var(--bg); border: 2px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; }
+        .product-box.primary { border-color: var(--primary); border-width: 3px; background: linear-gradient(180deg, #eef2ff, var(--bg)); }
+        .badge { display: inline-block; background: var(--primary); color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
     </style>
 </head>
 <body>
@@ -78,276 +84,352 @@
         <div class="slides">
             <!-- Slide 1: Title -->
             <div class="slide title active" data-slide="1">
-                <div class="logo"><span class="logo-icon">◆</span> Anduin</div>
-                <h1>Instant <span class="gradient-text">PnL Settlement</span><br>Infrastructure</h1>
-                <p class="tagline">T+0 settlement. 5x capital efficiency. Zero counterparty risk.</p>
+                <h1>Instant Settlement.<br>Direct From Your Wallet.</h1>
+                <p class="tagline">No prefunding • No counterparty risk • No waiting</p>
+                <div style="display: flex; justify-content: center; gap: 60px; margin-top: 60px;">
+                    <div class="stat">
+                        <div class="stat-value">T+0</div>
+                        <div class="stat-label">Settlement</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">5x</div>
+                        <div class="stat-label">Capital Efficiency</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Markets</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Slide 2: The Problem -->
             <div class="slide" data-slide="2">
-                <h2>Your Capital Is Locked for Days</h2>
-                <div class="stat-grid">
-                    <div class="stat">
-                        <div class="stat-value">$50B+</div>
-                        <div class="stat-label">Capital locked in settlement reserves</div>
+                <h2>Settlement Is Broken</h2>
+                <div class="grid-4">
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="clock"></i></div>
+                        <h3>T+2 Delays</h3>
+                        <p>Trades take days to settle. Capital sits idle.</p>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">T+2</div>
-                        <div class="stat-label">Days money sits with counterparty</div>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="lock"></i></div>
+                        <h3>Prefunding Required</h3>
+                        <p>You must deposit before you trade. Capital inefficient.</p>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">2-5%</div>
-                        <div class="stat-label">Settlement failures in volatile markets</div>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="shield-off"></i></div>
+                        <h3>Counterparty Risk</h3>
+                        <p>Your assets sit on someone else's books.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="building-2"></i></div>
+                        <h3>Siloed Platforms</h3>
+                        <p>Each broker is an island. No interoperability.</p>
                     </div>
                 </div>
-                <p style="margin-top: 60px; text-align: center;">Settlement delays create systemic risk and lock up billions that could be working. The problem only gets worse with higher trading volumes.</p>
             </div>
 
-            <!-- Slide 3: What Settlement Delays Cost You -->
+            <!-- Slide 3: One Layer, Three Products -->
             <div class="slide" data-slide="3">
-                <h2>The Real Cost of T+2 Settlement</h2>
-                <ul class="problem-list">
-                    <li>Capital locked in margin reserves instead of trading</li>
-                    <li>Counterparty exposure — what if they blow up mid-trade?</li>
-                    <li>Manual reconciliation across brokers and venues</li>
-                    <li>Settlement failures cost time and money</li>
-                    <li>Can't scale trading without scaling capital reserves</li>
-                </ul>
+                <h2 style="text-align: center;">One Layer. Three Products.</h2>
+                <p style="text-align: center; margin: 0 auto 60px; max-width: 800px;">Anduin connects investors and brokers through a unified settlement layer that enables instant settlement, efficient lending, and seamless issuance.</p>
+                <div class="products-showcase">
+                    <div class="product-box primary">
+                        <div class="badge">CORE PRODUCT</div>
+                        <div class="icon-wrapper" style="margin: 0 auto 24px;"><i data-lucide="zap"></i></div>
+                        <h3>Settlement</h3>
+                        <p>Instant T+0 settlement. Real-time margin calls. Cross-broker netting.</p>
+                    </div>
+                    <div class="product-box">
+                        <div class="icon-wrapper" style="margin: 0 auto 24px;"><i data-lucide="wallet"></i></div>
+                        <h3>Lending</h3>
+                        <p>10x margin without MIFID complexity. Externalize balance sheet risk.</p>
+                    </div>
+                    <div class="product-box">
+                        <div class="icon-wrapper" style="margin: 0 auto 24px;"><i data-lucide="layers"></i></div>
+                        <h3>Issuance</h3>
+                        <p>Tokenize any asset. Delta-one trackers. Yield notes.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Slide 4: The Solution -->
+            <!-- Slide 4: For Brokers & Exchanges -->
             <div class="slide" data-slide="4">
-                <h2>On-Chain Settlement Changes Everything</h2>
-                <p>Anduin enables instant PnL settlement in seconds, not days:</p>
-                <div class="grid-3">
-                    <div class="card">
-                        <div class="card-icon">⚡</div>
-                        <h3>T+0 Settlement</h3>
-                        <p>Trades settle on-chain in seconds. No waiting, no counterparty risk.</p>
+                <h2>For Brokers & Exchanges</h2>
+                <p style="margin-bottom: 40px; font-size: 1.5rem;">Access new markets. Unlock capital. Grow volume.</p>
+                <div class="grid-2">
+                    <div class="card highlight">
+                        <div class="icon-wrapper"><i data-lucide="users"></i></div>
+                        <h3>Reach DeFi Users</h3>
+                        <p>60M+ on-chain traders who won't move to CEX. Now they can trade on your platform from their own wallets.</p>
                     </div>
                     <div class="card highlight">
-                        <div class="card-icon">🔗</div>
-                        <h3>Cross-Broker Netting</h3>
-                        <p>5x capital efficiency. The more brokers join, the more everyone saves.</p>
+                        <div class="icon-wrapper"><i data-lucide="trending-up"></i></div>
+                        <h3>5x Capital Efficiency</h3>
+                        <p>Cross-broker netting reduces margin requirements. Free up capital locked in reserves.</p>
                     </div>
-                    <div class="card">
-                        <div class="card-icon">🛡️</div>
-                        <h3>Zero Counterparty Risk</h3>
-                        <p>Atomic settlement means no exposure. If the trade executes, settlement happens.</p>
+                    <div class="card highlight">
+                        <div class="icon-wrapper"><i data-lucide="bar-chart-3"></i></div>
+                        <h3>Higher Trading Volume</h3>
+                        <p>Lower barriers = more traders = more volume. Instant settlement means faster turnover.</p>
+                    </div>
+                    <div class="card highlight">
+                        <div class="icon-wrapper"><i data-lucide="shield"></i></div>
+                        <h3>No Balance Sheet Risk</h3>
+                        <p>Lending, settlement, counterparty risk — all externalized to Anduin's on-chain infrastructure.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 5: How It Works -->
+            <!-- Slide 5: Three Ways to Grow -->
             <div class="slide" data-slide="5">
-                <h2>Four Steps. Seconds Instead of Days.</h2>
-                <div class="flow-steps">
-                    <div class="flow-step">
-                        <div class="flow-number">1</div>
-                        <h3>Trade Executes</h3>
-                        <p>Your platform matches the trade</p>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">
-                        <div class="flow-number">2</div>
-                        <h3>PnL Calculated</h3>
-                        <p>Net position verified</p>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">
-                        <div class="flow-number">3</div>
-                        <h3>Settle On-Chain</h3>
-                        <p>Funds move atomically</p>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">
-                        <div class="flow-number">4</div>
-                        <h3>Netting Applied</h3>
-                        <p>Only net amount moves</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 6: Three Products -->
-            <div class="slide" data-slide="6">
-                <h2>Three Products. One Platform.</h2>
-                <p>Settlement is the core. Lending and Issuance multiply your revenue.</p>
+                <h2>Three Ways to Grow Your Business</h2>
                 <div class="grid-3">
-                    <div class="card featured">
-                        <div style="background: var(--primary); color: white; padding: 8px; border-radius: 8px; font-weight: 600; margin-bottom: 16px; font-size: 0.9rem;">CORE PRODUCT</div>
-                        <div class="card-icon">⚡</div>
-                        <h3>Anduin Settlement</h3>
-                        <p>Instant on-chain PnL settlement. Real-time margin calls. Cross-broker netting reduces capital requirements by 5x.</p>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="zap"></i></div>
+                        <h3>Settlement</h3>
+                        <ul class="check-list" style="margin-top: 20px;">
+                            <li>Offer self-custody trading</li>
+                            <li>Users trade from wallets</li>
+                            <li>Settle instantly on-chain</li>
+                            <li>Zero counterparty risk</li>
+                        </ul>
                     </div>
                     <div class="card">
-                        <div class="card-icon">💰</div>
-                        <h3>Anduin Lending</h3>
-                        <p>In-app margin lending. 10x leverage on spot without MIFID complexity. We externalize balance sheet risk.</p>
+                        <div class="icon-wrapper"><i data-lucide="wallet"></i></div>
+                        <h3>Lending</h3>
+                        <ul class="check-list" style="margin-top: 20px;">
+                            <li>10x margin without MIFID</li>
+                            <li>In-app loans</li>
+                            <li>Externalize risk</li>
+                            <li>New revenue stream</li>
+                        </ul>
                     </div>
                     <div class="card">
-                        <div class="card-icon">📊</div>
-                        <h3>Anduin Issuance</h3>
-                        <p>Tokenize any asset as a structured product. Delta-one trackers, yield notes, securitized perps.</p>
+                        <div class="icon-wrapper"><i data-lucide="layers"></i></div>
+                        <h3>Issuance</h3>
+                        <ul class="check-list" style="margin-top: 20px;">
+                            <li>Tokenize products</li>
+                            <li>On-chain distribution</li>
+                            <li>Reach wallet users</li>
+                            <li>Expand market reach</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 7: The Netting Network -->
-            <div class="slide" data-slide="7">
-                <h2>The Network Effect Moat</h2>
-                <p style="margin-bottom: 60px;">The more brokers join Anduin, the more positions can be netted — freeing up capital for everyone.</p>
+            <!-- Slide 6: For Investors -->
+            <div class="slide" data-slide="6">
+                <h2>For Investors</h2>
+                <p style="margin-bottom: 40px; font-size: 1.5rem;">Trade directly. Stay in control.</p>
                 <div class="grid-2">
                     <div class="card">
-                        <h3>Without Netting</h3>
-                        <p style="margin-bottom: 20px;">You have:</p>
-                        <ul class="problem-list">
-                            <li>$10M exposure to Broker A</li>
-                            <li>$8M exposure to Broker B</li>
-                            <li>Total reserves: $18M locked</li>
-                        </ul>
+                        <div class="icon-wrapper"><i data-lucide="unlock"></i></div>
+                        <h3>Your Keys, Your Assets</h3>
+                        <p>Trade directly from your wallet. No deposits, no custody risk.</p>
                     </div>
-                    <div class="card highlight">
-                        <h3>With Anduin Netting</h3>
-                        <p style="margin-bottom: 20px;">We net them:</p>
-                        <ul class="check-list">
-                            <li>Net exposure: $2M</li>
-                            <li>Capital freed: $16M</li>
-                            <li>5x more efficient</li>
-                        </ul>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="zap"></i></div>
+                        <h3>Instant Settlement</h3>
+                        <p>Trades settle in seconds, not days. Your capital is never locked.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="wallet"></i></div>
+                        <h3>No Prefunding</h3>
+                        <p>Margin vault handles collateral efficiently. No need to pre-deposit.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="globe"></i></div>
+                        <h3>Access Any Broker</h3>
+                        <p>One wallet, multiple brokers. Choose the best prices across platforms.</p>
                     </div>
                 </div>
-                <p style="text-align: center; margin-top: 40px;"><strong>This is why early movers win.</strong> The first brokers on Anduin get maximum netting benefit.</p>
             </div>
 
-            <!-- Slide 8: Business Case / ROI -->
+            <!-- Slide 7: How It Works -->
+            <div class="slide" data-slide="7">
+                <h2 style="text-align: center;">How It Works</h2>
+                <div style="max-width: 800px; margin: 40px auto;">
+                    <div style="display: flex; flex-direction: column; gap: 30px;">
+                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">1. Investor deposits collateral</strong>
+                            <p style="margin: 0;">Funds go into margin vault, secured on-chain</p>
+                        </div>
+                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">2. Trade executes</strong>
+                            <p style="margin: 0;">User trades on broker platform from their wallet</p>
+                        </div>
+                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">3. PnL calculated</strong>
+                            <p style="margin: 0;">Settlement engine calculates net position</p>
+                        </div>
+                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--accent);">
+                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">4. Instant settlement</strong>
+                            <p style="margin: 0;">Margin vault credits/debits both sides atomically on-chain</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 60px; margin-top: 40px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i data-lucide="check-circle" style="color: var(--accent); width: 28px; height: 28px;"></i>
+                        <span style="font-size: 1.2rem; font-weight: 500;">Atomic settlement</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i data-lucide="shield" style="color: var(--accent); width: 28px; height: 28px;"></i>
+                        <span style="font-size: 1.2rem; font-weight: 500;">Insurance fund</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i data-lucide="arrow-right-left" style="color: var(--accent); width: 28px; height: 28px;"></i>
+                        <span style="font-size: 1.2rem; font-weight: 500;">Cross-broker netting</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: ROI -->
             <div class="slide" data-slide="8">
                 <h2>Free Up $10M+ in Locked Capital</h2>
-                <p>Conservative estimates for a mid-size broker or exchange:</p>
-                <div class="grid-2">
-                    <div class="roi-box">
-                        <h3 style="margin-bottom: 24px;">Before Anduin</h3>
-                        <div class="roi-row"><span>Settlement reserves</span><span style="color: #ef4444;">$15M locked</span></div>
-                        <div class="roi-row"><span>Settlement delays</span><span style="color: #ef4444;">T+2 to T+5</span></div>
-                        <div class="roi-row"><span>Counterparty risk</span><span style="color: #ef4444;">Always exposed</span></div>
-                        <div class="roi-row"><span>Ops cost</span><span style="color: #ef4444;">$2M+/year</span></div>
+                <p style="margin-bottom: 40px;">Conservative estimates for a mid-size broker or exchange</p>
+                <div class="comparison">
+                    <div class="comparison-row" style="font-weight: 600; color: var(--text); border-bottom: 2px solid var(--border);">
+                        <div class="comparison-label">Metric</div>
+                        <div class="comparison-before">Before Anduin</div>
+                        <div class="comparison-after">With Anduin</div>
                     </div>
-                    <div class="roi-box">
-                        <h3 style="margin-bottom: 24px;">With Anduin</h3>
-                        <div class="roi-row"><span>Capital freed</span><span class="roi-value">$10M+</span></div>
-                        <div class="roi-row"><span>Settlement time</span><span class="roi-value">T+0 (seconds)</span></div>
-                        <div class="roi-row"><span>Risk</span><span class="roi-value">Eliminated</span></div>
-                        <div class="roi-row"><span>Annual ROI</span><span class="roi-result">$1.5M+</span></div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">Settlement reserves</div>
+                        <div class="comparison-before">$15M locked</div>
+                        <div class="comparison-after">$10M+ freed</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">Settlement time</div>
+                        <div class="comparison-before">T+2 to T+5</div>
+                        <div class="comparison-after">T+0 (seconds)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">Counterparty risk</div>
+                        <div class="comparison-before">Constant monitoring</div>
+                        <div class="comparison-after">Eliminated</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">Ops cost (reconciliation)</div>
+                        <div class="comparison-before">$2M+/year</div>
+                        <div class="comparison-after">~$500K savings</div>
+                    </div>
+                    <div class="comparison-row" style="border-top: 2px solid var(--border); margin-top: 16px; padding-top: 24px;">
+                        <div class="comparison-label" style="font-weight: 600; font-size: 1.4rem;">New netting revenue</div>
+                        <div class="comparison-before"></div>
+                        <div class="result-value">+$500K+/year</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 9: Who We Partner With -->
+            <!-- Slide 9: Built on Proven Infrastructure -->
             <div class="slide" data-slide="9">
-                <h2>Who We Partner With</h2>
+                <h2>Built on Proven Infrastructure</h2>
                 <div class="grid-4">
-                    <div class="card" style="text-align: center;">
-                        <div class="card-icon">🔄</div>
-                        <h3>Crypto Exchanges</h3>
-                        <p style="font-size: 1rem;">Settle PnL between market makers and LPs instantly</p>
-                    </div>
-                    <div class="card" style="text-align: center;">
-                        <div class="card-icon">📈</div>
-                        <h3>CFD Brokers</h3>
-                        <p style="font-size: 1rem;">Real-time margin settlement</p>
-                    </div>
-                    <div class="card" style="text-align: center;">
-                        <div class="card-icon">🏦</div>
-                        <h3>Prime Brokers</h3>
-                        <p style="font-size: 1rem;">Cross-venue netting</p>
-                    </div>
-                    <div class="card" style="text-align: center;">
-                        <div class="card-icon">🤝</div>
-                        <h3>OTC Desks</h3>
-                        <p style="font-size: 1rem;">Atomic bilateral settlement</p>
-                    </div>
-                </div>
-                <div class="stat-grid" style="margin-top: 60px;">
-                    <div class="stat">
-                        <div class="stat-value" style="font-size: 3rem;">4+</div>
-                        <div class="stat-label">Live integrations</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" style="font-size: 3rem;">$B+</div>
-                        <div class="stat-label">Volume enabled</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" style="font-size: 3rem;">10+</div>
-                        <div class="stat-label">Pipeline partners</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 10: Technology Stack -->
-            <div class="slide" data-slide="10">
-                <h2>Battle-Tested Infrastructure</h2>
-                <div class="grid-4">
-                    <div class="card" style="text-align: center;">
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="layers"></i></div>
                         <h3>Base L2</h3>
-                        <p style="font-size: 1rem;">Coinbase's L2 — low fees, high throughput</p>
+                        <p>Coinbase's Layer 2 for low fees and high throughput</p>
                     </div>
-                    <div class="card" style="text-align: center;">
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="wallet"></i></div>
                         <h3>USDC</h3>
-                        <p style="font-size: 1rem;">Circle-backed stablecoin</p>
+                        <p>Circle-backed stablecoin for settlement</p>
                     </div>
-                    <div class="card" style="text-align: center;">
-                        <h3>Smart Contracts</h3>
-                        <p style="font-size: 1rem;">Audited settlement logic</p>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="activity"></i></div>
+                        <h3>Chainlink Oracles</h3>
+                        <p>Enterprise-grade price feeds</p>
                     </div>
-                    <div class="card" style="text-align: center;">
-                        <h3>Chainlink</h3>
-                        <p style="font-size: 1rem;">Enterprise oracles</p>
+                    <div class="card">
+                        <div class="icon-wrapper"><i data-lucide="file-text"></i></div>
+                        <h3>ERC-3643</h3>
+                        <p>Compliant tokenization standard</p>
                     </div>
                 </div>
-                <ul class="check-list" style="margin-top: 40px;">
-                    <li>99.9% settlement success rate</li>
-                    <li>SOC 2 compliant operations</li>
-                    <li>Regulatory-ready infrastructure</li>
-                    <li>24/7 monitoring and support</li>
-                </ul>
+                <div class="stat-grid" style="margin-top: 80px;">
+                    <div class="stat">
+                        <div class="stat-value">99.9%</div>
+                        <div class="stat-label">Settlement Success Rate</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">$B+</div>
+                        <div class="stat-label">Trading Volume Enabled</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">4+</div>
+                        <div class="stat-label">Live Integrations</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Slide 11: CTA -->
-            <div class="slide cta" data-slide="11">
-                <h1>Ready to Free Up Capital?</h1>
-                <p>Let's calculate exactly how much capital Anduin can unlock for your platform.</p>
+            <!-- Slide 10: CTA -->
+            <div class="slide cta" data-slide="10">
+                <h1>Ready to Get Started?</h1>
+                <p style="font-size: 1.8rem;">Let's calculate exactly how much capital Anduin can unlock for your platform.</p>
                 <div class="contact-info">
-                    <p><strong>Email:</strong> <a href="mailto:partners@anduin.io">partners@anduin.io</a></p>
+                    <p style="margin-bottom: 24px; font-size: 1.6rem;">Schedule a partnership call:</p>
+                    <p><a href="mailto:partners@anduin.io" style="font-size: 1.8rem; font-weight: 600;">partners@anduin.io</a></p>
                 </div>
             </div>
         </div>
 
-        <nav class="nav">
-            <div class="nav-logo"><span class="logo-icon">◆</span> Anduin</div>
+        <div class="nav">
+            <div class="nav-logo">Anduin</div>
             <div class="nav-controls">
                 <button class="nav-btn" onclick="prevSlide()">← Previous</button>
-                <span class="slide-counter">1 / 11</span>
+                <span class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">10</span></span>
                 <button class="nav-btn" onclick="nextSlide()">Next →</button>
             </div>
-        </nav>
+        </div>
     </div>
 
     <script>
+        lucide.createIcons();
+        
         let currentSlide = 1;
-        const totalSlides = 11;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        document.getElementById('total-slides').textContent = totalSlides;
+
         function showSlide(n) {
-            if (n < 1) n = 1;
-            if (n > totalSlides) n = totalSlides;
-            document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
-            document.querySelector(`[data-slide="${n}"]`).classList.add('active');
-            document.querySelector('.slide-counter').textContent = `${n} / ${totalSlides}`;
-            currentSlide = n;
+            const slides = document.querySelectorAll('.slide');
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+            else currentSlide = n;
+            
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index + 1 === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            document.getElementById('current-slide').textContent = currentSlide;
+            lucide.createIcons();
         }
-        function nextSlide() { showSlide(currentSlide + 1); }
-        function prevSlide() { showSlide(currentSlide - 1); }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-            else if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
         });
+
+        // Initialize
+        showSlide(1);
     </script>
 </body>
 </html>

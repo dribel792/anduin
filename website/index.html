@@ -3,111 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anduin | Instant PnL Settlement for Exchanges & Brokers</title>
+    <title>Anduin | Instant Settlement. Direct From Your Wallet.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .stat-huge { font-size: 4rem; font-weight: 800; }
-        .highlight-box { 
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(14, 165, 233, 0.1));
-            border: 1px solid var(--primary);
-            border-radius: 16px;
-            padding: 40px;
-            margin: 40px 0;
-        }
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            margin-top: 40px;
-        }
-        .value-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-        }
-        .value-card h3 { margin-bottom: 16px; }
-        .roi-section {
-            background: var(--bg-alt);
-            padding: 80px 0;
-        }
-        .roi-calc {
-            background: var(--bg);
-            border-radius: 16px;
-            padding: 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-        .roi-input, .roi-output {
-            padding: 24px;
-        }
-        .roi-line {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .roi-result {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .client-types {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-top: 40px;
-        }
-        .client-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 32px;
-            text-align: center;
-        }
-        .client-card.featured {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-        .client-icon { font-size: 3rem; margin-bottom: 16px; }
-        .flow-steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-            margin-top: 40px;
-        }
-        .flow-step {
-            text-align: center;
-            position: relative;
-        }
-        .flow-step::after {
-            content: '→';
-            position: absolute;
-            right: -20px;
-            top: 40px;
-            font-size: 2rem;
-            color: var(--primary);
-        }
-        .flow-step:last-child::after {
-            display: none;
-        }
-        .flow-number {
-            background: var(--primary);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-    </style>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -116,11 +16,15 @@
             <a href="#" class="logo">
                 <img src="assets/logos/anduin-combined.svg" alt="Anduin" height="36">
             </a>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <i data-lucide="menu"></i>
+            </button>
             <div class="nav-links">
                 <a href="#problem">Problem</a>
                 <a href="#solution">Solution</a>
-                <a href="#roi">ROI</a>
-                <a href="#contact" class="btn btn-primary">Schedule Partnership Call</a>
+                <a href="#brokers">For Brokers</a>
+                <a href="#investors">For Investors</a>
+                <a href="#contact" class="btn btn-primary">Get Started</a>
             </div>
         </div>
     </nav>
@@ -129,28 +33,27 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">For Crypto Exchanges & CFD Brokers</div>
-                <h1>Settle Trades in <span class="gradient-text">Seconds</span>, Not Days</h1>
+                <h1>Instant Settlement. Direct From Your Wallet.</h1>
                 <p class="hero-subtitle">
-                    Instant on-chain PnL settlement eliminates counterparty risk and frees up capital locked in margins. 
-                    Real-time margin calls. Cross-broker netting reduces capital requirements by 5x. T+0, 24/7, always-on.
+                    Anduin is the settlement layer that lets investors and brokers interact directly — no prefunding, no counterparty risk, no waiting.
                 </p>
+                <p class="hero-subtext">Settlement • Lending • Issuance</p>
                 <div class="hero-cta">
-                    <a href="#contact" class="btn btn-primary btn-large">See How Much Capital You Can Free</a>
-                    <a href="#problem" class="btn btn-secondary btn-large">Learn More</a>
+                    <a href="#brokers" class="btn btn-primary btn-large">For Brokers</a>
+                    <a href="#investors" class="btn btn-secondary btn-large">For Investors</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
                         <span class="stat-value">T+0</span>
-                        <span class="stat-label">Instant settlement</span>
+                        <span class="stat-label">Settlement</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-value">5x</span>
-                        <span class="stat-label">Capital efficiency via netting</span>
+                        <span class="stat-value">No</span>
+                        <span class="stat-label">Prefunding</span>
                     </div>
                     <div class="stat">
                         <span class="stat-value">24/7</span>
-                        <span class="stat-label">Always-on infrastructure</span>
+                        <span class="stat-label">Markets</span>
                     </div>
                 </div>
             </div>
@@ -160,313 +63,354 @@
     <!-- Problem Section -->
     <section class="problem-section" id="problem">
         <div class="container">
-            <h2 class="section-title">Your Money Is Stuck for Days</h2>
-            <p class="section-subtitle">Settlement delays lock up billions in capital and create systemic risk</p>
+            <h2 class="section-title">Settlement Is Broken</h2>
             
             <div class="problems-grid">
                 <div class="problem-card">
-                    <div class="problem-icon">⏱️</div>
-                    <h3>T+2 Settlement Delays</h3>
-                    <p>Your money sits with the other side for 48+ hours. You can't use it. You can't move it. It's just... waiting.</p>
+                    <div class="icon-wrapper">
+                        <i data-lucide="clock"></i>
+                    </div>
+                    <h3>T+2 Delays</h3>
+                    <p>Trades take days to settle. Capital sits idle.</p>
                 </div>
                 <div class="problem-card">
-                    <div class="problem-icon">🔒</div>
-                    <h3>Capital Locked in Margins</h3>
-                    <p>Billions trapped in reserve accounts to cover settlement risk. That capital could be working — but it's stuck in escrow.</p>
+                    <div class="icon-wrapper">
+                        <i data-lucide="lock"></i>
+                    </div>
+                    <h3>Prefunding Required</h3>
+                    <p>You must deposit before you trade. Capital inefficient.</p>
                 </div>
                 <div class="problem-card">
-                    <div class="problem-icon">⚠️</div>
-                    <h3>Counterparty Exposure</h3>
-                    <p>What if they don't settle? What if they blow up mid-trade? Your risk desk monitors dozens of counterparties constantly.</p>
+                    <div class="icon-wrapper">
+                        <i data-lucide="shield-off"></i>
+                    </div>
+                    <h3>Counterparty Risk</h3>
+                    <p>Your assets sit on someone else's books.</p>
                 </div>
                 <div class="problem-card">
-                    <div class="problem-icon">📊</div>
-                    <h3>Manual Reconciliation Hell</h3>
-                    <p>End-of-day reconciliation across brokers, venues, and counterparties. Hours of ops work. Still breaks sometimes.</p>
-                </div>
-            </div>
-
-            <div class="highlight-box" style="margin-top: 60px;">
-                <h3 style="text-align: center; margin-bottom: 32px; font-size: 1.75rem;">The Real Cost</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; text-align: center;">
-                    <div>
-                        <div class="stat-huge gradient-text">$50B+</div>
-                        <p style="font-size: 1.25rem;">Capital locked in settlement reserves</p>
+                    <div class="icon-wrapper">
+                        <i data-lucide="building-2"></i>
                     </div>
-                    <div>
-                        <div class="stat-huge gradient-text">2-5%</div>
-                        <p style="font-size: 1.25rem;">Settlement failure rate in volatile markets</p>
-                    </div>
-                    <div>
-                        <div class="stat-huge gradient-text">$2M+</div>
-                        <p style="font-size: 1.25rem;">Annual ops cost for mid-size broker</p>
-                    </div>
+                    <h3>Siloed Platforms</h3>
+                    <p>Each broker is an island. No interoperability.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Who We Partner With -->
-    <section class="solutions-section">
+    <!-- How Anduin Works (Overview) -->
+    <section class="overview-section" id="solution">
         <div class="container">
-            <h2 class="section-title">Who We Partner With</h2>
-            <p class="section-subtitle">We're building the netting network for modern finance</p>
-            <div class="client-types">
-                <div class="client-card featured">
-                    <div class="client-icon">🔄</div>
-                    <h3>Crypto Exchanges</h3>
-                    <p><strong>Settle PnL between market makers, LPs, and the exchange instantly.</strong> No more waiting for wire transfers. Cross-exchange netting for better capital efficiency.</p>
-                </div>
-                <div class="client-card featured">
-                    <div class="client-icon">📈</div>
-                    <h3>CFD Brokers</h3>
-                    <p><strong>Real-time margin settlement reduces counterparty exposure.</strong> Instant margin calls. Automated position netting. Lower capital requirements.</p>
-                </div>
-                <div class="client-card">
-                    <div class="client-icon">🏦</div>
-                    <h3>Prime Brokers</h3>
-                    <p><strong>Cross-venue netting optimizes capital allocation.</strong> Consolidate positions across multiple venues. 5x capital efficiency from network effects.</p>
-                </div>
-                <div class="client-card">
-                    <div class="client-icon">🤝</div>
-                    <h3>OTC Desks</h3>
-                    <p><strong>Atomic bilateral settlement eliminates credit risk.</strong> Trade with anyone, settle instantly. No escrow, no waiting, no counterparty risk.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works" id="solution">
-        <div class="container">
-            <h2 class="section-title">How Instant Settlement Works</h2>
-            <p class="section-subtitle">Four steps. Seconds instead of days.</p>
+            <h2 class="section-title">One Layer. Three Products.</h2>
+            <p class="section-subtitle">
+                Anduin connects investors and brokers through a unified settlement layer that enables instant settlement, efficient lending, and seamless issuance.
+            </p>
             
-            <div class="flow-steps">
-                <div class="flow-step">
-                    <div class="flow-number">1</div>
-                    <h3>Trade Executes</h3>
-                    <p>Your platform matches the trade. Order filled. Normal workflow.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">2</div>
-                    <h3>PnL Calculated</h3>
-                    <p>Anduin calculates net position and verifies with both sides. Fully auditable.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">3</div>
-                    <h3>Settle On-Chain</h3>
-                    <p>Funds move atomically via smart contract. T+0, no intermediaries, no delays.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">4</div>
-                    <h3>Netting Applied</h3>
-                    <p>Positions net across counterparties. Only the net amount moves. Capital efficiency multiplied.</p>
-                </div>
-            </div>
-
-            <div class="highlight-box" style="margin-top: 60px;">
-                <h3 style="text-align: center; margin-bottom: 24px;">The Network Effect Moat</h3>
-                <p style="text-align: center; font-size: 1.125rem; max-width: 800px; margin: 0 auto;">
-                    The more brokers join, the more positions can be netted. If you have opposing positions with two different brokers on Anduin, we net them — freeing up capital for everyone. <strong>This is why early movers win.</strong>
-                </p>
+            <div class="architecture-diagram">
+                <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Investor Wallet -->
+                    <g transform="translate(50, 100)">
+                        <rect width="180" height="80" rx="8" fill="#f8fafc" stroke="#6366f1" stroke-width="2"/>
+                        <text x="90" y="45" text-anchor="middle" font-size="16" font-weight="600" fill="#1e293b">Investor Wallet</text>
+                    </g>
+                    
+                    <!-- Arrow to Anduin -->
+                    <line x1="240" y1="140" x2="290" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="290" y1="140" x2="240" y2="140" stroke="#6366f1" stroke-width="2" marker-start="url(#arrowhead)"/>
+                    
+                    <!-- Anduin Settlement Layer -->
+                    <g transform="translate(300, 80)">
+                        <rect width="200" height="120" rx="8" fill="#6366f1" stroke="#4f46e5" stroke-width="2"/>
+                        <text x="100" y="50" text-anchor="middle" font-size="18" font-weight="700" fill="white">Anduin</text>
+                        <text x="100" y="75" text-anchor="middle" font-size="16" font-weight="600" fill="white">Settlement Layer</text>
+                    </g>
+                    
+                    <!-- Arrow to Broker -->
+                    <line x1="510" y1="140" x2="560" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="560" y1="140" x2="510" y2="140" stroke="#6366f1" stroke-width="2" marker-start="url(#arrowhead)"/>
+                    
+                    <!-- Broker/Exchange -->
+                    <g transform="translate(570, 100)">
+                        <rect width="180" height="80" rx="8" fill="#f8fafc" stroke="#6366f1" stroke-width="2"/>
+                        <text x="90" y="45" text-anchor="middle" font-size="16" font-weight="600" fill="#1e293b">Broker/Exchange</text>
+                    </g>
+                    
+                    <!-- Vertical line from Anduin -->
+                    <line x1="400" y1="210" x2="400" y2="260" stroke="#6366f1" stroke-width="2"/>
+                    
+                    <!-- Three Products -->
+                    <g transform="translate(100, 270)">
+                        <rect width="150" height="70" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+                        <text x="75" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="#4f46e5">Settlement</text>
+                        <text x="75" y="50" text-anchor="middle" font-size="11" fill="#64748b">Instant T+0</text>
+                    </g>
+                    
+                    <g transform="translate(325, 270)">
+                        <rect width="150" height="70" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+                        <text x="75" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="#4f46e5">Lending</text>
+                        <text x="75" y="50" text-anchor="middle" font-size="11" fill="#64748b">10x Margin</text>
+                    </g>
+                    
+                    <g transform="translate(550, 270)">
+                        <rect width="150" height="70" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+                        <text x="75" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="#4f46e5">Issuance</text>
+                        <text x="75" y="50" text-anchor="middle" font-size="11" fill="#64748b">Token Products</text>
+                    </g>
+                    
+                    <!-- Arrows to products -->
+                    <line x1="400" y1="260" x2="175" y2="270" stroke="#6366f1" stroke-width="1.5"/>
+                    <line x1="400" y1="260" x2="400" y2="270" stroke="#6366f1" stroke-width="1.5"/>
+                    <line x1="400" y1="260" x2="625" y2="270" stroke="#6366f1" stroke-width="1.5"/>
+                    
+                    <!-- Arrow definitions -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#6366f1"/>
+                        </marker>
+                    </defs>
+                </svg>
             </div>
         </div>
     </section>
 
-    <!-- Products -->
-    <section class="solutions-section" style="background: var(--bg-alt);">
+    <!-- For Brokers & Exchanges -->
+    <section class="brokers-section" id="brokers">
         <div class="container">
-            <h2 class="section-title">Three Products. One Platform.</h2>
-            <p class="section-subtitle">Settlement is the core. Lending and Issuance multiply your revenue.</p>
+            <h2 class="section-title">For Brokers & Exchanges</h2>
+            <p class="section-subtitle">Access new markets. Unlock capital. Grow volume.</p>
             
-            <div class="value-grid">
-                <div class="value-card" style="border: 3px solid var(--primary); transform: scale(1.05);">
-                    <div style="background: var(--primary); color: white; padding: 8px; border-radius: 8px; font-weight: 600; margin-bottom: 16px;">CORE PRODUCT</div>
-                    <div style="font-size: 3rem; margin-bottom: 16px;">⚡</div>
-                    <h3>Anduin Settlement</h3>
-                    <p><strong>Instant on-chain PnL settlement.</strong> No more T+2. Real-time margin calls. Cross-broker netting reduces capital requirements by 5x. This is the foundation.</p>
-                    <p style="color: var(--text-muted); margin-top: 12px; font-size: 0.9rem;">Now onboarding partners</p>
+            <div class="value-props-grid">
+                <div class="value-prop-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="users"></i>
+                    </div>
+                    <h3>Reach DeFi Users</h3>
+                    <p>60M+ on-chain traders who won't move to CEX. Now they can trade on your platform from their own wallets.</p>
                 </div>
                 
-                <div class="value-card" style="border: 2px solid var(--primary);">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">💰</div>
-                    <h3>Anduin Lending</h3>
-                    <p><strong>In-app margin lending.</strong> 10x leverage on spot without MIFID complexity. Externalize balance sheet risk. Users get leverage, you get fees, we take the risk.</p>
-                    <p style="color: var(--accent); margin-top: 12px; font-size: 0.9rem;">✓ Live with top-10 fintech</p>
+                <div class="value-prop-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <h3>5x Capital Efficiency</h3>
+                    <p>Cross-broker netting reduces margin requirements. Free up capital locked in reserves.</p>
                 </div>
                 
-                <div class="value-card" style="border: 2px solid var(--primary);">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">📊</div>
-                    <h3>Anduin Issuance</h3>
-                    <p><strong>Tokenize any asset as a structured product.</strong> Delta-one trackers, yield notes, securitized perps. On-demand when users withdraw to wallet.</p>
-                    <p style="color: var(--accent); margin-top: 12px; font-size: 0.9rem;">✓ Live with 3 major exchanges</p>
+                <div class="value-prop-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="bar-chart-3"></i>
+                    </div>
+                    <h3>Higher Trading Volume</h3>
+                    <p>Lower barriers = more traders = more volume. Instant settlement means faster turnover.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ROI Section -->
-    <section class="roi-section" id="roi">
-        <div class="container">
-            <h2 class="section-title">Free Up $10M+ in Locked Capital</h2>
-            <p class="section-subtitle">Conservative estimates for a mid-size broker or exchange</p>
-            
-            <div class="roi-calc">
-                <div class="roi-input">
-                    <h3 style="margin-bottom: 24px;">Before Anduin</h3>
-                    <div class="roi-line">
-                        <span>Settlement reserves</span>
-                        <span style="color: #ff4444;">$15M locked</span>
+                
+                <div class="value-prop-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="shield"></i>
                     </div>
-                    <div class="roi-line">
-                        <span>Settlement delays</span>
-                        <span style="color: #ff4444;">T+2 to T+5</span>
-                    </div>
-                    <div class="roi-line">
-                        <span>Counterparty risk</span>
-                        <span style="color: #ff4444;">Constant monitoring</span>
-                    </div>
-                    <div class="roi-line">
-                        <span>Ops cost (reconciliation)</span>
-                        <span style="color: #ff4444;">$2M+/year</span>
-                    </div>
-                    <div class="roi-line" style="border-bottom: none;">
-                        <span>Settlement failures</span>
-                        <span style="color: #ff4444;">2-5% in volatility</span>
-                    </div>
-                </div>
-                <div class="roi-output">
-                    <h3 style="margin-bottom: 24px;">With Anduin</h3>
-                    <div class="roi-line">
-                        <span>Capital freed (5x netting)</span>
-                        <span style="color: var(--accent);">$10M+</span>
-                    </div>
-                    <div class="roi-line">
-                        <span>Settlement time</span>
-                        <span style="color: var(--accent);">T+0 (seconds)</span>
-                    </div>
-                    <div class="roi-line">
-                        <span>Counterparty risk</span>
-                        <span style="color: var(--accent);">Eliminated</span>
-                    </div>
-                    <div class="roi-line">
-                        <span>Ops cost savings</span>
-                        <span style="color: var(--accent);">~$1.5M/year</span>
-                    </div>
-                    <div class="roi-line" style="border-bottom: none;">
-                        <span>New netting revenue</span>
-                        <span class="roi-result">+$500K+/year</span>
-                    </div>
+                    <h3>No Balance Sheet Risk</h3>
+                    <p>Lending, settlement, counterparty risk — all externalized to Anduin's on-chain infrastructure.</p>
                 </div>
             </div>
             
-            <div style="margin-top: 60px; text-align: center;">
-                <h3 style="margin-bottom: 24px; font-size: 1.75rem;">What You Can Do With That Capital</h3>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 900px; margin: 0 auto;">
-                    <div style="background: var(--bg); padding: 32px; border-radius: 12px;">
-                        <div style="font-size: 2rem; margin-bottom: 16px;">📈</div>
-                        <h4>Expand Trading Pairs</h4>
-                        <p>Use freed capital to offer more markets and products</p>
+            <div class="products-row">
+                <h3 class="subsection-title">Three Ways to Grow</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h4>Settlement</h4>
+                        <p>Offer self-custody trading. Users trade from wallets, settle instantly.</p>
                     </div>
-                    <div style="background: var(--bg); padding: 32px; border-radius: 12px;">
-                        <div style="font-size: 2rem; margin-bottom: 16px;">🚀</div>
-                        <h4>Increase Leverage</h4>
-                        <p>Offer higher leverage to users without additional capital</p>
+                    
+                    <div class="product-card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="wallet"></i>
+                        </div>
+                        <h4>Lending</h4>
+                        <p>Offer 10x margin without MIFID complexity. In-app loans externalize risk.</p>
                     </div>
-                    <div style="background: var(--bg); padding: 32px; border-radius: 12px;">
-                        <div style="font-size: 2rem; margin-bottom: 16px;">💵</div>
-                        <h4>Lower Fees</h4>
-                        <p>Undercut competitors with lower margin requirements</p>
+                    
+                    <div class="product-card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h4>Issuance</h4>
+                        <p>Tokenize products for on-chain distribution. Reach wallet users.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Integration -->
-    <section class="solutions-section">
+    <!-- For Investors -->
+    <section class="investors-section" id="investors">
         <div class="container">
-            <h2 class="section-title">Integration in Weeks, Not Months</h2>
-            <div class="pillars">
-                <div class="pillar">
-                    <div class="pillar-number">01</div>
-                    <h3>Connect Your Systems</h3>
-                    <p>Single API integration. We connect to your existing order flow and position management. No major infrastructure changes.</p>
-                    <ul class="pillar-features">
-                        <li>REST + WebSocket API</li>
-                        <li>Your existing workflows</li>
-                        <li>White-label settlement</li>
-                        <li>4-6 week integration timeline</li>
-                    </ul>
+            <h2 class="section-title">For Investors</h2>
+            <p class="section-subtitle">Trade directly. Stay in control.</p>
+            
+            <div class="investor-benefits-grid">
+                <div class="benefit-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="unlock"></i>
+                    </div>
+                    <h3>Your Keys, Your Assets</h3>
+                    <p>Trade directly from your wallet. No deposits, no custody risk.</p>
                 </div>
-                <div class="pillar featured">
-                    <div class="pillar-badge">Network Effects</div>
-                    <div class="pillar-number">02</div>
-                    <h3>Join The Netting Network</h3>
-                    <p>The more brokers on Anduin, the more capital everyone saves. Early movers get maximum netting benefit.</p>
-                    <ul class="pillar-features">
-                        <li>Cross-broker position netting</li>
-                        <li>Real-time capital optimization</li>
-                        <li>Network grows with each partner</li>
-                        <li>Competitive moat for early joiners</li>
-                    </ul>
+                
+                <div class="benefit-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="zap"></i>
+                    </div>
+                    <h3>Instant Settlement</h3>
+                    <p>Trades settle in seconds, not days. Your capital is never locked.</p>
                 </div>
-                <div class="pillar">
-                    <div class="pillar-number">03</div>
-                    <h3>Scale With Support</h3>
-                    <p>Dedicated partner success team. We help you optimize netting, expand products, and maximize ROI.</p>
-                    <ul class="pillar-features">
-                        <li>Dedicated account manager</li>
-                        <li>Real-time netting analytics</li>
-                        <li>Quarterly business reviews</li>
-                        <li>New product early access</li>
-                    </ul>
+                
+                <div class="benefit-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="wallet"></i>
+                    </div>
+                    <h3>No Prefunding</h3>
+                    <p>Margin vault handles collateral efficiently. No need to pre-deposit.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="icon-wrapper large">
+                        <i data-lucide="globe"></i>
+                    </div>
+                    <h3>Access Any Broker</h3>
+                    <p>One wallet, multiple brokers. Choose the best prices across platforms.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Social Proof -->
-    <section class="tech-section" style="background: var(--bg-alt);">
+    <!-- Technical Flow -->
+    <section class="technical-section">
         <div class="container">
-            <h2 class="section-title">Trusted Infrastructure</h2>
-            <p class="section-subtitle" style="margin-bottom: 40px;">From top-10 fintechs to global crypto exchanges</p>
-            <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 60px;">
-                <div class="stat">
-                    <div class="stat-value" style="font-size: 3rem;">4+</div>
-                    <div class="stat-label">Live Integrations</div>
+            <h2 class="section-title">Under the Hood</h2>
+            
+            <div class="technical-diagram">
+                <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Investor Wallet -->
+                    <g transform="translate(200, 20)">
+                        <rect width="200" height="60" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                        <text x="100" y="38" text-anchor="middle" font-size="16" font-weight="600" fill="#1e293b">Investor Wallet</text>
+                    </g>
+                    
+                    <!-- Arrow + Label -->
+                    <line x1="300" y1="90" x2="300" y2="130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="320" y="115" font-size="12" fill="#64748b">deposit collateral</text>
+                    
+                    <!-- Margin Vault + Oracle -->
+                    <g transform="translate(150, 140)">
+                        <rect width="200" height="60" rx="8" fill="#6366f1" stroke="#4f46e5" stroke-width="2"/>
+                        <text x="100" y="38" text-anchor="middle" font-size="16" font-weight="600" fill="white">Margin Vault</text>
+                    </g>
+                    
+                    <g transform="translate(380, 140)">
+                        <rect width="180" height="60" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                        <text x="90" y="38" text-anchor="middle" font-size="14" font-weight="500" fill="#64748b">Oracle Price Feeds</text>
+                    </g>
+                    
+                    <!-- Connection between vault and oracle -->
+                    <line x1="360" y1="170" x2="370" y2="170" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arrow)"/>
+                    <line x1="370" y1="170" x2="360" y2="170" stroke="#6366f1" stroke-width="1.5" marker-start="url(#arrow)"/>
+                    
+                    <!-- Arrow + Label -->
+                    <line x1="300" y1="210" x2="300" y2="250" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="320" y="235" font-size="12" fill="#64748b">trade</text>
+                    
+                    <!-- Broker/Exchange -->
+                    <g transform="translate(200, 260)">
+                        <rect width="200" height="60" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                        <text x="100" y="38" text-anchor="middle" font-size="16" font-weight="600" fill="#1e293b">Broker/Exchange</text>
+                    </g>
+                    
+                    <!-- Arrow + Label -->
+                    <line x1="300" y1="330" x2="300" y2="370" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="320" y="355" font-size="12" fill="#64748b">PnL calculated</text>
+                    
+                    <!-- Settlement Engine -->
+                    <g transform="translate(150, 380)">
+                        <rect width="300" height="60" rx="8" fill="#6366f1" stroke="#4f46e5" stroke-width="2"/>
+                        <text x="150" y="38" text-anchor="middle" font-size="16" font-weight="600" fill="white">Settlement Engine</text>
+                    </g>
+                    
+                    <!-- Arrow + Label -->
+                    <line x1="300" y1="450" x2="300" y2="490" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="320" y="475" font-size="12" fill="#64748b">instant on-chain</text>
+                    
+                    <!-- Final Margin Vault -->
+                    <g transform="translate(150, 500)">
+                        <rect width="300" height="80" rx="8" fill="#22c55e" stroke="#16a34a" stroke-width="2"/>
+                        <text x="150" y="35" text-anchor="middle" font-size="16" font-weight="600" fill="white">Margin Vault</text>
+                        <text x="150" y="60" text-anchor="middle" font-size="13" fill="white">Credit/Debit Both Sides</text>
+                    </g>
+                    
+                    <!-- Arrow definition -->
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#6366f1"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+            
+            <div class="technical-features">
+                <div class="tech-feature">
+                    <i data-lucide="check-circle"></i>
+                    <span>Atomic settlement</span>
                 </div>
-                <div class="stat">
-                    <div class="stat-value" style="font-size: 3rem;">$B+</div>
-                    <div class="stat-label">Trading Volume Enabled</div>
+                <div class="tech-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Insurance fund</span>
                 </div>
-                <div class="stat">
-                    <div class="stat-value" style="font-size: 3rem;">10+</div>
-                    <div class="stat-label">Pipeline Partners</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value" style="font-size: 3rem;">99.9%</div>
-                    <div class="stat-label">Settlement Success Rate</div>
+                <div class="tech-feature">
+                    <i data-lucide="arrow-right-left"></i>
+                    <span>Cross-broker netting</span>
                 </div>
             </div>
-            <h3 style="text-align: center; margin-bottom: 32px; color: var(--text-muted);">Built on Battle-Tested Infrastructure</h3>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-stack-section">
+        <div class="container">
+            <h2 class="section-title">Built on Proven Infrastructure</h2>
+            
             <div class="tech-grid">
-                <div class="tech-item">
-                    <div class="tech-logo">Base L2</div>
-                    <p>Coinbase's L2 — low fees, high throughput</p>
+                <div class="tech-card">
+                    <div class="icon-wrapper">
+                        <i data-lucide="layers"></i>
+                    </div>
+                    <h4>Base L2</h4>
+                    <p>Coinbase's Layer 2 for low fees and high throughput</p>
                 </div>
-                <div class="tech-item">
-                    <div class="tech-logo">USDC</div>
-                    <p>Circle-backed stablecoin settlement</p>
+                
+                <div class="tech-card">
+                    <div class="icon-wrapper">
+                        <i data-lucide="wallet"></i>
+                    </div>
+                    <h4>USDC</h4>
+                    <p>Circle-backed stablecoin for settlement</p>
                 </div>
-                <div class="tech-item">
-                    <div class="tech-logo">Smart Contracts</div>
-                    <p>Audited by leading security firms</p>
+                
+                <div class="tech-card">
+                    <div class="icon-wrapper">
+                        <i data-lucide="activity"></i>
+                    </div>
+                    <h4>Chainlink Oracles</h4>
+                    <p>Enterprise-grade price feeds</p>
                 </div>
-                <div class="tech-item">
-                    <div class="tech-logo">Chainlink</div>
-                    <p>Enterprise-grade price oracles</p>
+                
+                <div class="tech-card">
+                    <div class="icon-wrapper">
+                        <i data-lucide="file-text"></i>
+                    </div>
+                    <h4>ERC-3643</h4>
+                    <p>Compliant tokenization standard</p>
                 </div>
             </div>
         </div>
@@ -476,13 +420,18 @@
     <section class="cta-section" id="contact">
         <div class="container">
             <div class="cta-content">
-                <h2>Ready to Free Up Capital?</h2>
-                <p>Let's calculate exactly how much capital Anduin can unlock for your platform.</p>
-                <div class="cta-form">
-                    <input type="email" placeholder="your@email.com" class="cta-input">
-                    <button class="btn btn-primary btn-large">Schedule Partnership Call</button>
+                <h2>Ready to Get Started?</h2>
+                <p>Join the future of instant settlement</p>
+                <div class="cta-buttons">
+                    <a href="mailto:partners@anduin.io" class="btn btn-primary btn-large">
+                        <i data-lucide="building-2"></i>
+                        <span>I'm a Broker</span>
+                    </a>
+                    <a href="#waitlist" class="btn btn-secondary btn-large">
+                        <i data-lucide="user"></i>
+                        <span>I'm an Investor</span>
+                    </a>
                 </div>
-                <p class="cta-note">Or email partnerships directly: <a href="mailto:partners@anduin.io">partners@anduin.io</a></p>
             </div>
         </div>
     </section>
@@ -493,33 +442,24 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <img src="assets/logos/anduin-combined.svg" alt="Anduin" height="32">
-                    <p>Instant PnL settlement infrastructure for modern finance.</p>
+                    <p>Instant settlement infrastructure for modern finance.</p>
                 </div>
                 <div class="footer-links">
                     <div class="footer-col">
-                        <h4>Solutions</h4>
-                        <a href="#">For Crypto Exchanges</a>
-                        <a href="#">For CFD Brokers</a>
-                        <a href="#">For Prime Brokers</a>
-                        <a href="#">For OTC Desks</a>
+                        <h4>Products</h4>
+                        <a href="#settlement">Settlement</a>
+                        <a href="#lending">Lending</a>
+                        <a href="#issuance">Issuance</a>
                     </div>
                     <div class="footer-col">
-                        <h4>Products</h4>
-                        <a href="#">Anduin Settlement</a>
-                        <a href="#">Anduin Lending</a>
-                        <a href="#">Anduin Issuance</a>
+                        <h4>Solutions</h4>
+                        <a href="#brokers">For Brokers</a>
+                        <a href="#investors">For Investors</a>
                     </div>
                     <div class="footer-col">
                         <h4>Company</h4>
-                        <a href="#">About</a>
-                        <a href="#">Careers</a>
-                        <a href="#">Contact</a>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Legal</h4>
-                        <a href="#">Privacy</a>
-                        <a href="#">Terms</a>
-                        <a href="#">Compliance</a>
+                        <a href="#about">About</a>
+                        <a href="#contact">Contact</a>
                     </div>
                 </div>
             </div>
@@ -530,5 +470,28 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileMenuToggle.classList.toggle('active');
+            });
+        }
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>

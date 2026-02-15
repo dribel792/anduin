@@ -1,0 +1,26 @@
+{
+  "name": "@anduin/keeper",
+  "version": "1.0.0",
+  "description": "Anduin Settlement Keeper - Automated settlement bot",
+  "main": "keeper.ts",
+  "scripts": {
+    "keeper": "ts-node keeper.ts",
+    "netting": "ts-node netting-scheduler.ts",
+    "health": "ts-node health-check.ts",
+    "dev": "concurrently \"npm:keeper\" \"npm:netting\" \"npm:health\"",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "viem": "^2.7.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

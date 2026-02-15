@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients - Anduin Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.294.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <h1>Anduin</h1>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="clients.html" class="active">Clients</a>
+      <a href="settlements.html">Settlements</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="page-header">
+      <div>
+        <h1>Client Directory</h1>
+        <p class="subtitle">View all registered clients and their activity</p>
+      </div>
+      <button class="btn btn-primary" id="refresh-btn">
+        <i data-lucide="refresh-cw"></i>
+        Refresh
+      </button>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <i data-lucide="users"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Clients</div>
+          <div class="stat-value" id="total-clients">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <i data-lucide="trending-up"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Active Today</div>
+          <div class="stat-value" id="active-clients">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple">
+          <i data-lucide="wallet"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Collateral</div>
+          <div class="stat-value" id="total-collateral">$0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <i data-lucide="activity"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Settlements</div>
+          <div class="stat-value" id="total-settlements">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Client List</h2>
+        <div class="filters">
+          <input type="text" id="search-input" placeholder="Search by address or name...">
+          <select id="vault-filter">
+            <option value="">All Vaults</option>
+            <option value="unified">Unified Account</option>
+            <option value="batch">Batch Settlement</option>
+            <option value="private">Private Settlement</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Address</th>
+                <th>Name</th>
+                <th>Vault</th>
+                <th>Collateral Balance</th>
+                <th>Settlements (24h)</th>
+                <th>PnL (24h)</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clients-table">
+              <tr class="empty-state">
+                <td colspan="8">Loading clients...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/clients.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anduin Admin Panel</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.294.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>Anduin Admin</h1>
+      </div>
+      <nav class="nav">
+        <a href="#clients" class="nav-item active" data-page="clients">
+          <i data-lucide="users"></i>
+          <span>Clients</span>
+        </a>
+        <a href="#insurance" class="nav-item" data-page="insurance">
+          <i data-lucide="shield"></i>
+          <span>Insurance Fund</span>
+        </a>
+        <a href="#controls" class="nav-item" data-page="controls">
+          <i data-lucide="sliders"></i>
+          <span>System Controls</span>
+        </a>
+        <a href="#audit" class="nav-item" data-page="audit">
+          <i data-lucide="file-text"></i>
+          <span>Audit Log</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h2 id="page-title">Client Management</h2>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="refresh-btn">
+            <i data-lucide="refresh-cw"></i>
+            Refresh
+          </button>
+        </div>
+      </header>
+
+      <!-- Clients Page -->
+      <div id="clients-page" class="page active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="users"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Total Clients</div>
+              <div class="stat-value" id="total-clients">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="wallet"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Total Collateral</div>
+              <div class="stat-value" id="total-collateral">$0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="trending-up"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Active Settlements</div>
+              <div class="stat-value" id="active-settlements">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Client Onboarding</h3>
+          </div>
+          <div class="card-body">
+            <form id="onboard-client-form">
+              <div class="form-group">
+                <label for="client-address">Client Address (0x...)</label>
+                <input type="text" id="client-address" placeholder="0x..." required>
+              </div>
+              <div class="form-group">
+                <label for="client-name">Client Name (optional)</label>
+                <input type="text" id="client-name" placeholder="e.g., Hedge Fund Alpha">
+              </div>
+              <div class="form-group">
+                <label for="vault-select">Vault</label>
+                <select id="vault-select" required>
+                  <option value="">Select vault...</option>
+                  <option value="unified">Unified Account Vault</option>
+                  <option value="batch">Batch Settlement Vault</option>
+                  <option value="private">Private Settlement Vault</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="user-plus"></i>
+                Onboard Client
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Registered Clients</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Address</th>
+                    <th>Name</th>
+                    <th>Vault</th>
+                    <th>Collateral</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="clients-table-body">
+                  <tr class="empty-state">
+                    <td colspan="6">No clients registered yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insurance Page -->
+      <div id="insurance-page" class="page">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="shield"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Insurance Fund Balance</div>
+              <div class="stat-value" id="insurance-balance">$0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="briefcase"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Broker Pool Balance</div>
+              <div class="stat-value" id="broker-balance">$0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="alert-triangle"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Socialized Loss</div>
+              <div class="stat-value" id="socialized-loss">$0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <h3>Deposit to Insurance Fund</h3>
+            </div>
+            <div class="card-body">
+              <form id="deposit-insurance-form">
+                <div class="form-group">
+                  <label for="deposit-amount">Amount (USDC)</label>
+                  <input type="number" id="deposit-amount" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i data-lucide="plus-circle"></i>
+                  Deposit
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Withdraw from Insurance Fund</h3>
+            </div>
+            <div class="card-body">
+              <form id="withdraw-insurance-form">
+                <div class="form-group">
+                  <label for="withdraw-amount">Amount (USDC)</label>
+                  <input type="number" id="withdraw-amount" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                  <i data-lucide="minus-circle"></i>
+                  Withdraw
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Insurance Events History</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Transaction</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="insurance-events-table">
+                  <tr class="empty-state">
+                    <td colspan="4">No insurance events yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Controls Page -->
+      <div id="controls-page" class="page">
+        <div class="card">
+          <div class="card-header">
+            <h3>Emergency Controls</h3>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-warning">
+              <i data-lucide="alert-triangle"></i>
+              <strong>Warning:</strong> These controls affect all vaults system-wide. Use with caution.
+            </div>
+            
+            <div class="control-group">
+              <div class="control-info">
+                <h4>Pause All Vaults</h4>
+                <p>Prevents all deposits, withdrawals, and settlements. Use in case of emergency.</p>
+              </div>
+              <button class="btn btn-danger" id="pause-btn">
+                <i data-lucide="pause-circle"></i>
+                Pause System
+              </button>
+            </div>
+
+            <div class="control-group">
+              <div class="control-info">
+                <h4>Resume Operations</h4>
+                <p>Re-enables all vault operations after pause.</p>
+              </div>
+              <button class="btn btn-success" id="unpause-btn">
+                <i data-lucide="play-circle"></i>
+                Resume System
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>System Status</h3>
+          </div>
+          <div class="card-body">
+            <div class="status-grid">
+              <div class="status-item">
+                <span class="status-label">Unified Account Vault</span>
+                <span class="status-badge status-active" id="vault-unified-status">Active</span>
+              </div>
+              <div class="status-item">
+                <span class="status-label">Batch Settlement Vault</span>
+                <span class="status-badge status-active" id="vault-batch-status">Active</span>
+              </div>
+              <div class="status-item">
+                <span class="status-label">Private Settlement Vault</span>
+                <span class="status-badge status-active" id="vault-private-status">Active</span>
+              </div>
+              <div class="status-item">
+                <span class="status-label">Keeper Service</span>
+                <span class="status-badge status-active" id="keeper-status">Running</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit Log Page -->
+      <div id="audit-page" class="page">
+        <div class="card">
+          <div class="card-header">
+            <h3>Audit Log</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Action</th>
+                    <th>Actor</th>
+                    <th>Entity</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-log-table">
+                  <tr class="empty-state">
+                    <td colspan="5">No audit events yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/admin.js"></script>
+  <script>
+    // Initialize lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

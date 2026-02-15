@@ -3,420 +3,861 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anduin - Partner Pitch Deck</title>
+    <title>Anduin - B2B Pitch Deck</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root {
             --primary: #6366f1;
-            --secondary: #0ea5e9;
+            --primary-dark: #4f46e5;
             --accent: #22c55e;
             --bg: #ffffff;
             --bg-alt: #f8fafc;
             --text: #1e293b;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --gradient: linear-gradient(135deg, #6366f1, #0ea5e9);
+            --gradient: linear-gradient(135deg, #6366f1, #4f46e5);
         }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
-        .deck { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
-        .slides { flex: 1; position: relative; overflow: hidden; background: var(--bg); }
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 80px; display: none; flex-direction: column; justify-content: center; opacity: 0; transition: opacity 0.5s ease; }
-        .slide.active { display: flex; opacity: 1; }
-        .slide h1 { font-size: 4rem; font-weight: 700; margin-bottom: 32px; line-height: 1.1; }
-        .slide h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 40px; }
-        .slide h3 { font-size: 1.75rem; font-weight: 600; margin-bottom: 24px; }
-        .slide p { font-size: 1.4rem; color: var(--text-muted); max-width: 900px; line-height: 1.6; }
-        .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo { font-size: 1.75rem; font-weight: 700; margin-bottom: 48px; display: flex; align-items: center; gap: 12px; }
-        .slide.title { text-align: center; background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08), transparent 60%); }
-        .slide.title h1 { font-size: 5rem; }
-        .tagline { font-size: 2rem; color: var(--text-muted); margin-bottom: 60px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px; margin-top: 40px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 40px; }
-        .card { background: var(--bg); border: 2px solid var(--border); border-radius: 16px; padding: 40px; transition: all 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .card:hover { border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .card.highlight { border-color: var(--primary); background: var(--bg-alt); }
-        .card.featured { border: 3px solid var(--primary); transform: scale(1.05); }
-        .icon-wrapper { width: 64px; height: 64px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--primary); }
-        .icon-wrapper svg { width: 32px; height: 32px; }
-        .card h3 { margin-bottom: 16px; }
-        .card p { font-size: 1.1rem; }
-        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; margin-top: 60px; }
-        .stat { text-align: center; }
-        .stat-value { font-size: 5rem; font-weight: 700; color: var(--primary); }
-        .stat-label { font-size: 1.25rem; color: var(--text-muted); margin-top: 8px; }
-        .check-list { list-style: none; font-size: 1.4rem; }
-        .check-list li { padding: 16px 0; padding-left: 48px; position: relative; }
-        .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-size: 2rem; font-weight: 700; }
-        .problem-list { list-style: none; font-size: 1.4rem; }
-        .problem-list li { padding: 16px 0; padding-left: 48px; position: relative; color: var(--text-muted); }
-        .problem-list li::before { content: "✗"; position: absolute; left: 0; color: #ef4444; font-size: 2rem; font-weight: 700; }
-        .comparison { background: var(--bg-alt); border-radius: 16px; padding: 40px; margin-top: 40px; }
-        .comparison-row { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--border); font-size: 1.3rem; align-items: center; }
-        .comparison-row:last-child { border-bottom: none; }
-        .comparison-label { font-weight: 500; flex: 2; }
-        .comparison-before { color: #ef4444; flex: 1; text-align: center; }
-        .comparison-after { color: var(--accent); font-weight: 600; flex: 1; text-align: center; }
-        .result-value { font-size: 3rem; font-weight: 700; color: var(--accent); }
-        .slide.cta { text-align: center; background: var(--gradient); }
-        .slide.cta h1, .slide.cta h2 { color: white; }
-        .slide.cta p { color: rgba(255,255,255,0.95); margin: 0 auto 40px; }
-        .contact-info { font-size: 1.5rem; margin-top: 40px; color: white; }
-        .contact-info a { color: white; text-decoration: underline; }
-        .nav { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-alt); border-top: 1px solid var(--border); }
-        .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--text); }
-        .nav-controls { display: flex; gap: 16px; align-items: center; }
-        .nav-btn { padding: 10px 20px; background: var(--bg); border: 2px solid var(--border); border-radius: 8px; color: var(--text); cursor: pointer; font-size: 1rem; transition: all 0.2s; font-weight: 500; }
-        .nav-btn:hover { border-color: var(--primary); background: var(--bg-alt); }
-        .slide-counter { color: var(--text-muted); min-width: 60px; text-align: center; }
-        .flow-diagram { max-width: 900px; margin: 40px auto; }
-        .products-showcase { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; }
-        .product-box { background: var(--bg); border: 2px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; }
-        .product-box.primary { border-color: var(--primary); border-width: 3px; background: linear-gradient(180deg, #eef2ff, var(--bg)); }
-        .badge { display: inline-block; background: var(--primary); color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            overflow: hidden; 
+        }
+        
+        .deck { 
+            width: 100vw; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        .slides { 
+            flex: 1; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        .slide { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            padding: 80px; 
+            display: none; 
+            flex-direction: column; 
+            justify-content: center; 
+            opacity: 0; 
+            transition: opacity 0.5s ease; 
+        }
+        
+        .slide.active { 
+            display: flex; 
+            opacity: 1; 
+        }
+        
+        .slide h1 { 
+            font-size: 4rem; 
+            font-weight: 700; 
+            margin-bottom: 32px; 
+            line-height: 1.1; 
+        }
+        
+        .slide h2 { 
+            font-size: 2.5rem; 
+            font-weight: 600; 
+            margin-bottom: 40px; 
+        }
+        
+        .slide h3 { 
+            font-size: 1.75rem; 
+            font-weight: 600; 
+            margin-bottom: 24px; 
+        }
+        
+        .slide p { 
+            font-size: 1.4rem; 
+            color: var(--text-muted); 
+            line-height: 1.6; 
+        }
+        
+        .gradient-text { 
+            background: var(--gradient); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Title Slide */
+        .slide.title { 
+            text-align: center; 
+            align-items: center;
+            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.05), transparent 70%); 
+        }
+        
+        .slide.title img { 
+            height: 80px; 
+            margin-bottom: 48px; 
+        }
+        
+        .slide.title h1 { 
+            font-size: 5rem; 
+        }
+        
+        .tagline { 
+            font-size: 2rem; 
+            color: var(--primary); 
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        
+        .subtitle { 
+            font-size: 1.5rem; 
+            color: var(--text-muted); 
+        }
+        
+        /* Grid Layouts */
+        .grid-2 { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 40px; 
+            margin-top: 40px; 
+        }
+        
+        .grid-3 { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 40px; 
+            margin-top: 40px; 
+        }
+        
+        .grid-4 { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 32px; 
+            margin-top: 40px; 
+        }
+        
+        /* Cards */
+        .card { 
+            background: var(--bg-alt); 
+            border: 2px solid var(--border); 
+            border-radius: 16px; 
+            padding: 36px; 
+            transition: all 0.3s; 
+        }
+        
+        .card:hover { 
+            border-color: var(--primary); 
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15); 
+        }
+        
+        .card.highlight { 
+            border-color: var(--primary); 
+            background: #eef2ff; 
+        }
+        
+        .icon-wrapper { 
+            width: 64px; 
+            height: 64px; 
+            border-radius: 50%; 
+            background: var(--primary); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 24px; 
+            color: white;
+        }
+        
+        .icon-wrapper svg { 
+            width: 32px; 
+            height: 32px; 
+        }
+        
+        .card h3 { 
+            margin-bottom: 16px; 
+            font-size: 1.5rem;
+        }
+        
+        .card p { 
+            font-size: 1.1rem; 
+        }
+        
+        /* Stats */
+        .stats-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 80px; 
+            margin-top: 60px; 
+        }
+        
+        .stat { 
+            text-align: center; 
+        }
+        
+        .stat-value { 
+            font-size: 4.5rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+        }
+        
+        .stat-label { 
+            font-size: 1.25rem; 
+            color: var(--text-muted); 
+            margin-top: 8px; 
+        }
+        
+        /* Bullet Lists */
+        .bullet-list { 
+            margin-top: 40px; 
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .bullet-item { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 16px; 
+            font-size: 1.3rem; 
+        }
+        
+        .bullet-icon { 
+            width: 32px; 
+            height: 32px; 
+            background: var(--primary); 
+            border-radius: 50%; 
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .bullet-icon svg { 
+            width: 18px; 
+            height: 18px; 
+        }
+        
+        /* Waterfall Diagram */
+        .waterfall { 
+            display: flex; 
+            align-items: center; 
+            gap: 40px; 
+            margin-top: 60px;
+            padding: 40px;
+            background: var(--bg-alt);
+            border-radius: 16px;
+        }
+        
+        .waterfall-step { 
+            flex: 1; 
+            text-align: center; 
+            position: relative;
+        }
+        
+        .waterfall-step::after {
+            content: '→';
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .waterfall-step:last-child::after {
+            display: none;
+        }
+        
+        .waterfall-number { 
+            width: 60px; 
+            height: 60px; 
+            background: var(--primary); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.75rem; 
+            font-weight: 700; 
+            margin: 0 auto 16px; 
+        }
+        
+        .waterfall-step h4 { 
+            font-size: 1.25rem; 
+            margin-bottom: 8px; 
+        }
+        
+        .waterfall-step p { 
+            font-size: 1rem; 
+        }
+        
+        /* CTA Slide */
+        .cta-content { 
+            text-align: center; 
+            max-width: 800px; 
+            margin: 0 auto;
+        }
+        
+        .cta-content h2 { 
+            font-size: 4rem; 
+        }
+        
+        .contact { 
+            font-size: 2rem; 
+            color: var(--primary); 
+            font-weight: 600; 
+            margin: 40px 0; 
+        }
+        
+        /* Navigation */
+        .nav { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 20px 40px; 
+            background: var(--bg-alt); 
+            border-top: 1px solid var(--border);
+        }
+        
+        .nav-button { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-2px);
+        }
+        
+        .nav-button:disabled { 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+        
+        .slide-counter { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: var(--text-muted); 
+            font-size: 1rem;
+        }
+        
+        .slide-dot { 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%; 
+            background: var(--border); 
+            transition: all 0.3s;
+        }
+        
+        .slide-dot.active { 
+            background: var(--primary); 
+            transform: scale(1.5);
+        }
+        
+        /* SVG Styling */
+        svg text { 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .slide { padding: 60px; }
+            .slide h1 { font-size: 3rem; }
+            .slide h2 { font-size: 2rem; }
+            .slide p { font-size: 1.2rem; }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .slide { padding: 40px; }
+            .slide h1 { font-size: 2.5rem; }
+            .slide h2 { font-size: 1.5rem; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .stats-row { flex-direction: column; gap: 40px; }
+            .waterfall { flex-direction: column; }
+            .waterfall-step::after { display: none; }
+        }
     </style>
 </head>
 <body>
     <div class="deck">
         <div class="slides">
             <!-- Slide 1: Title -->
-            <div class="slide title active" data-slide="1">
-                <h1>Instant Settlement.<br>Direct From Your Wallet.</h1>
-                <p class="tagline">No prefunding • No counterparty risk • No waiting</p>
-                <div style="display: flex; justify-content: center; gap: 60px; margin-top: 60px;">
+            <div class="slide title active">
+                <img src="../assets/logos/anduin-combined.svg" alt="Anduin">
+                <h1>Anduin</h1>
+                <p class="tagline">Instant PnL Settlement Infrastructure</p>
+                <p class="subtitle">Settlement • Lending • Issuance for Exchanges & Brokers</p>
+            </div>
+
+            <!-- Slide 2: The Problem -->
+            <div class="slide">
+                <h2>Settlement Is Broken</h2>
+                <div class="grid-4">
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <h3>T+2 Delays</h3>
+                        <p>Capital sits idle for days</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="lock"></i>
+                        </div>
+                        <h3>Prefunding Required</h3>
+                        <p>Deposit before you trade</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="shield-off"></i>
+                        </div>
+                        <h3>Counterparty Risk</h3>
+                        <p>Assets on someone else's books</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="building-2"></i>
+                        </div>
+                        <h3>Siloed Platforms</h3>
+                        <p>No interoperability between brokers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: The Cost -->
+            <div class="slide">
+                <h2>What This Costs You</h2>
+                <div class="bullet-list">
+                    <div class="bullet-item">
+                        <div class="bullet-icon"><i data-lucide="dollar-sign"></i></div>
+                        <span><strong>$150+ billion</strong> locked in margin requirements globally</span>
+                    </div>
+                    <div class="bullet-item">
+                        <div class="bullet-icon"><i data-lucide="alert-triangle"></i></div>
+                        <span><strong>$6+ billion/year</strong> in settlement failures and failed trades</span>
+                    </div>
+                    <div class="bullet-item">
+                        <div class="bullet-icon"><i data-lucide="file-text"></i></div>
+                        <span><strong>Manual reconciliation</strong> — operational overhead, errors, delays</span>
+                    </div>
+                    <div class="bullet-item">
+                        <div class="bullet-icon"><i data-lucide="trending-down"></i></div>
+                        <span><strong>Lost opportunity</strong> — capital efficiency determines competitive advantage</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: The Solution -->
+            <div class="slide">
+                <h2>Instant On-Chain Settlement</h2>
+                <p style="max-width: 800px; margin-bottom: 60px;">
+                    Trades settle in seconds on Base L2 using USDC. No delays, no prefunding, no counterparty risk.
+                </p>
+                <div class="stats-row">
                     <div class="stat">
                         <div class="stat-value">T+0</div>
                         <div class="stat-label">Settlement</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">5x</div>
-                        <div class="stat-label">Capital Efficiency</div>
+                        <div class="stat-value">No</div>
+                        <div class="stat-label">Prefunding</div>
                     </div>
                     <div class="stat">
                         <div class="stat-value">24/7</div>
                         <div class="stat-label">Markets</div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Slide 2: The Problem -->
-            <div class="slide" data-slide="2">
-                <h2>Settlement Is Broken</h2>
-                <div class="grid-4">
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="clock"></i></div>
-                        <h3>T+2 Delays</h3>
-                        <p>Trades take days to settle. Capital sits idle.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="lock"></i></div>
-                        <h3>Prefunding Required</h3>
-                        <p>You must deposit before you trade. Capital inefficient.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="shield-off"></i></div>
-                        <h3>Counterparty Risk</h3>
-                        <p>Your assets sit on someone else's books.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="building-2"></i></div>
-                        <h3>Siloed Platforms</h3>
-                        <p>Each broker is an island. No interoperability.</p>
+                    <div class="stat">
+                        <div class="stat-value">Atomic</div>
+                        <div class="stat-label">Execution</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 3: One Layer, Three Products -->
-            <div class="slide" data-slide="3">
-                <h2 style="text-align: center;">One Layer. Three Products.</h2>
-                <p style="text-align: center; margin: 0 auto 60px; max-width: 800px;">Anduin connects investors and brokers through a unified settlement layer that enables instant settlement, efficient lending, and seamless issuance.</p>
-                <div class="products-showcase">
-                    <div class="product-box primary">
-                        <div class="badge">CORE PRODUCT</div>
-                        <div class="icon-wrapper" style="margin: 0 auto 24px;"><i data-lucide="zap"></i></div>
+            <!-- Slide 5: Settlement Flow -->
+            <div class="slide">
+                <h2>How It Works — Settlement Flow</h2>
+                <svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; margin-top: 20px;">
+                    <!-- User Wallet -->
+                    <g transform="translate(50, 30)">
+                        <rect width="180" height="80" rx="8" fill="#f8fafc" stroke="#6366f1" stroke-width="3"/>
+                        <text x="90" y="45" text-anchor="middle" font-size="18" font-weight="600" fill="#1e293b">User Wallet</text>
+                    </g>
+                    
+                    <!-- Deposit arrow -->
+                    <path d="M 140 120 L 140 180" stroke="#6366f1" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="160" y="155" font-size="14" fill="#64748b">depositCollateral(USDC)</text>
+                    
+                    <!-- Unified Account Vault -->
+                    <g transform="translate(350, 190)">
+                        <rect width="300" height="260" rx="12" fill="#6366f1" stroke="#4f46e5" stroke-width="3"/>
+                        <text x="150" y="35" text-anchor="middle" font-size="22" font-weight="700" fill="white">Unified Account Vault</text>
+                        
+                        <!-- Balances box -->
+                        <rect x="20" y="60" width="260" height="50" rx="6" fill="rgba(255,255,255,0.15)"/>
+                        <text x="150" y="90" text-anchor="middle" font-size="16" fill="white">User Balances</text>
+                        
+                        <!-- Broker pool box -->
+                        <rect x="20" y="130" width="260" height="50" rx="6" fill="rgba(255,255,255,0.15)"/>
+                        <text x="150" y="160" text-anchor="middle" font-size="16" fill="white">Broker Pool</text>
+                        
+                        <!-- Insurance fund box -->
+                        <rect x="20" y="200" width="260" height="50" rx="6" fill="rgba(34,197,94,0.3)"/>
+                        <text x="150" y="230" text-anchor="middle" font-size="16" fill="white">Insurance Fund</text>
+                    </g>
+                    
+                    <!-- Withdraw arrow -->
+                    <path d="M 140 180 L 140 120" stroke="#6366f1" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                    <text x="160" y="200" font-size="14" fill="#64748b">withdrawCollateral()</text>
+                    
+                    <!-- Broker System -->
+                    <g transform="translate(700, 30)">
+                        <rect width="180" height="80" rx="8" fill="#f8fafc" stroke="#6366f1" stroke-width="3"/>
+                        <text x="90" y="45" text-anchor="middle" font-size="18" font-weight="600" fill="#1e293b">Broker System</text>
+                    </g>
+                    
+                    <!-- Trade arrow from broker to vault -->
+                    <path d="M 690 70 L 660 70 L 660 260 L 660 260" stroke="#6366f1" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="670" y="165" font-size="14" fill="#64748b">Trade closes, PnL calc'd</text>
+                    
+                    <!-- Settlement arrow from vault to broker -->
+                    <path d="M 660 330 L 660 330 L 720 330 L 720 120" stroke="#22c55e" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="670" y="230" font-size="14" fill="#16a34a" font-weight="600">creditPnl() / seizeCol()</text>
+                    <text x="670" y="250" font-size="13" fill="#64748b">Instant settlement</text>
+                    
+                    <!-- Arrow definitions -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#6366f1"/>
+                        </marker>
+                    </defs>
+                </svg>
+                <p style="margin-top: 30px; text-align: center; font-size: 1.2rem;">
+                    User deposits → Trade happens → PnL settled atomically → User withdraws
+                </p>
+            </div>
+
+            <!-- Slide 6: Insurance Fund Waterfall -->
+            <div class="slide">
+                <h2>Insurance Fund Waterfall</h2>
+                <p style="margin-bottom: 20px;">Your broker pool is always protected</p>
+                <div class="waterfall">
+                    <div class="waterfall-step">
+                        <div class="waterfall-number">1</div>
+                        <h4>User Balance</h4>
+                        <p>Seize from losing trader's collateral (normal case)</p>
+                    </div>
+                    <div class="waterfall-step">
+                        <div class="waterfall-number">2</div>
+                        <h4>Insurance Fund</h4>
+                        <p>Covers shortfall if user balance insufficient</p>
+                    </div>
+                    <div class="waterfall-step">
+                        <div class="waterfall-number">3</div>
+                        <h4>Socialized Loss</h4>
+                        <p>Distributed across winning traders (last resort)</p>
+                    </div>
+                </div>
+                <div style="margin-top: 60px; padding: 30px; background: #eef2ff; border-radius: 12px; border-left: 4px solid var(--primary);">
+                    <p style="font-size: 1.3rem; color: var(--text);"><strong>Zero balance sheet risk.</strong> The system is designed to fail gracefully without touching your reserves.</p>
+                </div>
+            </div>
+
+            <!-- Slide 7: Three Products -->
+            <div class="slide">
+                <h2>Three Products, One Infrastructure</h2>
+                <div class="grid-3">
+                    <div class="card highlight">
+                        <div class="icon-wrapper">
+                            <i data-lucide="zap"></i>
+                        </div>
                         <h3>Settlement</h3>
-                        <p>Instant T+0 settlement. Real-time margin calls. Cross-broker netting.</p>
+                        <p><strong>Instant PnL settlement</strong></p>
+                        <p style="margin-top: 12px;">T+0, atomic, 24/7. Users trade from wallets, settle in seconds.</p>
                     </div>
-                    <div class="product-box">
-                        <div class="icon-wrapper" style="margin: 0 auto 24px;"><i data-lucide="wallet"></i></div>
+                    <div class="card highlight">
+                        <div class="icon-wrapper">
+                            <i data-lucide="wallet"></i>
+                        </div>
                         <h3>Lending</h3>
-                        <p>10x margin without MIFID complexity. Externalize balance sheet risk.</p>
+                        <p><strong>10x margin without MiFID</strong></p>
+                        <p style="margin-top: 12px;">Externalize risk. In-app loans from DeFi, not your balance sheet.</p>
                     </div>
-                    <div class="product-box">
-                        <div class="icon-wrapper" style="margin: 0 auto 24px;"><i data-lucide="layers"></i></div>
+                    <div class="card highlight">
+                        <div class="icon-wrapper">
+                            <i data-lucide="layers"></i>
+                        </div>
                         <h3>Issuance</h3>
-                        <p>Tokenize any asset. Delta-one trackers. Yield notes.</p>
+                        <p><strong>Tokenize any product</strong></p>
+                        <p style="margin-top: 12px;">ERC-3643 compliant. Distribute on-chain to 60M+ wallet users.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 4: For Brokers & Exchanges -->
-            <div class="slide" data-slide="4">
-                <h2>For Brokers & Exchanges</h2>
-                <p style="margin-bottom: 40px; font-size: 1.5rem;">Access new markets. Unlock capital. Grow volume.</p>
+            <!-- Slide 8: Cross-Broker Netting (The Moat) -->
+            <div class="slide">
+                <h2>Cross-Broker Netting (The Moat)</h2>
+                <div class="grid-2" style="align-items: center;">
+                    <div>
+                        <h3 style="color: var(--text-muted);">Without Netting</h3>
+                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                            <!-- Three brokers -->
+                            <rect x="50" y="20" width="100" height="60" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                            <text x="100" y="55" text-anchor="middle" font-size="14" fill="#1e293b">Broker A</text>
+                            
+                            <rect x="250" y="20" width="100" height="60" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                            <text x="300" y="55" text-anchor="middle" font-size="14" fill="#1e293b">Broker B</text>
+                            
+                            <rect x="150" y="200" width="100" height="60" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                            <text x="200" y="235" text-anchor="middle" font-size="14" fill="#1e293b">Broker C</text>
+                            
+                            <!-- Arrows -->
+                            <path d="M 150 50 L 250 50" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowRed)"/>
+                            <text x="200" y="45" text-anchor="middle" font-size="13" font-weight="600" fill="#ef4444">$80K</text>
+                            
+                            <path d="M 300 90 L 220 190" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowRed)"/>
+                            <text x="270" y="140" text-anchor="middle" font-size="13" font-weight="600" fill="#ef4444">$100K</text>
+                            
+                            <path d="M 150 230 L 100 90" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowRed)"/>
+                            <text x="110" y="160" text-anchor="middle" font-size="13" font-weight="600" fill="#ef4444">$60K</text>
+                            
+                            <defs>
+                                <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#ef4444"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                        <p style="text-align: center; margin-top: 20px; font-size: 1.4rem; color: #ef4444; font-weight: 600;">$240K moved</p>
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: var(--primary);">With Netting</h3>
+                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                            <!-- Three brokers -->
+                            <rect x="50" y="20" width="100" height="60" rx="6" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                            <text x="100" y="55" text-anchor="middle" font-size="14" fill="#1e293b">Broker A</text>
+                            
+                            <rect x="250" y="20" width="100" height="60" rx="6" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                            <text x="300" y="55" text-anchor="middle" font-size="14" fill="#1e293b">Broker B</text>
+                            
+                            <rect x="150" y="200" width="100" height="60" rx="6" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                            <text x="200" y="235" text-anchor="middle" font-size="14" fill="#1e293b">Broker C</text>
+                            
+                            <!-- Net arrow -->
+                            <path d="M 300 90 L 220 190" stroke="#22c55e" stroke-width="4" marker-end="url(#arrowGreen)"/>
+                            <text x="270" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#22c55e">$60K</text>
+                            <text x="270" y="160" text-anchor="middle" font-size="12" fill="#64748b">(net settlement)</text>
+                            
+                            <defs>
+                                <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 12 3, 0 6" fill="#22c55e"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                        <p style="text-align: center; margin-top: 20px; font-size: 1.4rem; color: #22c55e; font-weight: 600;">$60K moved (75% reduction)</p>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; padding: 30px; background: #eef2ff; border-radius: 12px;">
+                    <p style="font-size: 1.3rem; text-align: center;"><strong>More brokers = better netting = more capital savings</strong></p>
+                    <p style="margin-top: 12px; text-align: center; color: var(--text-muted);">This is why the network effect makes leaving expensive</p>
+                </div>
+            </div>
+
+            <!-- Slide 9: For Your Platform -->
+            <div class="slide">
+                <h2>What You Get</h2>
                 <div class="grid-2">
-                    <div class="card highlight">
-                        <div class="icon-wrapper"><i data-lucide="users"></i></div>
-                        <h3>Reach DeFi Users</h3>
-                        <p>60M+ on-chain traders who won't move to CEX. Now they can trade on your platform from their own wallets.</p>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3>Reach 60M+ DeFi Users</h3>
+                        <p>They trade from their wallets on YOUR platform. No deposits, no friction.</p>
                     </div>
-                    <div class="card highlight">
-                        <div class="icon-wrapper"><i data-lucide="trending-up"></i></div>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="trending-up"></i>
+                        </div>
                         <h3>5x Capital Efficiency</h3>
-                        <p>Cross-broker netting reduces margin requirements. Free up capital locked in reserves.</p>
+                        <p>Netting frees up margin reserves. Redeploy that capital to grow.</p>
                     </div>
-                    <div class="card highlight">
-                        <div class="icon-wrapper"><i data-lucide="bar-chart-3"></i></div>
-                        <h3>Higher Trading Volume</h3>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="bar-chart-3"></i>
+                        </div>
+                        <h3>Higher Volume</h3>
                         <p>Lower barriers = more traders = more volume. Instant settlement means faster turnover.</p>
                     </div>
-                    <div class="card highlight">
-                        <div class="icon-wrapper"><i data-lucide="shield"></i></div>
+                    <div class="card">
+                        <div class="icon-wrapper">
+                            <i data-lucide="shield"></i>
+                        </div>
                         <h3>No Balance Sheet Risk</h3>
-                        <p>Lending, settlement, counterparty risk — all externalized to Anduin's on-chain infrastructure.</p>
+                        <p>All externalized to Anduin. You focus on trading, we handle infrastructure.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 5: Three Ways to Grow -->
-            <div class="slide" data-slide="5">
-                <h2>Three Ways to Grow Your Business</h2>
-                <div class="grid-3">
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="zap"></i></div>
-                        <h3>Settlement</h3>
-                        <ul class="check-list" style="margin-top: 20px;">
-                            <li>Offer self-custody trading</li>
-                            <li>Users trade from wallets</li>
-                            <li>Settle instantly on-chain</li>
-                            <li>Zero counterparty risk</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="wallet"></i></div>
-                        <h3>Lending</h3>
-                        <ul class="check-list" style="margin-top: 20px;">
-                            <li>10x margin without MIFID</li>
-                            <li>In-app loans</li>
-                            <li>Externalize risk</li>
-                            <li>New revenue stream</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="layers"></i></div>
-                        <h3>Issuance</h3>
-                        <ul class="check-list" style="margin-top: 20px;">
-                            <li>Tokenize products</li>
-                            <li>On-chain distribution</li>
-                            <li>Reach wallet users</li>
-                            <li>Expand market reach</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 6: For Investors -->
-            <div class="slide" data-slide="6">
-                <h2>For Investors</h2>
-                <p style="margin-bottom: 40px; font-size: 1.5rem;">Trade directly. Stay in control.</p>
-                <div class="grid-2">
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="unlock"></i></div>
-                        <h3>Your Keys, Your Assets</h3>
-                        <p>Trade directly from your wallet. No deposits, no custody risk.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="zap"></i></div>
-                        <h3>Instant Settlement</h3>
-                        <p>Trades settle in seconds, not days. Your capital is never locked.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="wallet"></i></div>
-                        <h3>No Prefunding</h3>
-                        <p>Margin vault handles collateral efficiently. No need to pre-deposit.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="globe"></i></div>
-                        <h3>Access Any Broker</h3>
-                        <p>One wallet, multiple brokers. Choose the best prices across platforms.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 7: How It Works -->
-            <div class="slide" data-slide="7">
-                <h2 style="text-align: center;">How It Works</h2>
-                <div style="max-width: 800px; margin: 40px auto;">
-                    <div style="display: flex; flex-direction: column; gap: 30px;">
-                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--primary);">
-                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">1. Investor deposits collateral</strong>
-                            <p style="margin: 0;">Funds go into margin vault, secured on-chain</p>
-                        </div>
-                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--primary);">
-                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">2. Trade executes</strong>
-                            <p style="margin: 0;">User trades on broker platform from their wallet</p>
-                        </div>
-                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--primary);">
-                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">3. PnL calculated</strong>
-                            <p style="margin: 0;">Settlement engine calculates net position</p>
-                        </div>
-                        <div style="background: var(--bg-alt); padding: 24px; border-radius: 12px; border-left: 4px solid var(--accent);">
-                            <strong style="font-size: 1.3rem; display: block; margin-bottom: 8px;">4. Instant settlement</strong>
-                            <p style="margin: 0;">Margin vault credits/debits both sides atomically on-chain</p>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: center; gap: 60px; margin-top: 40px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i data-lucide="check-circle" style="color: var(--accent); width: 28px; height: 28px;"></i>
-                        <span style="font-size: 1.2rem; font-weight: 500;">Atomic settlement</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i data-lucide="shield" style="color: var(--accent); width: 28px; height: 28px;"></i>
-                        <span style="font-size: 1.2rem; font-weight: 500;">Insurance fund</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i data-lucide="arrow-right-left" style="color: var(--accent); width: 28px; height: 28px;"></i>
-                        <span style="font-size: 1.2rem; font-weight: 500;">Cross-broker netting</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 8: ROI -->
-            <div class="slide" data-slide="8">
-                <h2>Free Up $10M+ in Locked Capital</h2>
-                <p style="margin-bottom: 40px;">Conservative estimates for a mid-size broker or exchange</p>
-                <div class="comparison">
-                    <div class="comparison-row" style="font-weight: 600; color: var(--text); border-bottom: 2px solid var(--border);">
-                        <div class="comparison-label">Metric</div>
-                        <div class="comparison-before">Before Anduin</div>
-                        <div class="comparison-after">With Anduin</div>
-                    </div>
-                    <div class="comparison-row">
-                        <div class="comparison-label">Settlement reserves</div>
-                        <div class="comparison-before">$15M locked</div>
-                        <div class="comparison-after">$10M+ freed</div>
-                    </div>
-                    <div class="comparison-row">
-                        <div class="comparison-label">Settlement time</div>
-                        <div class="comparison-before">T+2 to T+5</div>
-                        <div class="comparison-after">T+0 (seconds)</div>
-                    </div>
-                    <div class="comparison-row">
-                        <div class="comparison-label">Counterparty risk</div>
-                        <div class="comparison-before">Constant monitoring</div>
-                        <div class="comparison-after">Eliminated</div>
-                    </div>
-                    <div class="comparison-row">
-                        <div class="comparison-label">Ops cost (reconciliation)</div>
-                        <div class="comparison-before">$2M+/year</div>
-                        <div class="comparison-after">~$500K savings</div>
-                    </div>
-                    <div class="comparison-row" style="border-top: 2px solid var(--border); margin-top: 16px; padding-top: 24px;">
-                        <div class="comparison-label" style="font-weight: 600; font-size: 1.4rem;">New netting revenue</div>
-                        <div class="comparison-before"></div>
-                        <div class="result-value">+$500K+/year</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 9: Built on Proven Infrastructure -->
-            <div class="slide" data-slide="9">
+            <!-- Slide 10: Technology Stack -->
+            <div class="slide">
                 <h2>Built on Proven Infrastructure</h2>
-                <div class="grid-4">
+                <div class="grid-2" style="margin-top: 60px;">
                     <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="layers"></i></div>
-                        <h3>Base L2</h3>
-                        <p>Coinbase's Layer 2 for low fees and high throughput</p>
+                        <div class="icon-wrapper">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h3>Base L2 (Coinbase)</h3>
+                        <p>Fast, cheap, institutional-grade Layer 2</p>
                     </div>
                     <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="wallet"></i></div>
-                        <h3>USDC</h3>
-                        <p>Circle-backed stablecoin for settlement</p>
+                        <div class="icon-wrapper">
+                            <i data-lucide="dollar-sign"></i>
+                        </div>
+                        <h3>USDC (Circle)</h3>
+                        <p>Regulated stablecoin for settlement</p>
                     </div>
                     <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="activity"></i></div>
-                        <h3>Chainlink Oracles</h3>
-                        <p>Enterprise-grade price feeds</p>
+                        <div class="icon-wrapper">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <h3>Chainlink</h3>
+                        <p>Enterprise oracle feeds for pricing</p>
                     </div>
                     <div class="card">
-                        <div class="icon-wrapper"><i data-lucide="file-text"></i></div>
+                        <div class="icon-wrapper">
+                            <i data-lucide="file-check"></i>
+                        </div>
                         <h3>ERC-3643</h3>
-                        <p>Compliant tokenization standard</p>
+                        <p>Compliant security token standard</p>
                     </div>
                 </div>
-                <div class="stat-grid" style="margin-top: 80px;">
+                <div style="margin-top: 60px; text-align: center;">
                     <div class="stat">
-                        <div class="stat-value">99.9%</div>
-                        <div class="stat-label">Settlement Success Rate</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">$B+</div>
-                        <div class="stat-label">Trading Volume Enabled</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">4+</div>
-                        <div class="stat-label">Live Integrations</div>
+                        <div class="stat-value">81</div>
+                        <div class="stat-label">Tests passing • Battle-tested contracts</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 10: CTA -->
-            <div class="slide cta" data-slide="10">
-                <h1>Ready to Get Started?</h1>
-                <p style="font-size: 1.8rem;">Let's calculate exactly how much capital Anduin can unlock for your platform.</p>
-                <div class="contact-info">
-                    <p style="margin-bottom: 24px; font-size: 1.6rem;">Schedule a partnership call:</p>
-                    <p><a href="mailto:partners@anduin.io" style="font-size: 1.8rem; font-weight: 600;">partners@anduin.io</a></p>
+            <!-- Slide 11: Integration -->
+            <div class="slide">
+                <h2>Live in 4-8 Weeks</h2>
+                <div class="waterfall">
+                    <div class="waterfall-step">
+                        <div class="waterfall-number">1</div>
+                        <h4>Connect Your API</h4>
+                        <p>REST/WebSocket integration</p>
+                    </div>
+                    <div class="waterfall-step">
+                        <div class="waterfall-number">2</div>
+                        <h4>Configure Vault</h4>
+                        <p>Set up netting rules & limits</p>
+                    </div>
+                    <div class="waterfall-step">
+                        <div class="waterfall-number">3</div>
+                        <h4>Go Live</h4>
+                        <p>Monitoring dashboard included</p>
+                    </div>
+                </div>
+                <div style="margin-top: 80px; padding: 40px; background: var(--bg-alt); border-radius: 16px; text-align: center;">
+                    <p style="font-size: 1.6rem; font-weight: 600; margin-bottom: 16px;">We handle the blockchain. You handle your users.</p>
+                    <p style="font-size: 1.2rem; color: var(--text-muted);">Full technical support during integration and beyond</p>
+                </div>
+            </div>
+
+            <!-- Slide 12: CTA -->
+            <div class="slide">
+                <div class="cta-content">
+                    <h2 class="gradient-text">Ready to Free Up Capital?</h2>
+                    <p class="contact">partnerships@anduin.finance</p>
+                    <p style="font-size: 1.5rem; margin-bottom: 60px;">Schedule a 30-minute partnership call</p>
+                    <div style="padding: 60px; background: var(--bg-alt); border-radius: 16px; border: 2px solid var(--primary);">
+                        <p style="font-size: 1.3rem; color: var(--text);"><strong>Join the brokers building the future of instant settlement.</strong></p>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Navigation -->
         <div class="nav">
-            <div class="nav-logo">Anduin</div>
-            <div class="nav-controls">
-                <button class="nav-btn" onclick="prevSlide()">← Previous</button>
-                <span class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">10</span></span>
-                <button class="nav-btn" onclick="nextSlide()">Next →</button>
-            </div>
+            <button class="nav-button" id="prevBtn" onclick="prevSlide()">
+                <i data-lucide="chevron-left"></i>
+                <span>Previous</span>
+            </button>
+            
+            <div class="slide-counter" id="slideCounter"></div>
+            
+            <button class="nav-button" id="nextBtn" onclick="nextSlide()">
+                <span>Next</span>
+                <i data-lucide="chevron-right"></i>
+            </button>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
         
-        let currentSlide = 1;
-        const totalSlides = document.querySelectorAll('.slide').length;
-        document.getElementById('total-slides').textContent = totalSlides;
-
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        
         function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            if (n > totalSlides) currentSlide = totalSlides;
-            if (n < 1) currentSlide = 1;
-            else currentSlide = n;
+            slides.forEach(slide => slide.classList.remove('active'));
             
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active');
-                if (index + 1 === currentSlide) {
-                    slide.classList.add('active');
-                }
-            });
+            if (n >= totalSlides) currentSlide = totalSlides - 1;
+            if (n < 0) currentSlide = 0;
             
-            document.getElementById('current-slide').textContent = currentSlide;
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation buttons
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            // Update counter with dots
+            updateCounter();
+            
+            // Reinit icons for new slide
             lucide.createIcons();
         }
-
+        
+        function updateCounter() {
+            slideCounter.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'slide-dot' + (i === currentSlide ? ' active' : '');
+                slideCounter.appendChild(dot);
+            }
+        }
+        
         function nextSlide() {
-            showSlide(currentSlide + 1);
+            currentSlide++;
+            showSlide(currentSlide);
         }
-
+        
         function prevSlide() {
-            showSlide(currentSlide - 1);
+            currentSlide--;
+            showSlide(currentSlide);
         }
-
+        
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
@@ -427,9 +868,21 @@
                 prevSlide();
             }
         });
-
+        
+        // Click navigation (left/right sides)
+        document.querySelector('.slides').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            
+            if (x < rect.width / 3) {
+                prevSlide();
+            } else if (x > rect.width * 2/3) {
+                nextSlide();
+            }
+        });
+        
         // Initialize
-        showSlide(1);
+        showSlide(currentSlide);
     </script>
 </body>
 </html>

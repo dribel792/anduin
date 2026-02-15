@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anduin Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <h1>Anduin</h1>
+        <span class="subtitle">Settlement Dashboard</span>
+      </div>
+      <nav>
+        <a href="index.html" class="active">Dashboard</a>
+        <a href="clients.html">Clients</a>
+        <a href="settlements.html">Settlements</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Overview Stats -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i data-lucide="dollar-sign"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Total Volume</h3>
+            <p class="stat-value" id="totalVolume">$0</p>
+            <span class="stat-change positive">+12% from last month</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i data-lucide="users"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Active Clients</h3>
+            <p class="stat-value" id="activeClients">0</p>
+            <span class="stat-change">24h active</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i data-lucide="shield"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Insurance Fund</h3>
+            <p class="stat-value" id="insuranceFund">$0</p>
+            <span class="stat-change positive">+5% buffer</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i data-lucide="activity"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Pending Settlements</h3>
+            <p class="stat-value" id="pendingCount">0</p>
+            <span class="stat-change">In queue</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts Row -->
+      <section class="charts-row">
+        <div class="chart-card">
+          <h3>Settlement Volume (7 days)</h3>
+          <canvas id="volumeChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>Netting Efficiency</h3>
+          <canvas id="nettingChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Live Settlement Feed -->
+      <section class="feed-section">
+        <div class="section-header">
+          <h3>
+            <i data-lucide="zap"></i>
+            Live Settlement Feed
+          </h3>
+          <button class="refresh-btn" onclick="loadSettlements()">
+            <i data-lucide="refresh-cw"></i>
+            Refresh
+          </button>
+        </div>
+        <div class="feed" id="settlementFeed">
+          <div class="feed-item">
+            <div class="feed-icon">
+              <i data-lucide="arrow-up-circle"></i>
+            </div>
+            <div class="feed-content">
+              <p class="feed-title">Settlement STL-123456</p>
+              <p class="feed-meta">Client: client-1 • Credit: $1,500.50 • 2 mins ago</p>
+            </div>
+            <span class="status-badge confirmed">Confirmed</span>
+          </div>
+          <!-- More items loaded via JS -->
+        </div>
+      </section>
+
+      <!-- Vault Balances -->
+      <section class="balances-section">
+        <h3>
+          <i data-lucide="wallet"></i>
+          Vault Balances
+        </h3>
+        <div class="balances-grid" id="vaultBalances">
+          <!-- Loaded via JS -->
+        </div>
+      </section>
+
+      <!-- System Health -->
+      <section class="health-section">
+        <h3>
+          <i data-lucide="heart-pulse"></i>
+          System Health
+        </h3>
+        <div class="health-grid">
+          <div class="health-item">
+            <span class="health-label">Keeper Status</span>
+            <span class="health-value" id="keeperStatus">
+              <i data-lucide="check-circle"></i> Running
+            </span>
+          </div>
+          <div class="health-item">
+            <span class="health-label">Last Settlement</span>
+            <span class="health-value" id="lastSettlement">2 mins ago</span>
+          </div>
+          <div class="health-item">
+            <span class="health-label">Avg Gas Cost</span>
+            <span class="health-value" id="avgGas">0.002 ETH</span>
+          </div>
+          <div class="health-item">
+            <span class="health-label">Chain Height</span>
+            <span class="health-value" id="blockHeight">1,234,567</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

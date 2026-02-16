@@ -1,375 +1,173 @@
 # Anduin Documentation Index
 
-**Complete technical documentation for the Anduin settlement infrastructure.**
+Complete technical documentation for Anduin's instant on-chain settlement infrastructure.
 
 ---
 
-## 📖 Table of Contents
+## Start Here
 
-### Core Documentation
+**👉 [ARCHITECTURE.md](ARCHITECTURE.md)** — Start here for system overview, smart contracts, and technical architecture.
 
-#### [INSURANCE_FUND.md](INSURANCE_FUND.md)
-The insurance fund mechanism that protects against underwater accounts.
-
-**Topics:**
-- Waterfall: user collateral → insurance fund → socialized losses
-- `seizeCollateralCapped()` function deep-dive
-- Admin deposit/withdraw functions
-- Example scenarios (sufficient collateral, partial shortfall, fund depletion)
-- Monitoring and alerts
-- Integration guide
-- Security considerations
-
-**Read this if:**
-- You need to understand how underwater accounts are handled
-- You're setting up monitoring for shortfall events
-- You're integrating settlement logic into a broker bridge
-- You want to know when/how to replenish the insurance fund
+This is the master architecture document consolidating V1 (single-venue MVP), V2 (on-chain-only settlement), and V3 (cross-venue portfolio margin with reinsurance). Read this first to understand how Anduin works.
 
 ---
 
-#### [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md)
-Exchange and broker integration adapters for connecting trading venues to on-chain settlement.
+## Core Documentation
 
-**Topics:**
-- Architecture overview (adapter pattern, factory, price aggregator, settlement bridge)
-- All 8 supported venues: Bybit, Kraken, OKX, Bitget, MEXC, KuCoin, HTX, MetaTrader 5
-- VenueAdapter interface specification
-- Price aggregation across multiple venues
-- Settlement bridge: mapping position closes to on-chain actions
-- How to onboard a new exchange
-- Configuration examples
-- Testing and monitoring
+### Product & Features
+- **[FEATURES.md](FEATURES.md)** — Comprehensive feature list with status, contracts, and descriptions
+- **[PRODUCT.md](PRODUCT.md)** — Product overview, target customers, revenue model, and roadmap
 
-**Read this if:**
-- You're integrating a new trading venue
-- You need real-time price feeds across multiple exchanges
-- You want to understand how position closes trigger on-chain settlements
-- You're building the broker bridge service
+### Technical Architecture
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** — Complete system architecture (V1/V2/V3), smart contracts, equity engine, insurance, netting
+- **[INSURANCE_FUND.md](INSURANCE_FUND.md)** — Insurance waterfall, shortfall handling, funding sources, admin functions
+- **[EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md)** — 8 venue adapters, integration guide, adapter pattern
 
----
+### Advanced Features
+- **[BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md)** — Merkle-proof based netting for HFT traders (88-96% gas savings)
+- **[PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md)** — Commitment-based settlement with hidden amounts for large traders
+- **[MULTI_COLLATERAL.md](MULTI_COLLATERAL.md)** — ETH/WBTC collateral support with oracle-based margin (planned)
 
-### Architecture & Design
-
-#### [ARCHITECTURE.md](ARCHITECTURE.md)
-High-level system architecture and component overview.
-
-**Topics:**
-- System components and data flow
-- Smart contract architecture
-- Backend services (bridge, indexer, recon, API)
-- Frontend dashboard
-- Deployment architecture
-- Tech stack decisions
-
-**Read this if:**
-- You're new to Anduin and need a system overview
-- You're onboarding engineers
-- You need to understand how all the pieces fit together
+### Operational
+- **[OPERATIONAL_INFRASTRUCTURE.md](OPERATIONAL_INFRASTRUCTURE.md)** — Keeper service, monitoring, alerting, DevOps
+- **[edge-cases.md](edge-cases.md)** — Safety features, circuit breaker, oracle failover, production checklist
 
 ---
 
-#### [PRIME_ARCHITECTURE.md](PRIME_ARCHITECTURE.md)
-Prime brokerage features: cross-venue netting and shared margin.
+## Reading Guide by Audience
 
-**Topics:**
-- Multi-venue position netting (60%+ margin savings)
-- Pre-trade margin checks
-- Hourly/daily settlement cycles
-- Default waterfall
-- Prime vault design
+### For Brokers Evaluating Anduin
 
-**Status:** Phase 2 (design complete, not yet implemented)
+**Goal:** Understand the business case and integration requirements.
 
-**Read this if:**
-- You want to understand the vision for cross-venue margin
-- You're planning multi-broker integrations
-- You need margin efficiency for HFT traders
+1. **[PRODUCT.md](PRODUCT.md)** — What Anduin does, who it's for, revenue model
+2. **[FEATURES.md](FEATURES.md)** — What features are available, what's planned
+3. **[ARCHITECTURE.md](ARCHITECTURE.md) (Overview + How It Works)** — High-level flow: deposit, equity updates, settlement
+4. **[INSURANCE_FUND.md](INSURANCE_FUND.md)** — How your venue is protected from liquidation shortfalls
+5. **[EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md)** — What APIs you need to provide, integration timeline
+
+**Time:** 30-45 minutes
 
 ---
 
-#### [PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md)
-Privacy-preserving settlement mechanism.
+### For Developers Integrating
 
-**Topics:**
-- Commitment-based settlement (amounts hidden on-chain)
-- Encrypted memos for user verification
-- Zero-knowledge proofs for regulatory audits
-- Privacy vs transparency trade-offs
+**Goal:** Understand the contracts, APIs, and integration steps.
 
-**Status:** Phase 2 (design complete, not yet implemented)
+1. **[ARCHITECTURE.md](ARCHITECTURE.md)** — Full technical architecture: smart contracts, equity engine, keeper service
+2. **[EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md)** — Adapter pattern, venue API requirements, examples
+3. **[OPERATIONAL_INFRASTRUCTURE.md](OPERATIONAL_INFRASTRUCTURE.md)** — Keeper service, monitoring, alerting
+4. **[edge-cases.md](edge-cases.md)** — Safety features, production deployment checklist
+5. **Contract code** — Read `contracts/src/` for implementation details
 
-**Read this if:**
-- You need to hide settlement amounts from public view
-- You're dealing with institutional clients who require privacy
-- You want to understand zkSNARK integration
+**Time:** 1-2 hours (plus contract code review)
 
 ---
 
-#### [BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md)
-Batch settlement for high-frequency traders.
+### For Investors / Due Diligence
 
-**Topics:**
-- 5-minute settlement windows
-- Off-chain netting with Merkle proofs
-- 88-96% gas savings
-- Claim-based settlement (lazy execution)
-- Batch vault design
+**Goal:** Understand the moat, safety, and scalability.
 
-**Status:** Phase 2 (design complete, not yet implemented)
+1. **[PRODUCT.md](PRODUCT.md)** — Market opportunity, revenue model, roadmap
+2. **[ARCHITECTURE.md](ARCHITECTURE.md)** — System design, security model, trust assumptions
+3. **[INSURANCE_FUND.md](INSURANCE_FUND.md)** — Risk management, waterfall, insurance pool funding
+4. **[FEATURES.md](FEATURES.md)** — What's built vs. planned, technology maturity
+5. **[edge-cases.md](edge-cases.md)** — Safety mechanisms, circuit breaker, oracle failover
+6. **[OPERATIONAL_INFRASTRUCTURE.md](OPERATIONAL_INFRASTRUCTURE.md)** — Monitoring, alerting, DevOps maturity
 
-**Read this if:**
-- You have HFT traders with hundreds of trades per day
-- You need to reduce gas costs dramatically
-- You want to understand Merkle proof settlements
+**Time:** 1-2 hours
 
 ---
 
-#### [MULTI_COLLATERAL.md](MULTI_COLLATERAL.md)
-Multi-collateral support with oracle-based margin.
+### For Researchers / Technical Deep Dive
 
-**Topics:**
-- ETH, WBTC, and other tokens as collateral
-- LTV ratios and haircuts per token
-- Oracle integration (Chainlink/Pyth)
-- Automated liquidations
-- Margin calls when health ratio drops
+**Goal:** Understand the technical innovations and design tradeoffs.
 
-**Status:** Phase 2 (design complete, not yet implemented)
+1. **[ARCHITECTURE.md](ARCHITECTURE.md)** — Complete architecture (V1/V2/V3 comparison)
+2. **[BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md)** — Merkle-proof netting, gas optimization
+3. **[PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md)** — Commitment-based privacy, zero-knowledge proofs
+4. **[MULTI_COLLATERAL.md](MULTI_COLLATERAL.md)** — Oracle-based margin, liquidation mechanisms
+5. **[edge-cases.md](edge-cases.md)** — Edge case handling, attack vectors, safety mechanisms
+6. **Contract tests** — Read `contracts/test/` for 203 test cases covering all scenarios
 
-**Read this if:**
-- You want to accept ETH or WBTC as collateral
-- You need to understand margin calculation with multiple assets
-- You're building liquidation bots
+**Time:** 3-4 hours (plus contract code deep dive)
 
 ---
 
-### Operational Documentation
-
-#### [edge-cases.md](edge-cases.md)
-Safety features and edge case handling.
-
-**Topics:**
-- Circuit breaker (auto-pause on volume spikes)
-- Underwater accounts (insurance fund + socialized losses)
-- Oracle failover (graceful degradation)
-- Timelock controller (24h delay on admin changes)
-- Withdrawal cooldown (flash loan prevention)
-- Missing events (complete event coverage)
-- Multi-collateral (haircuts for different tokens)
-- Withdrawal queue (broker insolvency)
-
-**Read this if:**
-- You're deploying to production
-- You need to understand all the safety mechanisms
-- You're setting up monitoring and alerting
-- You want to know what can go wrong and how it's handled
-
----
-
-## 📚 Documentation by Role
-
-### For Smart Contract Developers
-
-**Start here:**
-1. [ARCHITECTURE.md](ARCHITECTURE.md) — System overview
-2. [edge-cases.md](edge-cases.md) — Safety features
-3. [INSURANCE_FUND.md](INSURANCE_FUND.md) — Underwater account handling
-
-**Then explore:**
-- [MULTI_COLLATERAL.md](MULTI_COLLATERAL.md) — Multi-asset margin
-- [BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md) — Gas optimization
-- [PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md) — Privacy features
-
----
-
-### For Backend Engineers
-
-**Start here:**
-1. [ARCHITECTURE.md](ARCHITECTURE.md) — Component overview
-2. [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) — Venue adapters
-3. [INSURANCE_FUND.md](INSURANCE_FUND.md) — Settlement logic
-
-**Then explore:**
-- [edge-cases.md](edge-cases.md) — Error handling
-- [PRIME_ARCHITECTURE.md](PRIME_ARCHITECTURE.md) — Cross-venue features
-
----
-
-### For Platform Integrators
-
-**Start here:**
-1. [ARCHITECTURE.md](ARCHITECTURE.md) — How it all works
-2. [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) — Add your exchange
-3. [edge-cases.md](edge-cases.md) — Production safety
-
-**Then explore:**
-- [INSURANCE_FUND.md](INSURANCE_FUND.md) — Fund management
-- [BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md) — HFT optimization
-
----
-
-### For Operations / DevOps
-
-**Start here:**
-1. [edge-cases.md](edge-cases.md) — All safety mechanisms
-2. [INSURANCE_FUND.md](INSURANCE_FUND.md) — Monitoring shortfalls
-3. [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) — WebSocket health
-
-**Then explore:**
-- [ARCHITECTURE.md](ARCHITECTURE.md) — Deployment architecture
-- [PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md) — Privacy compliance
-
----
-
-## 🔍 Quick Reference
-
-### Key Contracts
-
-| Contract | Purpose | Documentation |
-|----------|---------|---------------|
-| **UnifiedAccountVault** | PnL settlement, insurance fund | [INSURANCE_FUND.md](INSURANCE_FUND.md) |
-| **SecurityTokenVault** | DVP for security tokens | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| **TradingHoursGuard** | Trading hours, halts | [edge-cases.md](edge-cases.md) |
-| **OracleGuard** | Price validation | [edge-cases.md](edge-cases.md) |
-
-### Key Services
-
-| Service | Purpose | Documentation |
-|---------|---------|---------------|
-| **Venue Adapters** | Exchange integrations | [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) |
-| **Settlement Bridge** | Position → on-chain mapping | [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) |
-| **Price Aggregator** | Multi-venue best prices | [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) |
-| **Broker Bridge** | Poll broker, execute settlements | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| **Indexer** | Event processing | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| **Recon Engine** | Broker ↔ on-chain reconciliation | [ARCHITECTURE.md](ARCHITECTURE.md) |
-
-### Key Features
-
-| Feature | Status | Documentation |
-|---------|--------|---------------|
-| Insurance Fund | ✅ Implemented | [INSURANCE_FUND.md](INSURANCE_FUND.md) |
-| Exchange Integrations | ✅ Implemented | [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) |
-| Circuit Breaker | ✅ Implemented | [edge-cases.md](edge-cases.md) |
-| Oracle Failover | ✅ Implemented | [edge-cases.md](edge-cases.md) |
-| Withdrawal Cooldown | ✅ Implemented | [edge-cases.md](edge-cases.md) |
-| Timelock Controller | ✅ Implemented | [edge-cases.md](edge-cases.md) |
-| Private Settlements | ⏸️ Phase 2 | [PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md) |
-| Batch Settlements | ⏸️ Phase 2 | [BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md) |
-| Multi-Collateral | ⏸️ Phase 2 | [MULTI_COLLATERAL.md](MULTI_COLLATERAL.md) |
-| Prime Brokerage | ⏸️ Phase 2 | [PRIME_ARCHITECTURE.md](PRIME_ARCHITECTURE.md) |
-
----
-
-## 🛠️ Common Tasks
-
-### "I want to integrate a new exchange"
-
-1. Read [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) — "How to Onboard a New Exchange" section
-2. Implement `VenueAdapter` interface for your exchange
-3. Add to `AdapterFactory`
-4. Test with provided examples
-5. Document in the "Supported Venues" section
-
----
-
-### "I want to understand how underwater accounts are handled"
-
-1. Read [INSURANCE_FUND.md](INSURANCE_FUND.md) — "The Waterfall" section
-2. Study the `seizeCollateralCapped()` code example
-3. Review the example scenarios
-4. Set up monitoring for `Shortfall` events
-
----
-
-### "I'm deploying to production, what do I need to know?"
-
-1. Read [edge-cases.md](edge-cases.md) — "Production Deployment Checklist"
-2. Configure circuit breaker thresholds
-3. Fund the insurance pool (recommend 5-10% of total collateral)
-4. Set up monitoring for critical events:
-   - `CircuitBreakerTriggered`
-   - `Shortfall`
-   - `InsuranceFundDeposited` / `InsuranceFundWithdrawn`
-5. Deploy `TimelockController` and transfer admin role
-6. Test failover scenarios
-
----
-
-### "I want to reduce gas costs for HFT traders"
-
-1. Read [BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md)
-2. Understand off-chain netting and Merkle proofs
-3. Note: Feature is designed but not yet implemented (Phase 2)
-4. For now, optimize by batching multiple users' settlements in a single transaction
-
----
-
-### "I need to add privacy features"
-
-1. Read [PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md)
-2. Understand commitment-based settlements
-3. Review zkSNARK integration approach
-4. Note: Feature is designed but not yet implemented (Phase 2)
-
----
-
-## 📝 Contributing to Documentation
-
-When adding new documentation:
-
-1. **Place in `/docs/`** directory
-2. **Add to this INDEX.md** under the appropriate section
-3. **Link from README.md** if it's a major feature
-4. **Use clear structure:** Overview → Implementation → Examples → FAQ
-5. **Include code snippets** with comments
-6. **Add ASCII diagrams** for visual flow
-7. **Cross-reference** related docs
-
-### Documentation Style Guide
-
-- **Headers:** Use `##` for main sections, `###` for subsections
-- **Code blocks:** Always specify language (```typescript, ```solidity)
-- **Examples:** Show input, code, and output
-- **Warnings:** Use **⚠️** emoji
-- **Success:** Use **✅** emoji
-- **Tables:** Use Markdown tables for comparisons
-- **Links:** Use relative links within docs (e.g., `[Architecture](ARCHITECTURE.md)`)
-
----
-
-## 🔗 External Resources
+## Documentation by Category
 
 ### Smart Contracts
-- [Foundry Book](https://book.getfoundry.sh/) — Testing framework
-- [OpenZeppelin Docs](https://docs.openzeppelin.com/) — Security patterns
-- [Solidity Docs](https://docs.soliditylang.org/) — Language reference
+- [ARCHITECTURE.md](ARCHITECTURE.md#smart-contracts) — All contracts overview
+- `UnifiedAccountVault.sol` — Single-venue PnL settlement (V1)
+- `HubVault.sol` — Cross-venue portfolio margin (V3)
+- `MarginVault.sol` — Per-venue vault (V2)
+- `ClearingVault.sol` — Cross-venue netting (V2/V3)
+- `SecurityTokenVault.sol` — DVP for security tokens
+- `OracleGuard.sol` — Oracle failover and price validation
+- `TradingHoursGuard.sol` — Trading hours, halts, earnings blackouts
 
-### Base L2
-- [Base Docs](https://docs.base.org/) — Chain documentation
-- [Base Testnet](https://sepolia.basescan.org/) — Block explorer
+### Off-Chain Services
+- [OPERATIONAL_INFRASTRUCTURE.md](OPERATIONAL_INFRASTRUCTURE.md) — Keeper, API, monitoring
+- [EXCHANGE_INTEGRATIONS.md](EXCHANGE_INTEGRATIONS.md) — Venue adapters (Bybit, Kraken, OKX, etc.)
 
-### Oracles
-- [Chainlink Price Feeds](https://docs.chain.link/data-feeds) — Oracle integration
-- [Pyth Network](https://docs.pyth.network/) — Alternative oracle
+### Safety & Security
+- [edge-cases.md](edge-cases.md) — Circuit breaker, oracle failover, timelock, withdrawal cooldown
+- [INSURANCE_FUND.md](INSURANCE_FUND.md) — Waterfall, shortfall coverage, socialized losses
 
-### TypeScript & viem
-- [viem Docs](https://viem.sh/) — Ethereum library
-- [wagmi Docs](https://wagmi.sh/) — React hooks
+### Product & Business
+- [PRODUCT.md](PRODUCT.md) — Product overview, target customers, revenue model
+- [FEATURES.md](FEATURES.md) — Feature matrix with status
 
----
-
-## 📧 Questions?
-
-If you can't find what you're looking for:
-
-1. **Search this index** for keywords
-2. **Check the README** for high-level overview
-3. **Read relevant doc files** in full
-4. **Ask in Discord** (if available)
-5. **Open a GitHub issue** with documentation feedback
+### Advanced Features (Designed, Not Yet Implemented)
+- [BATCH_SETTLEMENTS.md](BATCH_SETTLEMENTS.md) — Merkle-proof netting
+- [PRIVATE_SETTLEMENTS.md](PRIVATE_SETTLEMENTS.md) — Commitment-based privacy
+- [MULTI_COLLATERAL.md](MULTI_COLLATERAL.md) — Multi-asset collateral
 
 ---
 
-**Last updated:** 2026-02-14  
-**Documentation version:** v1.0
+## Quick Reference
+
+### Key Metrics
+- **203 tests passing** across all contracts
+- **8 exchange adapters** (Bybit, Kraken, OKX, Bitget, MEXC, KuCoin, HTX, MT5)
+- **3 product tiers** (V1 single-venue, V2 on-chain, V3 cross-venue)
+- **5 revenue streams** (settlement fees, insurance premium, equity updates, netting, integration)
+
+### Architecture Tiers
+- **V1 (UnifiedAccountVault)** — Single-venue instant settlement (entry-level)
+- **V2 (MarginVault + ClearingVault)** — On-chain cross-venue settlement (compliance-focused)
+- **V3 (HubVault + Keeper)** — Real-time cross-venue portfolio margin (growth product)
+
+### Contact
+- **GitHub:** [anduin-settlement](https://github.com/yourusername/anduin-settlement)
+- **Docs:** This directory
+- **Contracts:** `contracts/src/`
+- **Tests:** `contracts/test/`
+- **Services:** `services/`
+
+---
+
+## Archive
+
+Older architecture documents have been archived for reference:
+
+- `archive/ARCHITECTURE_V2.md` — V2 architecture (MarginVault + ClearingVault)
+- `archive/ARCHITECTURE_V3.md` — V3 architecture (HubVault + meta-risk layer)
+- `archive/PRIME_ARCHITECTURE.md` — Early cross-venue design
+
+These have been consolidated into the current [ARCHITECTURE.md](ARCHITECTURE.md).
+
+---
+
+## Contributing
+
+When adding new documentation:
+1. Add the doc to the appropriate category above
+2. Update reading guides if it's a core doc
+3. Link from ARCHITECTURE.md or FEATURES.md if relevant
+4. Keep this index up to date
+
+---
+
+**Last Updated:** 2025-02-16  
+**Version:** V3 architecture (HubVault + cross-venue equity)

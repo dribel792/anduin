@@ -1,5 +1,9 @@
 # Multi-Collateral Support — Architecture & Design
 
+**Status:** 🚧 Planned (design complete, deferred to post-MVP)
+
+---
+
 ## Problem
 
 Currently only **USDC accepted as collateral**:

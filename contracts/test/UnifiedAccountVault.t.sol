@@ -679,4 +679,219 @@ contract UnifiedAccountVaultTest is Test {
         vault.withdrawCollateral(50_000e6);
         assertEq(vault.collateral(user1), 0);
     }
+
+    // ═══════════════════════ AND-001: batchSettle ═══════════════════════
+
+    function _makeSettlement(
+        address user,
+        int256 amount,
+        bytes32 refId
+    ) internal pure returns (UnifiedAccountVault.Settlement memory) {
+        return UnifiedAccountVault.Settlement({
+            user: user,
+            amount: amount,
+            refId: refId,
+            symbolId: bytes32(0)
+        });
+    }
+
+    function test_batchSettle_happyPath_mixedCreditsAndDebits() public {
+        _depositCollateral(user1, 1000e6);
+        _depositCollateral(user2, 1000e6);
+        _brokerDeposit(5000e6);
+
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](4);
+        batch[0] = _makeSettlement(user1,  int256(100e6), keccak256("r1")); // credit
+        batch[1] = _makeSettlement(user2,  int256(200e6), keccak256("r2")); // credit
+        batch[2] = _makeSettlement(user1, -int256(50e6),  keccak256("r3")); // seize
+        batch[3] = _makeSettlement(user2, -int256(80e6),  keccak256("r4")); // seize
+
+        vm.prank(settlementRole);
+        vault.batchSettle(batch);
+
+        assertEq(vault.pnl(user1), 100e6);
+        assertEq(vault.pnl(user2), 200e6);
+        assertEq(vault.collateral(user1), 950e6);
+        assertEq(vault.collateral(user2), 920e6);
+    }
+
+    function test_batchSettle_emptyBatch_noOp() public {
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](0);
+        vm.prank(settlementRole);
+        vault.batchSettle(batch); // should not revert
+    }
+
+    function test_batchSettle_zeroAmount_consumesRefId() public {
+        _brokerDeposit(1000e6);
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](1);
+        batch[0] = _makeSettlement(user1, 0, keccak256("zero-ref"));
+
+        vm.prank(settlementRole);
+        vault.batchSettle(batch);
+
+        // refId consumed
+        assertTrue(vault.usedRefIds(keccak256("zero-ref")));
+        // balances unchanged
+        assertEq(vault.pnl(user1), 0);
+    }
+
+    function test_batchSettle_duplicateRefId_withinBatch_reverts() public {
+        _depositCollateral(user1, 1000e6);
+        _brokerDeposit(5000e6);
+
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](2);
+        batch[0] = _makeSettlement(user1, int256(100e6), keccak256("dup"));
+        batch[1] = _makeSettlement(user1, int256(100e6), keccak256("dup")); // same refId
+
+        vm.prank(settlementRole);
+        vm.expectRevert(UnifiedAccountVault.DuplicateRefId.selector);
+        vault.batchSettle(batch);
+    }
+
+    function test_batchSettle_duplicateRefId_fromPriorTx_reverts() public {
+        _depositCollateral(user1, 1000e6);
+        _brokerDeposit(5000e6);
+
+        // First batch uses refId
+        UnifiedAccountVault.Settlement[] memory batch1 = new UnifiedAccountVault.Settlement[](1);
+        batch1[0] = _makeSettlement(user1, int256(100e6), keccak256("used"));
+        vm.prank(settlementRole);
+        vault.batchSettle(batch1);
+
+        // Second batch reuses same refId
+        UnifiedAccountVault.Settlement[] memory batch2 = new UnifiedAccountVault.Settlement[](1);
+        batch2[0] = _makeSettlement(user1, int256(100e6), keccak256("used"));
+        vm.prank(settlementRole);
+        vm.expectRevert(UnifiedAccountVault.DuplicateRefId.selector);
+        vault.batchSettle(batch2);
+    }
+
+    function test_batchSettle_insufficientCollateral_midBatch_reverts_entireTx() public {
+        _depositCollateral(user1, 100e6);  // only 100
+        _brokerDeposit(5000e6);
+
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](2);
+        batch[0] = _makeSettlement(user1, int256(50e6),   keccak256("r1")); // credit, fine
+        batch[1] = _makeSettlement(user1, -int256(200e6), keccak256("r2")); // seize 200 but only 100 available
+
+        vm.prank(settlementRole);
+        vm.expectRevert(UnifiedAccountVault.InsufficientBalance.selector);
+        vault.batchSettle(batch);
+
+        // State must be unchanged (atomicity)
+        assertEq(vault.pnl(user1), 0);
+        assertFalse(vault.usedRefIds(keccak256("r1")));
+    }
+
+    function test_batchSettle_insufficientBrokerPool_reverts() public {
+        _depositCollateral(user1, 1000e6);
+        _brokerDeposit(50e6); // only 50 in pool
+
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](1);
+        batch[0] = _makeSettlement(user1, int256(100e6), keccak256("r1")); // credit 100 but pool only has 50
+
+        vm.prank(settlementRole);
+        vm.expectRevert(UnifiedAccountVault.InsufficientBrokerPool.selector);
+        vault.batchSettle(batch);
+    }
+
+    function test_batchSettle_maxBatchSize_succeeds() public {
+        uint256 maxSize = vault.MAX_BATCH_SIZE();
+        // Give broker enough USDC for the full batch
+        usdc.mint(brokerRole, uint256(maxSize) * 2e6);
+        vm.prank(brokerRole);
+        usdc.approve(address(vault), type(uint256).max);
+        _brokerDeposit(uint256(maxSize) * 2e6);
+        // Set up 10 users with USDC + approval
+        for (uint i = 0; i < 10; i++) {
+            address u = address(uint160(0x1000 + i));
+            usdc.mint(u, 1e9);
+            vm.prank(u);
+            usdc.approve(address(vault), type(uint256).max);
+            _depositCollateral(u, 1e9);
+        }
+
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](maxSize);
+        for (uint256 i = 0; i < maxSize; i++) {
+            batch[i] = _makeSettlement(
+                address(uint160(0x1000 + (i % 10))),
+                int256(1e6),
+                keccak256(abi.encodePacked("ref", i))
+            );
+        }
+        vm.prank(settlementRole);
+        vault.batchSettle(batch); // should not revert
+    }
+
+    function test_batchSettle_exceedsMaxBatchSize_reverts() public {
+        uint256 overSize = vault.MAX_BATCH_SIZE() + 1;
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](overSize);
+        // just fill with zero-amount entries so no other error fires first
+        for (uint256 i = 0; i < overSize; i++) {
+            batch[i] = _makeSettlement(user1, 0, keccak256(abi.encodePacked("z", i)));
+        }
+        vm.prank(settlementRole);
+        vm.expectRevert("batch too large");
+        vault.batchSettle(batch);
+    }
+
+    function test_batchSettle_paused_reverts() public {
+        vm.prank(admin);
+        vault.pause();
+
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](0);
+        vm.prank(settlementRole);
+        vm.expectRevert();
+        vault.batchSettle(batch);
+    }
+
+    function test_batchSettle_unauthorised_reverts() public {
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](0);
+        vm.prank(user1);
+        vm.expectRevert(UnifiedAccountVault.Unauthorized.selector);
+        vault.batchSettle(batch);
+    }
+
+    function test_batchSettle_gasComparison() public {
+        usdc.mint(brokerRole, 1_000_000e6);
+        vm.prank(brokerRole);
+        usdc.approve(address(vault), type(uint256).max);
+        _brokerDeposit(1_000_000e6);
+        for (uint i = 0; i < 10; i++) {
+            address u = address(uint160(0x2000 + i));
+            usdc.mint(u, 100_000e6);
+            vm.prank(u);
+            usdc.approve(address(vault), type(uint256).max);
+            _depositCollateral(u, 100_000e6);
+        }
+
+        // Baseline: 10 individual creditPnl calls
+        uint256 gasBefore = gasleft();
+        for (uint256 i = 0; i < 10; i++) {
+            vm.prank(settlementRole);
+            vault.creditPnl(
+                address(uint160(0x2000 + i)),
+                1e6,
+                keccak256(abi.encodePacked("single", i))
+            );
+        }
+        uint256 gasIndividual = gasBefore - gasleft();
+
+        // Batch: 10 settlements in one call
+        UnifiedAccountVault.Settlement[] memory batch = new UnifiedAccountVault.Settlement[](10);
+        for (uint256 i = 0; i < 10; i++) {
+            batch[i] = _makeSettlement(
+                address(uint160(0x2000 + i)),
+                int256(1e6),
+                keccak256(abi.encodePacked("batch", i))
+            );
+        }
+        gasBefore = gasleft();
+        vm.prank(settlementRole);
+        vault.batchSettle(batch);
+        uint256 gasBatch = gasBefore - gasleft();
+
+        // Batch should use less gas than individual calls
+        assertTrue(gasBatch < gasIndividual, "batch should be more gas efficient");
+    }
 }

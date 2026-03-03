@@ -241,6 +241,72 @@ contract UnifiedAccountVault is Pausable, ReentrancyGuard {
         emit CollateralSeized(user, amount, refId);
     }
 
+    // ──────────────────────────── Batch Settlement (AND-001) ───────
+
+    /// @notice A single settlement entry for batch processing
+    struct Settlement {
+        address user;
+        int256  amount;     // positive = credit PnL, negative = seize collateral
+        bytes32 refId;
+        bytes32 symbolId;   // used when guards are enabled; pass bytes32(0) if guards disabled
+    }
+
+    uint256 public constant MAX_BATCH_SIZE = 500;
+
+    /// @notice Process multiple settlements in a single transaction.
+    ///         All-or-nothing: if any entry fails the entire batch reverts.
+    function batchSettle(Settlement[] calldata settlements)
+        external
+        onlySettlement
+        whenNotPaused
+        nonReentrant
+    {
+        uint256 len = settlements.length;
+        if (len == 0) return;                          // empty batch: no-op
+        require(len <= MAX_BATCH_SIZE, "batch too large");
+
+        for (uint256 i = 0; i < len; ) {
+            Settlement calldata s = settlements[i];
+
+            // Guard check (skipped when guard addresses are zero)
+            if (s.symbolId != bytes32(0)) {
+                _checkGuards(s.symbolId);
+            }
+
+            // Dedup — must be unique within AND across all prior batches
+            if (usedRefIds[s.refId]) revert DuplicateRefId();
+            usedRefIds[s.refId] = true;
+
+            if (s.amount == 0) {
+                // zero-amount: consume refId, emit nothing, continue
+                unchecked { ++i; }
+                continue;
+            }
+
+            if (s.amount > 0) {
+                // Credit PnL
+                uint256 credit = uint256(s.amount);
+                if (brokerPool < credit) revert InsufficientBrokerPool();
+                brokerPool -= credit;
+                pnl[s.user] += credit;
+                emit PnLCredited(s.user, credit, s.refId);
+            } else {
+                // Seize collateral
+                uint256 debit = uint256(-s.amount);
+                if (collateral[s.user] < debit) revert InsufficientBalance();
+                collateral[s.user] -= debit;
+                brokerPool += debit;
+                emit CollateralSeized(s.user, debit, s.refId);
+            }
+
+            _trackAndCheckCircuitBreaker(
+                s.amount > 0 ? uint256(s.amount) : uint256(-s.amount)
+            );
+
+            unchecked { ++i; }
+        }
+    }
+
     /// @notice Credit PnL with guard checks (symbolId required if guards are set)
     function creditPnlWithGuards(
         address user,

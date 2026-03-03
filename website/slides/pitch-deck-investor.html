@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anduin — Investor Deck 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple:   #7C3AED;
+      --violet:   #5B21B6;
+      --soft:     #EDE9FE;
+      --cyan:     #0EA5E9;
+      --green:    #10B981;
+      --red:      #EF4444;
+      --bg:       #FFFFFF;
+      --bg-tint:  #F7F5FF;
+      --text:     #0D0820;
+      --muted:    #6B7280;
+      --dim:      #9CA3AF;
+      --border:   #E5E7EB;
+      --grad:     linear-gradient(135deg, #7C3AED 0%, #0EA5E9 100%);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#111; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Deck shell ── */
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slides { flex:1; position:relative; overflow:hidden; }
+
+    /* ── Slide base ── */
+    .slide {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      padding: 64px 80px;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .slide.active { display:flex; opacity:1; }
+
+    /* ── Typography ── */
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--purple);
+      background: var(--soft);
+      border: 1px solid rgba(124,58,237,0.2);
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    h1 { font-size: 4rem;   font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; color: var(--text); }
+    h2 { font-size: 2.6rem; font-weight: 700; line-height: 1.1;  letter-spacing: -0.025em; color: var(--text); }
+    h3 { font-size: 1.5rem; font-weight: 700; line-height: 1.2;  letter-spacing: -0.02em; color: var(--text); }
+    h4 { font-size: 1rem;   font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p { font-size: 1rem; color: var(--muted); line-height: 1.65; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Grid helpers ── */
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+    .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: border-color .2s;
+    }
+    .card.purple { background: var(--soft); border-color: rgba(124,58,237,0.3); }
+    .card.dark   { background: var(--text); border-color: var(--text); color:#fff; }
+    .card.dark h3, .card.dark h4, .card.dark p { color:#fff; }
+    .card.dark p  { color:rgba(255,255,255,0.7); }
+
+    .card-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .card.dark .card-tag { color: rgba(124,58,237,0.8); }
+
+    /* ── Stat block ── */
+    .stat-val {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── Problem badge ── */
+    .problem-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+    }
+    .problem-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--red);
+      font-weight: 600;
+      padding: 3px 8px;
+      background: #FEF2F2;
+      border-radius: 6px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .problem-item h4 { margin-bottom: 4px; }
+    .problem-item p { font-size: 0.85rem; }
+
+    /* ── Check list ── */
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.95rem; color: var(--muted);
+    }
+    .check-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Pill badges ── */
+    .pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin: 3px;
+    }
+    .pill.committed { background: #ECFDF5; color: #059669; border:1px solid #A7F3D0; }
+    .pill.prospect  { background: var(--soft); color: var(--purple); border:1px solid rgba(124,58,237,0.2); }
+    .pill.tier1     { background: #FFF7ED; color: #D97706; border:1px solid #FCD34D; }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 32px;
+    }
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      padding: 20px 16px;
+      border-radius: 12px;
+    }
+    .flow-step.highlight { background: var(--soft); border: 1.5px solid rgba(124,58,237,0.3); }
+    .flow-step.plain     { background: #F9FAFB; border: 1.5px solid var(--border); }
+    .flow-arrow {
+      font-size: 1.2rem; color: var(--dim); flex-shrink: 0;
+      padding: 0 6px;
+    }
+    .flow-step .step-label {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple); margin-bottom: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .flow-step.plain .step-label { color: var(--dim); }
+    .flow-step h4 { font-size: 0.95rem; margin-bottom: 4px; }
+    .flow-step p  { font-size: 0.8rem; }
+
+    /* ── Product columns ── */
+    .product-col {
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .product-col.primary { border-color: var(--purple); }
+    .product-header {
+      padding: 20px 24px;
+      border-bottom: 1.5px solid var(--border);
+      background: var(--bg-tint);
+    }
+    .product-col.primary .product-header { background: var(--soft); border-color: rgba(124,58,237,0.25); }
+    .product-header h3 { font-size: 1.15rem; margin-bottom: 4px; }
+    .product-header p  { font-size: 0.82rem; }
+    .product-body { padding: 20px 24px; }
+    .product-body li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      list-style: none;
+    }
+    .product-body li:last-child { border: none; }
+    .product-body li strong { color: var(--text); font-weight: 600; }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    /* ── Slide-specific BG ── */
+    .slide-dark {
+      background: var(--text) !important;
+    }
+    .slide-dark h1, .slide-dark h2, .slide-dark h3, .slide-dark h4 { color: #fff; }
+    .slide-dark p, .slide-dark .stat-label { color: rgba(255,255,255,0.6); }
+    .slide-dark .eyebrow { background: rgba(124,58,237,0.2); color: #C4B5FD; }
+    .slide-dark hr { border-color: rgba(255,255,255,0.08); }
+    .slide-dark .card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+    .slide-dark .card h4, .slide-dark .card h3 { color: #fff; }
+    .slide-dark .card p { color: rgba(255,255,255,0.6); }
+
+    .slide-tint { background: var(--bg-tint) !important; }
+
+    /* ── Navigation ── */
+    nav.controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 80px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    .nav-brand { font-weight: 700; font-size: 0.95rem; letter-spacing: -0.02em; }
+    .nav-brand span { color: var(--purple); }
+    .slide-counter { font-size: 0.8rem; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+    .nav-btns { display:flex; gap:8px; }
+    .nav-btn {
+      padding: 7px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      transition: all .15s;
+    }
+    .nav-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .nav-btn.primary { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .nav-btn.primary:hover { background: var(--violet); }
+
+    /* ── Slide dots ── */
+    .dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .dot.active {
+      background: var(--purple);
+      width: 18px;
+      border-radius: 3px;
+    }
+
+    /* ── Slide layout helpers ── */
+    .slide-header { margin-bottom: 36px; }
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .two-col-wide { display:grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
+
+    /* ── Big number row ── */
+    .big-nums {
+      display: flex;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      margin-top: 32px;
+    }
+    .big-num { flex:1; padding: 28px; text-align:center; border-right: 1px solid var(--border); }
+    .big-num:last-child { border-right: none; }
+
+    /* ── Traction row ── */
+    .client-block { margin-bottom: 24px; }
+    .client-block h4 { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Use of funds bar ── */
+    .fund-bar { height: 10px; border-radius: 100px; background: var(--grad); margin-bottom: 6px; }
+    .fund-row { margin-bottom: 14px; }
+    .fund-label { display:flex; justify-content:space-between; font-size: 0.85rem; margin-bottom: 4px; }
+    .fund-label span:first-child { color: var(--text); font-weight: 500; }
+    .fund-label span:last-child  { color: var(--purple); font-weight: 600; }
+
+    /* ── Background decoration ── */
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .slide > * { position: relative; z-index: 1; }
+
+    /* ── Keyboard hint ── */
+    .key-hint {
+      position: fixed;
+      bottom: 64px;
+      right: 24px;
+      font-size: 0.7rem;
+      color: var(--dim);
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+  <div class="slides" id="slides">
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 1: COVER                                         -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide active" id="slide-1">
+      <div class="bg-blob" style="width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(124,58,237,0.08) 0%,transparent 70%);"></div>
+      <div class="bg-blob" style="width:400px;height:400px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(14,165,233,0.06) 0%,transparent 70%);"></div>
+
+      <div style="max-width:780px;">
+        <div class="eyebrow">Confidential · Investor Deck 2026</div>
+        <h1 style="margin-bottom:24px;">The Settlement Layer<br>for <span class="grad-text">Modern Finance.</span></h1>
+        <p style="font-size:1.15rem;max-width:560px;margin-bottom:48px;">Anduin enables brokers and exchanges to offer instant on-chain settlement, margin lending, and tokenized issuance through a single API — unlocking 60M+ self-custody users they cannot currently serve.</p>
+
+        <div class="big-nums" style="max-width:640px;">
+          <div class="big-num">
+            <span class="stat-val">$4T+</span>
+            <span class="stat-label">Addressable Volume</span>
+          </div>
+          <div class="big-num">
+            <span class="stat-val">60M+</span>
+            <span class="stat-label">Untapped Users</span>
+          </div>
+          <div class="big-num">
+            <span class="stat-val">3</span>
+            <span class="stat-label">Revenue Streams</span>
+          </div>
+          <div class="big-num">
+            <span class="stat-val">T+0</span>
+            <span class="stat-label">Settlement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 2: THE PROBLEM                                   -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide slide-tint" id="slide-2">
+      <div class="slide-header" style="text-align:center;">
+        <div class="eyebrow">The Problem</div>
+        <h2>Brokers Are Locked Out<br>of Trillions in Capital</h2>
+      </div>
+
+      <div class="grid-2" style="gap:16px;max-width:960px;margin:0 auto;">
+        <div class="problem-item">
+          <span class="problem-num">01</span>
+          <div>
+            <h4>60M+ users brokers can't reach</h4>
+            <p>Self-custody wallet users won't move assets to a CEX. Brokers have no way to serve them. That's an entire generation of traders — locked out.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-num">02</span>
+          <div>
+            <h4>Margin is a regulatory minefield</h4>
+            <p>Offering 10× leverage requires MIFID licensing, balance sheet exposure, and risk desks. Most brokers skip it entirely — leaving revenue on the table.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-num">03</span>
+          <div>
+            <h4>T+2 settlement wastes capital</h4>
+            <p>Trades settle in days. Capital sits idle. Users prefund accounts they can't touch. Every day of delay is a day of lost trading volume.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-num">04</span>
+          <div>
+            <h4>Product distribution is broken</h4>
+            <p>Building an issuer or risk desk costs years and $10M+. Brokers can't offer equities, commodities, or structured products without it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 3: THE SOLUTION                                  -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-3">
+      <div class="bg-blob" style="width:500px;height:500px;top:-150px;right:-50px;background:radial-gradient(circle,rgba(124,58,237,0.07) 0%,transparent 70%);"></div>
+
+      <div class="two-col" style="max-width:1000px;margin:0 auto;">
+        <div>
+          <div class="eyebrow">The Solution</div>
+          <h2 style="margin-bottom:20px;">One API.<br><span class="grad-text">Three Products.</span><br>Instant Access.</h2>
+          <p style="margin-bottom:32px;">Anduin is the infrastructure layer that plugs into any broker or exchange via a single API. No balance sheet required. No new licenses. Just plug in and offer capabilities that were previously impossible.</p>
+          <ul class="check-list">
+            <li>Users trade directly from self-custody wallets</li>
+            <li>Settlement is instant, atomic, on-chain — no T+2</li>
+            <li>Margin lending without MIFID exposure</li>
+            <li>Tokenized equities and structured products on demand</li>
+            <li>All three products from one integration</li>
+          </ul>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card purple">
+            <span class="card-tag">01 / Core</span>
+            <h3 style="margin-bottom:8px;">Settlement</h3>
+            <p style="font-size:0.88rem;">Instant T+0 on-chain settlement via margin vault. Users trade from wallets, brokers capture flow without custody risk.</p>
+          </div>
+          <div class="card">
+            <span class="card-tag">02 / Revenue</span>
+            <h3 style="margin-bottom:8px;">Lending</h3>
+            <p style="font-size:0.88rem;">In-app margin loans up to 10× — fully collateralised, no MIFID, no balance sheet risk for the broker.</p>
+          </div>
+          <div class="card">
+            <span class="card-tag">03 / Distribution</span>
+            <h3 style="margin-bottom:8px;">Issuance</h3>
+            <p style="font-size:0.88rem;">Tokenized equities, commodities, structured notes and securitized perps — minted on demand, no issuer desk needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 4: SETTLEMENT (PRIMARY FOCUS)                    -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide slide-dark" id="slide-4">
+      <div class="bg-blob" style="width:700px;height:700px;top:-200px;right:-200px;background:radial-gradient(circle,rgba(124,58,237,0.15) 0%,transparent 70%);"></div>
+
+      <div class="slide-header">
+        <div class="eyebrow">Product Line 01</div>
+        <h2>Settlement — <span class="grad-text">The Core Infrastructure</span></h2>
+        <p style="max-width:560px;margin-top:12px;">The primary product. Every broker and exchange needs this. It's the foundation everything else sits on.</p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-step plain">
+          <div class="step-label">User</div>
+          <h4 style="color:#fff;">Self-Custody Wallet</h4>
+          <p>Deposits collateral on Base L2. Never leaves their wallet.</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step highlight">
+          <div class="step-label">Anduin</div>
+          <h4>Margin Vault</h4>
+          <p>Holds collateral. Credits USDx. Revalued every ~10s via Chainlink.</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step plain">
+          <div class="step-label">Broker</div>
+          <h4 style="color:#fff;">Order Execution</h4>
+          <p>Receives trade instructions. Executes on their platform as normal.</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step highlight">
+          <div class="step-label">Anduin</div>
+          <h4>Settlement Engine</h4>
+          <p>Calculates net PnL. Atomically updates vault balances on-chain.</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step plain">
+          <div class="step-label">Result</div>
+          <h4 style="color:#fff;">T+0 Complete</h4>
+          <p>Both sides credited/debited instantly. No counterparty risk.</p>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-top:28px;">
+        <div class="card">
+          <h4 style="margin-bottom:6px;">Base L2</h4>
+          <p style="font-size:0.82rem;">Low fees, Ethereum security. USDC as settlement currency.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:6px;">Multi-Collateral</h4>
+          <p style="font-size:0.82rem;">ETH, WBTC, USDC, USDT — any asset, one USDx account.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:6px;">Batch Settlement</h4>
+          <p style="font-size:0.82rem;">100 trades in one tx. 90%+ gas savings for high-frequency brokers.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:6px;">81 Tests</h4>
+          <p style="font-size:0.82rem;">Production-grade smart contracts. Auditable, deployed on Base Sepolia.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 5: LENDING                                       -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide slide-tint" id="slide-5">
+      <div class="two-col-wide" style="max-width:1000px;margin:0 auto;gap:56px;">
+        <div>
+          <div class="eyebrow">Product Line 02</div>
+          <h2 style="margin-bottom:20px;">Lending — <span class="grad-text">Margin Without the Complexity</span></h2>
+          <p style="margin-bottom:28px;">Brokers want to offer leverage but won't touch MIFID. Anduin externalises the risk entirely — the loan is between the user and Anduin's vault, not the broker's balance sheet.</p>
+
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+            <div class="card">
+              <h4 style="margin-bottom:6px;">In-app margin loans</h4>
+              <p style="font-size:0.88rem;">User posts collateral, receives USDx credit, trades up to 10× notional. Broker earns spread without touching the loan.</p>
+            </div>
+            <div class="card">
+              <h4 style="margin-bottom:6px;">Fully automated margining</h4>
+              <p style="font-size:0.88rem;">Collateral revalued every 10 seconds. Margin calls and liquidations handled by Anduin's keeper — not the broker.</p>
+            </div>
+            <div class="card">
+              <h4 style="margin-bottom:6px;">Balance sheet stays clean</h4>
+              <p style="font-size:0.88rem;">Broker never touches the loan. No capital requirement. No credit risk. Plug-in revenue stream.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom:20px;font-size:1.1rem;color:var(--muted);font-weight:500;">Who it's for</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;">
+            <span style="font-size:0.9rem;font-weight:600;padding:8px 16px;background:#fff;border:1.5px solid var(--border);border-radius:10px;">CFD Brokers</span>
+            <span style="font-size:0.9rem;font-weight:600;padding:8px 16px;background:#fff;border:1.5px solid var(--border);border-radius:10px;">Crypto Exchanges</span>
+            <span style="font-size:0.9rem;font-weight:600;padding:8px 16px;background:#fff;border:1.5px solid var(--border);border-radius:10px;">Neobanks</span>
+            <span style="font-size:0.9rem;font-weight:600;padding:8px 16px;background:#fff;border:1.5px solid var(--border);border-radius:10px;">Prediction Markets</span>
+          </div>
+
+          <h3 style="margin-bottom:16px;font-size:1.1rem;color:var(--muted);font-weight:500;">Committed clients</h3>
+          <div class="client-block">
+            <div style="display:flex;gap:10px;align-items:center;padding:14px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:12px;margin-bottom:10px;">
+              <span style="font-size:1.2rem;">✅</span>
+              <div>
+                <div style="font-weight:700;font-size:0.95rem;">Revolut</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Committed — Lending integration</div>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="margin-bottom:12px;font-size:1.1rem;color:var(--muted);font-weight:500;">Prospects</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span class="pill prospect">eToro</span>
+            <span class="pill prospect">Axi</span>
+            <span class="pill prospect">Bit2Me</span>
+            <span class="pill prospect">Baader Bank</span>
+            <span class="pill prospect">Nexo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 6: ISSUANCE                                      -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-6">
+      <div class="bg-blob" style="width:500px;height:500px;top:-100px;right:-100px;background:radial-gradient(circle,rgba(14,165,233,0.07) 0%,transparent 70%);"></div>
+
+      <div class="two-col-wide" style="max-width:1000px;margin:0 auto;gap:56px;">
+        <div>
+          <div class="eyebrow">Product Line 03</div>
+          <h2 style="margin-bottom:20px;">Issuance — <span class="grad-text">Structured Products on Demand</span></h2>
+          <p style="margin-bottom:28px;">Exchanges want to offer equities, commodities, and structured products but won't build an issuer or risk desk. Anduin handles issuance infrastructure — they just distribute.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+            <div class="card">
+              <span class="card-tag">Assets</span>
+              <p style="font-size:0.85rem;">Equities, indices, commodities, precious metals, crypto-linked underlyings</p>
+            </div>
+            <div class="card">
+              <span class="card-tag">Formats</span>
+              <p style="font-size:0.85rem;">Principal-protected notes, delta-one trackers, securitized perpetuals</p>
+            </div>
+            <div class="card">
+              <span class="card-tag">On-chain</span>
+              <p style="font-size:0.85rem;">ERC-3643 tokenization on demand — user withdraws to wallet, we mint 1:1</p>
+            </div>
+            <div class="card">
+              <span class="card-tag">Compliance</span>
+              <p style="font-size:0.85rem;">Identity-gated tokens. Permissioned transfer. Regulatory-grade trail.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom:16px;font-size:1.1rem;color:var(--muted);font-weight:500;">Committed clients</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px;">
+            <div style="display:flex;gap:10px;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:12px;">
+              <span>✅</span>
+              <div><div style="font-weight:700;font-size:0.9rem;">Bitvavo</div><div style="font-size:0.78rem;color:var(--muted);">Committed — Issuance</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:12px;">
+              <span>✅</span>
+              <div><div style="font-weight:700;font-size:0.9rem;">Bitget</div><div style="font-size:0.78rem;color:var(--muted);">Committed — Issuance</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:12px;">
+              <span>✅</span>
+              <div><div style="font-weight:700;font-size:0.9rem;">OSL</div><div style="font-size:0.78rem;color:var(--muted);">Committed — Issuance (HK)</div></div>
+            </div>
+          </div>
+
+          <h3 style="margin-bottom:12px;font-size:1.1rem;color:var(--muted);font-weight:500;">Prospects</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span class="pill prospect">BitMEX</span>
+            <span class="pill prospect">MEXC</span>
+            <span class="pill prospect">Young Platform</span>
+            <span class="pill prospect">Bybit</span>
+            <span class="pill prospect">Kraken</span>
+            <span class="pill prospect">OKX</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 7: MARKET OPPORTUNITY                            -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide slide-tint" id="slide-7">
+      <div class="slide-header" style="text-align:center;">
+        <div class="eyebrow">Market Opportunity</div>
+        <h2>A Massive, Underserved Market</h2>
+        <p style="max-width:580px;margin:12px auto 0;">Brokers and exchanges collectively serve hundreds of millions of users — but an entire generation of self-custody users is completely inaccessible to them today.</p>
+      </div>
+
+      <div class="grid-3" style="max-width:960px;margin:0 auto;">
+        <div class="card" style="text-align:center;">
+          <span class="stat-val" style="font-size:2.4rem;">60M+</span>
+          <span class="stat-label">Active on-chain wallet users</span>
+          <hr>
+          <p style="font-size:0.82rem;">DeFi users who hold assets in self-custody and refuse to move to CEX. Currently unreachable by any traditional broker.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <span class="stat-val" style="font-size:2.4rem;">$4T+</span>
+          <span class="stat-label">Annual crypto trading volume</span>
+          <hr>
+          <p style="font-size:0.82rem;">Spot + derivatives. Even capturing 1 bps of settlement fees on 1% of volume = $40M+ ARR.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <span class="stat-val" style="font-size:2.4rem;">$500B+</span>
+          <span class="stat-label">CFD/structured product market</span>
+          <hr>
+          <p style="font-size:0.82rem;">Global retail structured products. Brokers want yield exposure without the issuer infrastructure cost.</p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:960px;margin:20px auto 0;">
+        <div style="padding:16px 20px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:4px;">Why now?</div>
+          <p style="font-size:0.82rem;">Base L2 makes on-chain settlement cheap enough for retail. USDC provides the stable settlement layer. Chainlink provides the oracle. All the pieces exist.</p>
+        </div>
+        <div style="padding:16px 20px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:4px;">Who buys?</div>
+          <p style="font-size:0.82rem;">The broker/exchange pays. They offer it as a feature to users. One integration contract worth $100k–$2M ARR per client depending on volume.</p>
+        </div>
+        <div style="padding:16px 20px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:4px;">Network effect</div>
+          <p style="font-size:0.82rem;">Each broker that integrates makes the network more valuable. Cross-broker netting reduces capital requirements for everyone in the network.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 8: BUSINESS MODEL                                -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-8">
+      <div class="bg-blob" style="width:400px;height:400px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%);"></div>
+
+      <div class="slide-header">
+        <div class="eyebrow">Business Model</div>
+        <h2>Simple, Usage-Based Pricing</h2>
+        <p style="max-width:580px;margin-top:10px;">Brokers pay based on settled volume. Three revenue streams, all usage-based, all scaling with client growth.</p>
+      </div>
+
+      <div class="grid-3" style="max-width:960px;margin:0 auto 28px;">
+        <div class="card purple">
+          <span class="card-tag">Settlement</span>
+          <h3 style="font-size:1.4rem;margin-bottom:6px;">1–3 bps</h3>
+          <p style="font-size:0.85rem;">Per notional settled. Charged to the broker. Scales directly with their trading volume.</p>
+          <hr>
+          <p style="font-size:0.8rem;color:var(--muted);">$1M settled → $100–300 per day</p>
+        </div>
+        <div class="card">
+          <span class="card-tag">Lending</span>
+          <h3 style="font-size:1.4rem;margin-bottom:6px;">25–75 bps</h3>
+          <p style="font-size:0.85rem;">Spread on loan value. Broker earns their share of the spread, Anduin retains the rest.</p>
+          <hr>
+          <p style="font-size:0.8rem;color:var(--muted);">$10M loans outstanding → ~$50K/month</p>
+        </div>
+        <div class="card">
+          <span class="card-tag">Issuance</span>
+          <h3 style="font-size:1.4rem;margin-bottom:6px;">5–15 bps</h3>
+          <p style="font-size:0.85rem;">Per product issued/redeemed. Broker earns management fee, Anduin earns issuance spread.</p>
+          <hr>
+          <p style="font-size:0.8rem;color:var(--muted);">$100M AUM → ~$75K/month</p>
+        </div>
+      </div>
+
+      <div style="max-width:960px;margin:0 auto;">
+        <div style="padding:20px 24px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.2);border-radius:14px;display:flex;gap:32px;align-items:center;">
+          <div style="flex:1;">
+            <div style="font-weight:700;margin-bottom:4px;">Unit economics example</div>
+            <p style="font-size:0.85rem;">Mid-tier crypto exchange: $500M monthly volume, $20M loans outstanding, $50M tokenized products. Conservative 2 bps settlement + 50 bps lending + 10 bps issuance.</p>
+          </div>
+          <div style="text-align:center;padding:16px 24px;background:#fff;border-radius:12px;border:1.5px solid var(--border);flex-shrink:0;">
+            <span class="stat-val" style="font-size:2rem;">~$200K</span>
+            <span class="stat-label">Est. Monthly Revenue</span>
+            <div style="font-size:0.75rem;color:var(--dim);margin-top:4px;">per mid-tier client</div>
+          </div>
+          <div style="text-align:center;padding:16px 24px;background:#fff;border-radius:12px;border:1.5px solid var(--border);flex-shrink:0;">
+            <span class="stat-val" style="font-size:2rem;">~$2.4M</span>
+            <span class="stat-label">Est. Annual Revenue</span>
+            <div style="font-size:0.75rem;color:var(--dim);margin-top:4px;">per mid-tier client</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 9: TRACTION & PIPELINE                          -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide slide-tint" id="slide-9">
+      <div class="slide-header" style="text-align:center;">
+        <div class="eyebrow">Traction</div>
+        <h2>Committed Clients &amp; Active Pipeline</h2>
+        <p style="max-width:600px;margin:12px auto 0;">3 committed clients before product launch. 21-company active pipeline across all three product lines.</p>
+      </div>
+
+      <div class="grid-2" style="max-width:960px;margin:0 auto;gap:24px;">
+        <div>
+          <div class="client-block">
+            <h4>Committed — Settlement · All</h4>
+            <p style="font-size:0.85rem;color:var(--muted);margin-bottom:14px;">Every client is committed to settlement as the base product.</p>
+          </div>
+          <div class="client-block">
+            <h4>Committed — Lending</h4>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:10px;">
+                <span style="font-weight:700;">Revolut</span>
+                <span class="pill committed">Committed</span>
+              </div>
+            </div>
+          </div>
+          <div class="client-block" style="margin-top:16px;">
+            <h4>Committed — Issuance</h4>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:10px;">
+                <span style="font-weight:700;">Bitvavo</span>
+                <span class="pill committed">Committed</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:10px;">
+                <span style="font-weight:700;">Bitget</span>
+                <span class="pill committed">Committed</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border:1.5px solid #A7F3D0;border-radius:10px;">
+                <span style="font-weight:700;">OSL</span>
+                <span class="pill committed">Committed (HK)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="client-block">
+            <h4>Tier 1 — Strong Contacts</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+              <span class="pill tier1">eToro</span>
+              <span class="pill tier1">BitMEX</span>
+              <span class="pill tier1">MEXC</span>
+              <span class="pill tier1">Taiwan Mobile</span>
+              <span class="pill tier1">EDX Markets</span>
+              <span class="pill tier1">B2C2</span>
+            </div>
+          </div>
+          <div class="client-block">
+            <h4>Tier 2 — Good Contacts</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+              <span class="pill prospect">Bybit</span>
+              <span class="pill prospect">Axi</span>
+              <span class="pill prospect">Kraken</span>
+              <span class="pill prospect">Nexo</span>
+            </div>
+          </div>
+          <div class="client-block">
+            <h4>Tier 3 — In Pipeline</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">Phemex</span>
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">Libertex</span>
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">XTB</span>
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">OKX</span>
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">Bullish</span>
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">Backpack</span>
+              <span class="pill" style="background:#F9FAFB;border:1px solid var(--border);color:var(--muted);">Tradeville</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 10: TECHNOLOGY                                   -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-10">
+      <div class="two-col" style="max-width:1000px;margin:0 auto;gap:48px;">
+        <div>
+          <div class="eyebrow">Technology</div>
+          <h2 style="margin-bottom:20px;">Production-Grade.<br><span class="grad-text">Already Built.</span></h2>
+          <p style="margin-bottom:28px;">The core infrastructure is written, tested, and ready for deployment. Not a whitepaper — working smart contracts with 81 tests passing.</p>
+          <ul class="check-list">
+            <li>UnifiedAccountVault — live on Base Sepolia testnet</li>
+            <li>81 Foundry tests — all passing, including edge cases</li>
+            <li>8 exchange adapters — Hyperliquid, Binance, HL and more</li>
+            <li>SecurityTokenVault — DVP settlement for issuance</li>
+            <li>MultiCollateralVault — ETH, WBTC, USDC, USDT support</li>
+            <li>Insurance fund + 6-layer liquidation waterfall</li>
+            <li>Batch settlement — 90%+ gas savings</li>
+          </ul>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="padding:16px 20px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.2);border-radius:12px;">
+            <div class="mono" style="font-size:0.7rem;color:var(--purple);margin-bottom:8px;">CHAIN</div>
+            <div style="font-weight:700;margin-bottom:4px;">Base L2</div>
+            <p style="font-size:0.82rem;">Ethereum L2. Sub-cent fees. Coinbase-backed infrastructure.</p>
+          </div>
+          <div style="padding:16px 20px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+            <div class="mono" style="font-size:0.7rem;color:var(--dim);margin-bottom:8px;">CURRENCY</div>
+            <div style="font-weight:700;margin-bottom:4px;">USDC</div>
+            <p style="font-size:0.82rem;">Circle-backed. The settlement currency of institutional DeFi.</p>
+          </div>
+          <div style="padding:16px 20px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+            <div class="mono" style="font-size:0.7rem;color:var(--dim);margin-bottom:8px;">ORACLE</div>
+            <div style="font-weight:700;margin-bottom:4px;">Chainlink</div>
+            <p style="font-size:0.82rem;">Enterprise-grade price feeds. 10-second revaluation cycle.</p>
+          </div>
+          <div style="padding:16px 20px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+            <div class="mono" style="font-size:0.7rem;color:var(--dim);margin-bottom:8px;">STANDARD</div>
+            <div style="font-weight:700;margin-bottom:4px;">ERC-3643</div>
+            <p style="font-size:0.82rem;">Compliant tokenization. Identity-gated, transferable globally.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 11: THE ASK                                      -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide slide-dark" id="slide-11">
+      <div class="bg-blob" style="width:600px;height:600px;top:-100px;right:-200px;background:radial-gradient(circle,rgba(124,58,237,0.18) 0%,transparent 70%);"></div>
+
+      <div class="two-col" style="max-width:1000px;margin:0 auto;gap:48px;">
+        <div>
+          <div class="eyebrow">The Ask</div>
+          <h2 style="margin-bottom:20px;">Raising to <span class="grad-text">Deploy &amp; Land</span></h2>
+          <p style="margin-bottom:28px;color:rgba(255,255,255,0.6);">The product is built. We need capital to deploy to mainnet, close the committed clients, and build the go-to-market team to land the next 10.</p>
+
+          <div style="padding:24px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;margin-bottom:20px;">
+            <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(124,58,237,0.8);margin-bottom:8px;font-family:'JetBrains Mono',monospace;">Use of Funds</div>
+            <div class="fund-row">
+              <div class="fund-label"><span style="color:rgba(255,255,255,0.9);">Engineering &amp; Audit</span><span>40%</span></div>
+              <div class="fund-bar" style="width:40%;"></div>
+            </div>
+            <div class="fund-row">
+              <div class="fund-label"><span style="color:rgba(255,255,255,0.9);">Sales &amp; BD</span><span>30%</span></div>
+              <div class="fund-bar" style="width:30%;"></div>
+            </div>
+            <div class="fund-row">
+              <div class="fund-label"><span style="color:rgba(255,255,255,0.9);">Operations &amp; Legal</span><span>20%</span></div>
+              <div class="fund-bar" style="width:20%;"></div>
+            </div>
+            <div class="fund-row">
+              <div class="fund-label"><span style="color:rgba(255,255,255,0.9);">Reserve</span><span>10%</span></div>
+              <div class="fund-bar" style="width:10%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);">
+            <span class="card-tag">Milestone 1 — 0-3 months</span>
+            <h4 style="color:#fff;margin-bottom:6px;">Mainnet deployment</h4>
+            <p>Deploy to Base mainnet. Go live with Revolut, Bitvavo, Bitget, OSL.</p>
+          </div>
+          <div class="card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);">
+            <span class="card-tag">Milestone 2 — 3-6 months</span>
+            <h4 style="color:#fff;margin-bottom:6px;">Close Tier 1 pipeline</h4>
+            <p>Land eToro, BitMEX, MEXC, EDX — convert to signed contracts.</p>
+          </div>
+          <div class="card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);">
+            <span class="card-tag">Milestone 3 — 6-12 months</span>
+            <h4 style="color:#fff;margin-bottom:6px;">$1M ARR</h4>
+            <p>5 live clients. Cross-broker netting live. Multi-collateral vault production.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 12: CONTACT / CLOSE                              -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-12">
+      <div class="bg-blob" style="width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(124,58,237,0.07) 0%,transparent 60%);"></div>
+
+      <div style="max-width:680px;margin:0 auto;text-align:center;">
+        <div class="eyebrow">Let's Build This Together</div>
+        <h2 style="margin-bottom:20px;">The infrastructure layer<br>for <span class="grad-text">the next wave of finance.</span></h2>
+        <p style="margin-bottom:40px;font-size:1.05rem;">3 committed clients. 21-company pipeline. Product built and tested. We're raising to deploy and land.</p>
+
+        <div style="display:flex;justify-content:center;gap:16px;margin-bottom:40px;flex-wrap:wrap;">
+          <a href="mailto:partners@anduin.io" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--purple);color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:0.95rem;">
+            Get in Touch
+          </a>
+          <a href="https://dribel792.github.io/anduin/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#fff;color:var(--text);border:1.5px solid var(--border);border-radius:10px;text-decoration:none;font-weight:600;font-size:0.95rem;">
+            anduin.io
+          </a>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:32px;padding:20px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.15);border-radius:14px;">
+          <div style="text-align:center;">
+            <div style="font-weight:700;font-size:1.4rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">3</div>
+            <div style="font-size:0.72rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Committed clients</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-weight:700;font-size:1.4rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">21</div>
+            <div style="font-size:0.72rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Company pipeline</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-weight:700;font-size:1.4rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">81</div>
+            <div style="font-size:0.72rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Tests passing</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-weight:700;font-size:1.4rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">T+0</div>
+            <div style="font-size:0.72rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Settlement</div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;font-size:0.72rem;color:var(--dim);">Confidential · 2026 · partners@anduin.io</div>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+
+  <!-- ── Navigation bar ── -->
+  <nav class="controls" id="navBar">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span class="nav-brand">anduin<span>.</span></span>
+      <span class="slide-counter" id="counter">1 / 12</span>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Prev</button>
+      <button class="nav-btn primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+    </div>
+  </nav>
+</div>
+
+<div class="key-hint">← → to navigate · F for fullscreen</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, n));
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+
+    // Update nav bar bg for dark slides
+    const navBar = document.getElementById('navBar');
+    const isDark = slides[current].classList.contains('slide-dark');
+    navBar.style.background = isDark ? '#0D0820' : '#fff';
+    navBar.style.borderColor = isDark ? 'rgba(255,255,255,0.08)' : '#E5E7EB';
+    document.querySelectorAll('.nav-btn:not(.primary)').forEach(b => {
+      b.style.color = isDark ? 'rgba(255,255,255,0.7)' : '';
+      b.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : '';
+      b.style.background = isDark ? 'transparent' : '';
+    });
+    document.querySelector('.nav-brand').style.color = isDark ? '#fff' : '';
+    document.getElementById('counter').style.color = isDark ? 'rgba(255,255,255,0.4)' : '';
+    dotsEl.querySelectorAll('.dot').forEach(d => {
+      d.style.background = d.classList.contains('active') ? '#7C3AED' : (isDark ? 'rgba(255,255,255,0.2)' : '#E5E7EB');
+    });
+  }
+
+  function navigate(dir) {
+    goTo(current + dir);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+    if (e.key === 'f' || e.key === 'F') document.documentElement.requestFullscreen?.();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anduin — Sales Deck for Exchanges & Brokers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple:  #7C3AED;
+      --violet:  #5B21B6;
+      --soft:    #EDE9FE;
+      --cyan:    #0EA5E9;
+      --green:   #10B981;
+      --red:     #EF4444;
+      --orange:  #F97316;
+      --bg:      #FFFFFF;
+      --bg-tint: #F7F5FF;
+      --text:    #0D0820;
+      --muted:   #6B7280;
+      --dim:     #9CA3AF;
+      --border:  #E5E7EB;
+      --grad:    linear-gradient(135deg, #7C3AED 0%, #0EA5E9 100%);
+      --grad-r:  linear-gradient(135deg, #0EA5E9 0%, #7C3AED 100%);
+      --danger:  linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#111; }
+    body { font-family:'Space Grotesk',sans-serif; -webkit-font-smoothing:antialiased; }
+
+    .deck { width:100vw; height:100vh; display:flex; flex-direction:column; }
+    .slides { flex:1; position:relative; overflow:hidden; }
+
+    .slide {
+      position:absolute; inset:0; background:var(--bg);
+      padding:56px 80px; display:none; flex-direction:column;
+      justify-content:center; opacity:0; transition:opacity 0.35s ease;
+    }
+    .slide.active { display:flex; opacity:1; }
+
+    /* typography */
+    .eyebrow {
+      display:inline-block; font-size:0.63rem; font-weight:600;
+      letter-spacing:0.14em; text-transform:uppercase; color:var(--purple);
+      background:var(--soft); border:1px solid rgba(124,58,237,0.2);
+      padding:4px 14px; border-radius:100px; margin-bottom:18px;
+    }
+    .eyebrow.red   { background:#FEF2F2; color:#DC2626; border-color:#FCA5A5; }
+    .eyebrow.green { background:#ECFDF5; color:#059669; border-color:#A7F3D0; }
+    .eyebrow.orange{ background:#FFF7ED; color:#D97706; border-color:#FCD34D; }
+
+    h1 { font-size:3.8rem; font-weight:700; line-height:1.05; letter-spacing:-0.03em; color:var(--text); }
+    h2 { font-size:2.5rem; font-weight:700; line-height:1.1;  letter-spacing:-0.025em; color:var(--text); }
+    h3 { font-size:1.4rem; font-weight:700; line-height:1.2;  letter-spacing:-0.02em; color:var(--text); }
+    h4 { font-size:0.95rem; font-weight:600; letter-spacing:-0.01em; color:var(--text); }
+
+    .grad-text {
+      background:var(--grad); -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .danger-text {
+      background:var(--danger); -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent; background-clip:text;
+    }
+
+    p { font-size:0.97rem; color:var(--muted); line-height:1.65; }
+    .mono { font-family:'JetBrains Mono',monospace; }
+
+    /* grids */
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+    .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+
+    /* cards */
+    .card {
+      background:#fff; border:1.5px solid var(--border);
+      border-radius:14px; padding:24px 22px;
+    }
+    .card.purple { background:var(--soft); border-color:rgba(124,58,237,0.3); }
+    .card.danger { background:#FEF2F2; border-color:#FCA5A5; }
+    .card.green  { background:#ECFDF5; border-color:#A7F3D0; }
+    .card.dark   { background:var(--text); border-color:var(--text); }
+    .card.dark h4,.card.dark h3,.card.dark p { color:#fff; }
+    .card.dark p { color:rgba(255,255,255,0.65); }
+
+    .card-tag {
+      font-family:'JetBrains Mono',monospace; font-size:0.6rem;
+      letter-spacing:0.1em; text-transform:uppercase; color:var(--purple);
+      margin-bottom:10px; display:block;
+    }
+
+    /* stat */
+    .stat-val {
+      font-size:2.6rem; font-weight:700; letter-spacing:-0.04em;
+      background:var(--grad); -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent; background-clip:text;
+      line-height:1; display:block; margin-bottom:5px;
+    }
+    .stat-val.red {
+      background:var(--danger); -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .stat-label {
+      font-size:0.7rem; font-weight:500; letter-spacing:0.06em;
+      text-transform:uppercase; color:var(--dim);
+    }
+
+    /* check list */
+    .check-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .check-list li { display:flex; align-items:flex-start; gap:10px; font-size:0.92rem; color:var(--muted); }
+    .check-list li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+    /* cross list */
+    .cross-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .cross-list li { display:flex; align-items:flex-start; gap:10px; font-size:0.92rem; color:var(--muted); }
+    .cross-list li::before { content:'✗'; color:var(--red); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+    /* flow */
+    .flow { display:flex; align-items:stretch; gap:0; margin-top:28px; }
+    .flow-step { flex:1; text-align:center; padding:18px 12px; border-radius:12px; }
+    .flow-step.hi  { background:var(--soft); border:1.5px solid rgba(124,58,237,0.3); }
+    .flow-step.pl  { background:#F9FAFB; border:1.5px solid var(--border); }
+    .flow-arrow { font-size:1.1rem; color:var(--dim); flex-shrink:0; padding:0 5px; align-self:center; }
+    .flow-step .step-label { font-family:'JetBrains Mono',monospace; font-size:0.58rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); margin-bottom:5px; }
+    .flow-step.pl .step-label { color:var(--dim); }
+    .flow-step h4 { font-size:0.88rem; margin-bottom:3px; }
+    .flow-step p  { font-size:0.75rem; }
+
+    /* waterfall */
+    .wf-row {
+      display:flex; align-items:center; gap:14px; padding:13px 18px;
+      border-radius:10px; border:1.5px solid var(--border); background:#fff;
+      margin-bottom:8px;
+    }
+    .wf-num {
+      font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:700;
+      width:26px; height:26px; border-radius:50%; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0;
+    }
+    .wf-bar { flex:1; height:8px; border-radius:100px; }
+
+    /* pill */
+    .pill {
+      display:inline-block; font-size:0.72rem; font-weight:600;
+      padding:3px 11px; border-radius:100px; margin:2px;
+    }
+    .pill.g { background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; }
+    .pill.p { background:var(--soft); color:var(--purple); border:1px solid rgba(124,58,237,0.2); }
+    .pill.o { background:#FFF7ED; color:#D97706; border:1px solid #FCD34D; }
+
+    hr { border:none; border-top:1px solid var(--border); margin:20px 0; }
+
+    /* slide variants */
+    .slide-dark { background:var(--text) !important; }
+    .slide-dark h1,.slide-dark h2,.slide-dark h3,.slide-dark h4 { color:#fff; }
+    .slide-dark p,.slide-dark .stat-label { color:rgba(255,255,255,0.6); }
+    .slide-dark .eyebrow { background:rgba(124,58,237,0.2); color:#C4B5FD; }
+    .slide-dark hr { border-color:rgba(255,255,255,0.08); }
+    .slide-dark .card { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.1); }
+    .slide-dark .card h4,.slide-dark .card h3 { color:#fff; }
+    .slide-dark .card p { color:rgba(255,255,255,0.55); }
+    .slide-dark .wf-row { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1); }
+
+    .slide-tint { background:var(--bg-tint) !important; }
+    .slide-red  { background:#FFF5F5 !important; }
+
+    /* layout */
+    .slide-header { margin-bottom:32px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+    .two-col-wide { display:grid; grid-template-columns:1.45fr 1fr; gap:48px; align-items:start; }
+
+    .big-nums {
+      display:flex; gap:0; border:1.5px solid var(--border); border-radius:14px;
+      overflow:hidden; background:#fff; margin-top:28px;
+    }
+    .big-num { flex:1; padding:24px; text-align:center; border-right:1px solid var(--border); }
+    .big-num:last-child { border-right:none; }
+
+    /* bg blob */
+    .bg-blob { position:absolute; border-radius:50%; pointer-events:none; z-index:0; }
+    .slide > * { position:relative; z-index:1; }
+
+    /* nav */
+    nav.controls {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:11px 80px; border-top:1px solid var(--border);
+      background:#fff; z-index:10; flex-shrink:0;
+    }
+    .nav-brand { font-weight:700; font-size:0.9rem; letter-spacing:-0.02em; }
+    .nav-brand span { color:var(--purple); }
+    .slide-counter { font-size:0.78rem; color:var(--dim); font-family:'JetBrains Mono',monospace; }
+    .nav-btns { display:flex; gap:8px; }
+    .nav-btn {
+      padding:6px 18px; border-radius:7px; font-size:0.82rem; font-weight:600;
+      cursor:pointer; border:1.5px solid var(--border); background:#fff;
+      color:var(--text); font-family:'Space Grotesk',sans-serif; transition:all .15s;
+    }
+    .nav-btn:hover { border-color:var(--purple); color:var(--purple); }
+    .nav-btn.primary { background:var(--purple); color:#fff; border-color:var(--purple); }
+    .nav-btn.primary:hover { background:var(--violet); }
+
+    .dots { display:flex; gap:5px; align-items:center; }
+    .dot { width:5px; height:5px; border-radius:50%; background:var(--border); cursor:pointer; transition:all .2s; }
+    .dot.active { background:var(--purple); width:16px; border-radius:3px; }
+
+    .key-hint {
+      position:fixed; bottom:58px; right:22px; font-size:0.68rem;
+      color:var(--dim); font-family:'JetBrains Mono',monospace; opacity:0.55;
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+<div class="slides" id="slides">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 · COVER                                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide active" id="slide-1">
+  <div class="bg-blob" style="width:700px;height:700px;top:-250px;right:-150px;background:radial-gradient(circle,rgba(124,58,237,0.08) 0%,transparent 70%);"></div>
+  <div class="bg-blob" style="width:400px;height:400px;bottom:-100px;left:-80px;background:radial-gradient(circle,rgba(14,165,233,0.06) 0%,transparent 70%);"></div>
+
+  <div style="max-width:820px;">
+    <div class="eyebrow">Anduin · Settlement & Prime Infrastructure</div>
+    <h1 style="margin-bottom:22px;">Your users are trading<br>on <span class="danger-text">Hyperliquid.</span><br><span class="grad-text">Here's how to get them back.</span></h1>
+    <p style="font-size:1.1rem;max-width:600px;margin-bottom:44px;line-height:1.7;">Anduin is a settlement and prime layer that plugs into your exchange or broker via a single API — letting you serve self-custody users, offer margin lending, and settle trades instantly on-chain. No balance sheet exposure. No new licences. No rebuilding your stack.</p>
+
+    <div class="big-nums" style="max-width:680px;">
+      <div class="big-num">
+        <span class="stat-val">$500B+</span>
+        <span class="stat-label">Hyperliquid volume '24</span>
+      </div>
+      <div class="big-num">
+        <span class="stat-val">60M+</span>
+        <span class="stat-label">Self-custody users</span>
+      </div>
+      <div class="big-num">
+        <span class="stat-val">T+0</span>
+        <span class="stat-label">Settlement</span>
+      </div>
+      <div class="big-num">
+        <span class="stat-val">1 API</span>
+        <span class="stat-label">To go live</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 · THE THREAT                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-dark" id="slide-2">
+  <div class="bg-blob" style="width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(239,68,68,0.12) 0%,transparent 70%);"></div>
+
+  <div class="two-col" style="max-width:1020px;margin:0 auto;">
+    <div>
+      <div class="eyebrow red">The Threat</div>
+      <h2 style="margin-bottom:18px;">DeFi perps are eating<br>your <span class="danger-text">lunch money.</span></h2>
+      <p style="margin-bottom:28px;">Hyperliquid, dYdX, GMX, and a dozen clones processed over <strong style="color:#fff;">$1 trillion in volume</strong> in 2024 — and it's accelerating. These platforms do one thing you can't: they let users trade without leaving their wallet.</p>
+      <p style="margin-bottom:28px;">Your high-value traders — the ones who care about self-custody, who hold ETH and BTC natively — are already there. You're not losing them to a competitor. You're losing them to an architecture.</p>
+      <p>The window to fix this is open <strong style="color:#fff;">right now</strong>, before DeFi perps reach mainstream retail.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.25);">
+        <div style="font-size:0.6rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:#F87171;margin-bottom:8px;">Volume you're missing</div>
+        <span class="stat-val red" style="font-size:2.2rem;">$1T+</span>
+        <span class="stat-label">DeFi perps volume 2024</span>
+      </div>
+      <div class="card" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.25);">
+        <div style="font-size:0.6rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:#F87171;margin-bottom:8px;">Users you can't serve</div>
+        <span class="stat-val red" style="font-size:2.2rem;">60M+</span>
+        <span class="stat-label">Active on-chain wallet users</span>
+      </div>
+      <div class="card" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.25);">
+        <div style="font-size:0.6rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:#F87171;margin-bottom:8px;">Capital sitting idle per trade</div>
+        <span class="stat-val red" style="font-size:2.2rem;">T+2</span>
+        <span class="stat-label">Your settlement cycle. Theirs is instant.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 · THREE PROBLEMS YOU HAVE RIGHT NOW                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-tint" id="slide-3">
+  <div class="slide-header" style="text-align:center;">
+    <div class="eyebrow red">Three Problems You Have Right Now</div>
+    <h2>Structural limits that cost you volume every day</h2>
+  </div>
+
+  <div class="grid-3" style="max-width:980px;margin:0 auto;">
+    <div class="card danger">
+      <div style="font-size:1.8rem;margin-bottom:12px;">🚪</div>
+      <h3 style="margin-bottom:10px;font-size:1.15rem;">60M users you can't reach</h3>
+      <p style="font-size:0.88rem;">Self-custody holders won't move their ETH, BTC, or stablecoins to your platform. They're not churned — they never converted. Anduin lets them trade with you without ever touching your custodial system.</p>
+    </div>
+    <div class="card danger">
+      <div style="font-size:1.8rem;margin-bottom:12px;">⏳</div>
+      <h3 style="margin-bottom:10px;font-size:1.15rem;">Capital locked in T+2 limbo</h3>
+      <p style="font-size:0.88rem;">Every trade that settles in 2 days is capital that can't be redeployed. Your users prefund accounts with buffers they don't need. T+0 settlement frees that capital — which means more trades, more volume, more fees for you.</p>
+    </div>
+    <div class="card danger">
+      <div style="font-size:1.8rem;margin-bottom:12px;">🏦</div>
+      <h3 style="margin-bottom:10px;font-size:1.15rem;">Leverage means balance sheet risk</h3>
+      <p style="font-size:0.88rem;">Offering 5–10× leverage requires MIFID licensing, internal risk desks, and balance sheet exposure. Most brokers skip it entirely. Anduin externalises the loan — the risk never touches your books.</p>
+    </div>
+  </div>
+
+  <div style="max-width:980px;margin:20px auto 0;padding:18px 24px;background:#fff;border:1.5px solid var(--border);border-radius:12px;display:flex;gap:16px;align-items:center;">
+    <span style="font-size:1.4rem;">💡</span>
+    <p style="font-size:0.9rem;color:var(--text);"><strong>The common root cause:</strong> Your platform was built for custodial, off-chain users. Anduin is the infrastructure layer that adds on-chain settlement and prime services without requiring you to rebuild anything.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 · THE ANDUIN LAYER                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div class="bg-blob" style="width:500px;height:500px;top:-150px;right:-50px;background:radial-gradient(circle,rgba(124,58,237,0.07) 0%,transparent 70%);"></div>
+
+  <div class="two-col" style="max-width:1020px;margin:0 auto;">
+    <div>
+      <div class="eyebrow">The Anduin Layer</div>
+      <h2 style="margin-bottom:18px;">A settlement &amp; prime layer<br><span class="grad-text">bolted on to what you have.</span></h2>
+      <p style="margin-bottom:26px;">Anduin doesn't replace your exchange. It adds a collateral and settlement infrastructure underneath it — so self-custody users can post collateral on-chain, and you settle their PnL against it in real time.</p>
+      <p style="margin-bottom:26px;">From your side: one API integration. You receive a user's net PnL after each session and call <code class="mono" style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:0.82rem;">batchSettle()</code>. Anduin handles everything on-chain — collateral, liquidation, insurance.</p>
+      <ul class="check-list">
+        <li>Users trade on <em>your</em> platform — nothing changes on your UI</li>
+        <li>You call one function to settle — Anduin does the rest</li>
+        <li>No custody of user assets. No MIFID exposure. No balance sheet risk.</li>
+        <li>Live in weeks, not quarters</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card purple">
+        <span class="card-tag">Layer 1 — Settlement</span>
+        <h4 style="margin-bottom:6px;">Instant T+0 on-chain settlement</h4>
+        <p style="font-size:0.85rem;">User's collateral sits in the Anduin vault. You call batchSettle() with net PnL. Balances update atomically. No counterparty risk.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Layer 2 — Prime / Lending</span>
+        <h4 style="margin-bottom:6px;">Margin without the headache</h4>
+        <p style="font-size:0.85rem;">USDx credit extended against collateral. User gets leverage. You earn revenue. Anduin carries the risk — not you.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Layer 3 — Issuance (optional)</span>
+        <h4 style="margin-bottom:6px;">Tokenized products on demand</h4>
+        <p style="font-size:0.85rem;">Equities, commodities, structured notes minted as ERC-3643 tokens. Distribute to your users without building an issuer desk.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 · HOW IT WORKS (ARCHITECTURE)                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-dark" id="slide-5">
+  <div class="bg-blob" style="width:600px;height:600px;top:-150px;right:-150px;background:radial-gradient(circle,rgba(124,58,237,0.14) 0%,transparent 70%);"></div>
+
+  <div class="slide-header">
+    <div class="eyebrow">Architecture</div>
+    <h2>Exactly how the money moves</h2>
+    <p style="max-width:640px;margin-top:10px;">Five steps. The user interacts with you exactly as they do today. Anduin runs silently underneath, settling every trade on-chain.</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step pl">
+      <div class="step-label">Step 1 · User</div>
+      <h4 style="color:#fff;">Deposit Collateral</h4>
+      <p>Sends USDC / ETH / WBTC to Anduin vault on Base L2. One-time setup.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step hi">
+      <div class="step-label">Step 2 · Anduin</div>
+      <h4>Mint USDx Credit</h4>
+      <p>Vault credits USDx (internal USD unit) at LTV × collateral value, revalued every ~10s via Chainlink.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step pl">
+      <div class="step-label">Step 3 · You</div>
+      <h4 style="color:#fff;">User Trades</h4>
+      <p>User trades on your platform as normal. You verify their USDx balance before allowing positions.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step hi">
+      <div class="step-label">Step 4 · Anduin</div>
+      <h4>batchSettle()</h4>
+      <p>You push net PnL per user. Anduin credits winners, debits losers atomically on-chain. Permanent record.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step pl">
+      <div class="step-label">Step 5 · Done</div>
+      <h4 style="color:#fff;">T+0 Complete</h4>
+      <p>User can withdraw updated collateral immediately. No T+2 wait. Capital redeployed instantly.</p>
+    </div>
+  </div>
+
+  <div class="grid-4" style="margin-top:24px;">
+    <div class="card">
+      <h4 style="margin-bottom:5px;">Multi-Collateral</h4>
+      <p style="font-size:0.8rem;">ETH, WBTC, USDC, USDT — any ERC-20. One USDx account across all assets.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-bottom:5px;">Batch Settlement</h4>
+      <p style="font-size:0.8rem;">Up to 500 trades in one on-chain transaction. 90%+ gas savings at scale.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-bottom:5px;">Chainlink Oracles</h4>
+      <p style="font-size:0.8rem;">Price feeds revalue collateral every ~10s. Margin calls fire before the market moves against you.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-bottom:5px;">Base L2</h4>
+      <p style="font-size:0.8rem;">Sub-cent transaction fees. Ethereum-grade security. Coinbase-backed chain.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 6 · USDx & CAPITAL EFFICIENCY                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-tint" id="slide-6">
+  <div class="two-col-wide" style="max-width:1020px;margin:0 auto;">
+    <div>
+      <div class="eyebrow">Capital Efficiency</div>
+      <h2 style="margin-bottom:18px;">USDx — the <span class="grad-text">prime credit layer</span><br>that unlocks capital.</h2>
+      <p style="margin-bottom:20px;">USDx is Anduin's internal accounting unit. It's not a token — it's a credit line. When a user deposits $10,000 of ETH at 80% LTV, they instantly receive $8,000 USDx they can trade with. No waiting. No T+2. The collateral never leaves the vault.</p>
+      <p style="margin-bottom:28px;">For your platform, this means users arrive with more spending power. More spending power → larger positions → more fee revenue for you.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+        <div class="card">
+          <span class="card-tag">Without Anduin</span>
+          <ul class="cross-list" style="margin-top:4px;">
+            <li style="font-size:0.83rem;">User deposits $10K USDC</li>
+            <li style="font-size:0.83rem;">Trades $10K notional max</li>
+            <li style="font-size:0.83rem;">Capital locked T+2 after close</li>
+            <li style="font-size:0.83rem;">Can't use ETH/BTC as collateral</li>
+          </ul>
+        </div>
+        <div class="card purple">
+          <span class="card-tag">With Anduin</span>
+          <ul class="check-list" style="margin-top:4px;">
+            <li style="font-size:0.83rem;">User deposits $10K ETH</li>
+            <li style="font-size:0.83rem;">Gets $8K USDx at 80% LTV</li>
+            <li style="font-size:0.83rem;">Capital freed instantly T+0</li>
+            <li style="font-size:0.83rem;">Any ERC-20 as collateral</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;">
+        <div style="padding:20px 22px;background:var(--soft);border-bottom:1.5px solid rgba(124,58,237,0.2);">
+          <div class="mono" style="font-size:0.62rem;color:var(--purple);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Live example</div>
+          <h4>A $50M/month exchange on Anduin</h4>
+        </div>
+        <div style="padding:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.85rem;color:var(--muted);">Monthly settled volume</span>
+            <span style="font-weight:700;font-size:0.9rem;">$50M</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.85rem;color:var(--muted);">Settlement fee (2 bps)</span>
+            <span style="font-weight:700;font-size:0.9rem;color:var(--purple);">$10K / mo to Anduin</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.85rem;color:var(--muted);">Loans outstanding avg</span>
+            <span style="font-weight:700;font-size:0.9rem;">$5M</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.85rem;color:var(--muted);">Lending spread (50 bps)</span>
+            <span style="font-weight:700;font-size:0.9rem;color:var(--purple);">$25K / mo shared</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;">
+            <span style="font-size:0.88rem;font-weight:600;color:var(--text);">Volume uplift (new users)</span>
+            <span style="font-weight:700;font-size:0.95rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">+15–30%</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;padding:14px 18px;background:#fff;border:1.5px solid var(--border);border-radius:12px;">
+        <p style="font-size:0.82rem;"><strong style="color:var(--text);">Why volume goes up:</strong> Self-custody users who never converted now trade on your platform. Capital frees faster so users trade more cycles. Higher leverage means larger average position size.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 7 · PRIME LENDING                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide" id="slide-7">
+  <div class="bg-blob" style="width:500px;height:500px;top:-100px;right:-100px;background:radial-gradient(circle,rgba(14,165,233,0.07) 0%,transparent 70%);"></div>
+
+  <div class="slide-header" style="margin-bottom:28px;">
+    <div class="eyebrow">Prime Lending</div>
+    <h2>Offer 10× leverage. Touch<br><span class="grad-text">zero of the risk.</span></h2>
+    <p style="max-width:580px;margin-top:10px;">The loan is between the user and Anduin's vault. You're just the distribution channel — and you earn a share of the spread.</p>
+  </div>
+
+  <div class="grid-3" style="max-width:980px;margin:0 auto 20px;">
+    <div class="card purple">
+      <span class="card-tag">How it works</span>
+      <h4 style="margin-bottom:8px;">User posts collateral → gets leverage</h4>
+      <p style="font-size:0.85rem;">Deposits $5K ETH, receives $40K USDx at 8× leverage. Trades on your platform. Anduin's keeper monitors margin in real time — not you.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag">Your economics</span>
+      <h4 style="margin-bottom:8px;">Earn spread revenue, risk-free</h4>
+      <p style="font-size:0.85rem;">You earn a share of the lending spread (25–75 bps annualised on loan value). The loan never touches your balance sheet. No capital requirement. No regulatory exposure.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag">Anduin's role</span>
+      <h4 style="margin-bottom:8px;">We carry the risk, you earn the revenue</h4>
+      <p style="font-size:0.85rem;">Anduin's keeper revalues collateral every 10 seconds. Margin calls and forced liquidations are executed automatically. You get the revenue line, not the risk line.</p>
+    </div>
+  </div>
+
+  <div style="max-width:980px;margin:0 auto;padding:18px 24px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.2);border-radius:12px;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center;">
+      <div style="padding:0 20px;border-right:1px solid var(--border);">
+        <span class="stat-val" style="font-size:1.8rem;">10×</span>
+        <span class="stat-label">Max leverage available</span>
+      </div>
+      <div style="padding:0 20px;border-right:1px solid var(--border);">
+        <span class="stat-val" style="font-size:1.8rem;">10s</span>
+        <span class="stat-label">Collateral revalue cycle</span>
+      </div>
+      <div style="padding:0 20px;border-right:1px solid var(--border);">
+        <span class="stat-val" style="font-size:1.8rem;">0</span>
+        <span class="stat-label">Balance sheet exposure for you</span>
+      </div>
+      <div style="padding:0 20px;">
+        <span class="stat-val" style="font-size:1.8rem;">25–75<span style="font-size:1.1rem;">bps</span></span>
+        <span class="stat-label">Lending spread (shared)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 8 · INSURANCE FUND & LIABILITY                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-dark" id="slide-8">
+  <div class="bg-blob" style="width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(16,185,129,0.12) 0%,transparent 70%);"></div>
+
+  <div class="two-col" style="max-width:1020px;margin:0 auto;">
+    <div>
+      <div class="eyebrow green">Insurance & Liability</div>
+      <h2 style="margin-bottom:18px;">Six layers of protection.<br><span class="grad-text">You're covered.</span></h2>
+      <p style="margin-bottom:22px;">The obvious question: what happens if the market crashes and collateral is insufficient? Anduin operates a six-layer insurance waterfall — your exposure as a broker is zero at every layer.</p>
+      <p style="margin-bottom:22px;">Anduin is liable for settlement shortfalls, not you. Your integration contract makes this explicit. You call <code class="mono" style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:0.82rem;color:#C4B5FD;">batchSettle()</code>; if the vault can't cover, the insurance waterfall absorbs the gap.</p>
+      <p>Protections are on-chain and auditable — not a promise in a PDF.</p>
+    </div>
+
+    <div>
+      <!-- Waterfall layers -->
+      <div class="wf-row">
+        <div class="wf-num" style="background:#EDE9FE;color:#7C3AED;">1</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.88rem;color:#fff;margin-bottom:2px;">User Collateral (first loss)</div>
+          <p style="font-size:0.78rem;">User's own posted ETH/USDC/WBTC absorbs their own losses first. ~80% of cases end here.</p>
+        </div>
+        <div class="wf-bar" style="width:80px;background:linear-gradient(90deg,#7C3AED,#5B21B6);flex:none;"></div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-num" style="background:#ECFDF5;color:#059669;">2</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.88rem;color:#fff;margin-bottom:2px;">5% Overcollateralisation Buffer</div>
+          <p style="font-size:0.78rem;">Vault maintains 105% collateral-to-debt at all times. Buffer absorbs sudden price gaps.</p>
+        </div>
+        <div class="wf-bar" style="width:64px;background:linear-gradient(90deg,#059669,#10B981);flex:none;"></div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-num" style="background:#EDE9FE;color:#7C3AED;">3</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.88rem;color:#fff;margin-bottom:2px;">Anduin Insurance Fund</div>
+          <p style="font-size:0.78rem;">Protocol-owned treasury seeded from settlement fees. Covers flash crash scenarios.</p>
+        </div>
+        <div class="wf-bar" style="width:48px;background:linear-gradient(90deg,#7C3AED,#0EA5E9);flex:none;"></div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-num" style="background:#FFF7ED;color:#D97706;">4</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.88rem;color:#fff;margin-bottom:2px;">Venue Guarantee Stakes</div>
+          <p style="font-size:0.78rem;">Exchanges that integrate Anduin optionally post a stake. Higher stake → lower fee tier. Skin in the game.</p>
+        </div>
+        <div class="wf-bar" style="width:36px;background:linear-gradient(90deg,#F97316,#FBBF24);flex:none;"></div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-num" style="background:#FEF2F2;color:#DC2626;">5</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.88rem;color:#fff;margin-bottom:2px;">Reinsurance Partner</div>
+          <p style="font-size:0.78rem;">Third-party reinsurer backstops systemic risk events above the fund threshold.</p>
+        </div>
+        <div class="wf-bar" style="width:24px;background:linear-gradient(90deg,#EF4444,#F97316);flex:none;"></div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-num" style="background:rgba(255,255,255,0.1);color:#9CA3AF;">6</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.88rem;color:#9CA3AF;margin-bottom:2px;">Socialised Loss (last resort)</div>
+          <p style="font-size:0.78rem;">Extreme tail risk only. Pro-rata haircut across all creditors. Never triggered in normal operations.</p>
+        </div>
+        <div class="wf-bar" style="width:12px;background:#374151;flex:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 9 · WHAT YOU ACTUALLY GET                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-tint" id="slide-9">
+  <div class="slide-header" style="text-align:center;">
+    <div class="eyebrow">Your Upside</div>
+    <h2>What you actually get from one integration</h2>
+    <p style="max-width:580px;margin:10px auto 0;">Not theoretical. Every line below is a direct consequence of integrating Anduin's settlement and prime layer.</p>
+  </div>
+
+  <div class="grid-2" style="max-width:980px;margin:0 auto;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card green">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.4rem;">📈</span>
+          <div>
+            <h4 style="margin-bottom:5px;">+15–30% volume from new users</h4>
+            <p style="font-size:0.85rem;">Self-custody holders who never converted can now trade on your platform without touching your custodial stack. That's a new user segment you currently have zero access to.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card green">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.4rem;">💰</span>
+          <div>
+            <h4 style="margin-bottom:5px;">New revenue stream: lending spread</h4>
+            <p style="font-size:0.85rem;">You earn a share of 25–75 bps on every dollar of margin outstanding on your platform. Zero capital cost, zero credit risk. Pure revenue line.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card green">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.4rem;">⚡</span>
+          <div>
+            <h4 style="margin-bottom:5px;">T+0 settlement = more trading cycles</h4>
+            <p style="font-size:0.85rem;">Capital that previously sat in T+2 limbo gets freed immediately. Users redeploy it, trade more cycles, generate more fees. Higher capital velocity = higher fee revenue for you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card green">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.4rem;">🛡</span>
+          <div>
+            <h4 style="margin-bottom:5px;">On-chain audit trail for every settlement</h4>
+            <p style="font-size:0.85rem;">Every batchSettle() call produces an immutable on-chain record. Regulators asking for settlement proof? You have it. Disputes? The chain is the arbiter.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card green">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.4rem;">🌐</span>
+          <div>
+            <h4 style="margin-bottom:5px;">Cross-broker netting (network effect)</h4>
+            <p style="font-size:0.85rem;">As more exchanges integrate, Anduin nets positions across venues — reducing capital requirements for everyone. The more clients on the network, the cheaper it gets for you.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card green">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.4rem;">🏗</span>
+          <div>
+            <h4 style="margin-bottom:5px;">Tokenized products without an issuer desk</h4>
+            <p style="font-size:0.85rem;">Offer tokenized equities, commodities and structured notes to your users. Anduin handles the issuance infrastructure. You just list and distribute.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 10 · INTEGRATION                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide" id="slide-10">
+  <div class="bg-blob" style="width:500px;height:500px;top:-100px;right:-100px;background:radial-gradient(circle,rgba(124,58,237,0.07) 0%,transparent 70%);"></div>
+
+  <div class="two-col" style="max-width:1020px;margin:0 auto;">
+    <div>
+      <div class="eyebrow">Integration</div>
+      <h2 style="margin-bottom:18px;">Live in weeks.<br><span class="grad-text">Not quarters.</span></h2>
+      <p style="margin-bottom:24px;">Anduin is designed for fast integration. We have pre-built adapters for major exchange APIs, a simple SDK, and a test environment with simulated settlement so your engineering team can validate before going live.</p>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+        <div style="display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.15);border-radius:10px;">
+          <span class="mono" style="font-size:0.7rem;color:var(--purple);width:56px;flex-shrink:0;">WEEK 1</span>
+          <p style="font-size:0.85rem;margin:0;">API keys exchanged, test environment set up, first simulated batchSettle() called.</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.15);border-radius:10px;">
+          <span class="mono" style="font-size:0.7rem;color:var(--purple);width:56px;flex-shrink:0;">WEEK 2–3</span>
+          <p style="font-size:0.85rem;margin:0;">Connect balance verification (user USDx check before order), wire in settlement call to end-of-session PnL calculation.</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--bg-tint);border:1.5px solid rgba(124,58,237,0.15);border-radius:10px;">
+          <span class="mono" style="font-size:0.7rem;color:var(--purple);width:56px;flex-shrink:0;">WEEK 4</span>
+          <p style="font-size:0.85rem;margin:0;">Mainnet dry run with real users on a closed beta. Monitor insurance fund, keeper health, oracle latency.</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;padding:12px 16px;background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:10px;">
+          <span class="mono" style="font-size:0.7rem;color:#059669;width:56px;flex-shrink:0;">GO LIVE</span>
+          <p style="font-size:0.85rem;margin:0;color:var(--text);"><strong>Open to all users.</strong> Settlement running. Lending active. New user segment accessible.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:1rem;color:var(--muted);font-weight:500;margin-bottom:16px;">Pre-built exchange adapters</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+        <span class="pill g">Hyperliquid</span>
+        <span class="pill g">Binance</span>
+        <span class="pill g">Kraken</span>
+        <span class="pill g">OKX</span>
+        <span class="pill g">Bybit</span>
+        <span class="pill p">+ custom adapter</span>
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--muted);font-weight:500;margin-bottom:14px;">What your engineers integrate</h3>
+      <div style="background:var(--text);border-radius:12px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;line-height:1.8;">
+        <div style="color:#9CA3AF;">// 1. Check user's available USDx before order</div>
+        <div style="color:#C4B5FD;">GET /v1/balance/{userAddress}</div>
+        <br>
+        <div style="color:#9CA3AF;">// 2. Submit net PnL after session close</div>
+        <div style="color:#C4B5FD;">POST /v1/settle</div>
+        <div style="color:#86EFAC;">{ settlements: [ { user, amount, refId } ] }</div>
+        <br>
+        <div style="color:#9CA3AF;">// That's the core integration. 2 endpoints.</div>
+      </div>
+
+      <div style="margin-top:14px;padding:14px 16px;background:var(--bg-tint);border:1.5px solid var(--border);border-radius:10px;">
+        <p style="font-size:0.82rem;"><strong style="color:var(--text);">81 tests passing.</strong> Smart contracts audited, deployed on Base Sepolia. Production-grade. Not a whitepaper.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 11 · PRICING                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-tint" id="slide-11">
+  <div class="slide-header" style="text-align:center;">
+    <div class="eyebrow">Pricing</div>
+    <h2>Usage-based. You pay as you grow.</h2>
+    <p style="max-width:580px;margin:10px auto 0;">No upfront integration fee. No minimums. Anduin earns when you earn.</p>
+  </div>
+
+  <div class="grid-3" style="max-width:980px;margin:0 auto 22px;">
+    <div class="card purple">
+      <span class="card-tag">Settlement</span>
+      <h3 style="font-size:1.35rem;margin-bottom:6px;">1–3 bps</h3>
+      <p style="font-size:0.85rem;">Per notional settled. Paid by you to Anduin. Volume tiers bring it down to 1 bps at scale.</p>
+      <hr>
+      <p style="font-size:0.8rem;">$100M/month settled → $10–30K/month</p>
+    </div>
+    <div class="card">
+      <span class="card-tag">Prime Lending</span>
+      <h3 style="font-size:1.35rem;margin-bottom:6px;">25–75 bps</h3>
+      <p style="font-size:0.85rem;">Lending spread on loan value. Anduin takes the majority; you earn a distribution share — without touching the loan.</p>
+      <hr>
+      <p style="font-size:0.8rem;">$10M loans → ~$25–75K/month gross</p>
+    </div>
+    <div class="card">
+      <span class="card-tag">Issuance (optional)</span>
+      <h3 style="font-size:1.35rem;margin-bottom:6px;">5–15 bps</h3>
+      <p style="font-size:0.85rem;">Per product issued/redeemed. Anduin earns the issuance spread; you earn the ongoing management fee from your users.</p>
+      <hr>
+      <p style="font-size:0.8rem;">$100M AUM → ~$75K/month to you</p>
+    </div>
+  </div>
+
+  <div style="max-width:980px;margin:0 auto;padding:20px 28px;background:#fff;border:1.5px solid var(--border);border-radius:14px;">
+    <div style="display:grid;grid-template-columns:1fr auto auto;gap:28px;align-items:center;">
+      <div>
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:4px;">Mid-tier exchange unit economics</div>
+        <p style="font-size:0.83rem;">$500M monthly volume · $20M loans outstanding · settlement + lending only. Conservative assumptions.</p>
+      </div>
+      <div style="text-align:center;padding:14px 22px;background:var(--bg-tint);border-radius:10px;border:1.5px solid rgba(124,58,237,0.15);">
+        <span class="stat-val" style="font-size:1.8rem;">~$110K</span>
+        <span class="stat-label">Monthly cost to you</span>
+      </div>
+      <div style="text-align:center;padding:14px 22px;background:#ECFDF5;border-radius:10px;border:1.5px solid #A7F3D0;">
+        <span class="stat-val" style="font-size:1.8rem;background:linear-gradient(135deg,#059669,#10B981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">+$2M+</span>
+        <span class="stat-label">Estimated annual revenue uplift</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 12 · CTA / CLOSE                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide" id="slide-12">
+  <div class="bg-blob" style="width:800px;height:800px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 60%);"></div>
+
+  <div style="max-width:700px;margin:0 auto;text-align:center;">
+    <div class="eyebrow">Let's Build This</div>
+    <h2 style="margin-bottom:18px;">Your users are already<br>on-chain. <span class="grad-text">Meet them there.</span></h2>
+    <p style="margin-bottom:16px;font-size:1.05rem;">DeFi perps are not going away. The question is whether your platform is the one that bridges the gap — or whether your users find a competitor who does it first.</p>
+    <p style="margin-bottom:36px;">Anduin is live on Base Sepolia. Integration is 2 endpoints and 4 weeks. The first exchange to go live gets the self-custody user segment before everyone else does.</p>
+
+    <div style="display:flex;justify-content:center;gap:14px;margin-bottom:36px;flex-wrap:wrap;">
+      <a href="mailto:max@anduin.finance" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--purple);color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:0.95rem;">Book a Technical Call</a>
+      <a href="https://dribel792.github.io/anduin/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#fff;color:var(--text);border:1.5px solid var(--border);border-radius:10px;text-decoration:none;font-weight:600;font-size:0.95rem;">anduin.finance →</a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:#fff;">
+      <div style="padding:18px 12px;text-align:center;border-right:1px solid var(--border);">
+        <div style="font-weight:700;font-size:1.3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">81</div>
+        <div style="font-size:0.66rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;">Tests passing</div>
+      </div>
+      <div style="padding:18px 12px;text-align:center;border-right:1px solid var(--border);">
+        <div style="font-weight:700;font-size:1.3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">T+0</div>
+        <div style="font-size:0.66rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;">Settlement</div>
+      </div>
+      <div style="padding:18px 12px;text-align:center;border-right:1px solid var(--border);">
+        <div style="font-weight:700;font-size:1.3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">2</div>
+        <div style="font-size:0.66rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;">API endpoints</div>
+      </div>
+      <div style="padding:18px 12px;text-align:center;border-right:1px solid var(--border);">
+        <div style="font-weight:700;font-size:1.3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">6</div>
+        <div style="font-size:0.66rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;">Insurance layers</div>
+      </div>
+      <div style="padding:18px 12px;text-align:center;">
+        <div style="font-weight:700;font-size:1.3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">4wk</div>
+        <div style="font-size:0.66rem;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;">To go live</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;font-size:0.7rem;color:var(--dim);">Confidential · 2026 · max@anduin.finance</div>
+  </div>
+</div>
+
+</div><!-- /slides -->
+
+<!-- nav bar -->
+<nav class="controls" id="navBar">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <span class="nav-brand">anduin<span>.</span></span>
+    <span class="slide-counter" id="counter">1 / 12</span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="nav-btns">
+    <button class="nav-btn" onclick="navigate(-1)">← Prev</button>
+    <button class="nav-btn primary" onclick="navigate(1)">Next →</button>
+  </div>
+</nav>
+</div>
+
+<div class="key-hint">← → to navigate · F for fullscreen</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 0;
+
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, n));
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+
+    const navBar   = document.getElementById('navBar');
+    const isDark   = slides[current].classList.contains('slide-dark');
+    navBar.style.background   = isDark ? '#0D0820' : '#fff';
+    navBar.style.borderColor  = isDark ? 'rgba(255,255,255,0.08)' : '#E5E7EB';
+    document.querySelectorAll('.nav-btn:not(.primary)').forEach(b => {
+      b.style.color       = isDark ? 'rgba(255,255,255,0.7)' : '';
+      b.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : '';
+      b.style.background  = isDark ? 'transparent' : '';
+    });
+    document.querySelector('.nav-brand').style.color = isDark ? '#fff' : '';
+    document.getElementById('counter').style.color   = isDark ? 'rgba(255,255,255,0.4)' : '';
+    dotsEl.querySelectorAll('.dot').forEach(d => {
+      d.style.background = d.classList.contains('active')
+        ? '#7C3AED'
+        : (isDark ? 'rgba(255,255,255,0.2)' : '#E5E7EB');
+    });
+  }
+
+  function navigate(dir) { goTo(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+    if (e.key === 'f' || e.key === 'F') document.documentElement.requestFullscreen?.();
+  });
+</script>
+</body>
+</html>

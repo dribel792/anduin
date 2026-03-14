@@ -162,6 +162,11 @@
     .dot { width:5px; height:5px; border-radius:50%; background:var(--border); cursor:pointer; transition:all .2s; }
     .dot.active { background:var(--purple); width:16px; border-radius:3px; }
     .key-hint { position:fixed; bottom:56px; right:20px; font-size:.66rem; color:var(--dim); font-family:'JetBrains Mono',monospace; opacity:.5; }
+
+    /* Mermaid diagram sizing */
+    #arch-diagram { flex:1; display:flex; align-items:center; justify-content:center; }
+    #arch-diagram svg { width:100% !important; height:auto !important; max-height:390px; }
+    .mermaid .label { font-family:'Space Grotesk',sans-serif !important; }
   </style>
 </head>
 <body>
@@ -377,38 +382,55 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════ S6 · HOW IT WORKS -->
-<div class="slide slide-tint" id="s6">
-  <div class="slide-hdr">
-    <div class="eyebrow">Architecture</div>
-    <h2>Exactly how the money moves</h2>
-    <p style="max-width:600px;margin-top:8px;">Five steps. Your users interact with your platform exactly as they do today. Anduin runs silently underneath.</p>
+<div class="slide slide-tint" id="s6" style="padding:40px 60px;justify-content:flex-start;">
+  <div style="margin-bottom:16px;display:flex;align-items:center;gap:16px;">
+    <div class="eyebrow" style="margin-bottom:0;">Architecture</div>
+    <h2 style="font-size:1.8rem;">How the system works — every component, every flow</h2>
   </div>
   <!-- Mermaid architecture flowchart -->
-  <div id="arch-diagram" class="mermaid" style="max-width:960px;margin:0 auto;background:#fff;border-radius:14px;padding:18px 24px;border:1.5px solid var(--border);">
+  <div id="arch-diagram" class="mermaid" style="width:100%;background:#fff;border-radius:14px;padding:20px 28px;border:1.5px solid var(--border);">
+%%{init: {'flowchart': {'nodeSpacing': 40, 'rankSpacing': 70, 'curve': 'basis'}, 'themeVariables': {'fontSize': '13px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff', 'clusterBkg': '#F9FAFB', 'clusterBorder': '#E5E7EB'}}}%%
 flowchart LR
-    UW["👛 User Wallet\nUSDC · ETH · WBTC"]
-    EX["📊 Exchange Platform\n2 API calls total"]
-    MV["🔐 Margin Vault\nHolds collateral\nIssues USDx credit\nBase L2 · USDC"]
-    SE["⚡ Settlement Engine\nbatchSettle()"]
-    KP["🤖 Keeper\nMonitors collateral ratio"]
-    CL["📡 Chainlink Oracle\nPrice feeds every ~10s"]
-    IF["🛡 Insurance Fund\nOn-chain backstop"]
+    subgraph EXT["Participants"]
+        UW["👛 User Wallet\nUSDC · ETH · WBTC"]
+        EX["📊 Exchange Platform"]
+    end
+
+    subgraph AND["Anduin Layer"]
+        ESC["📋 Settlement Contract\nReserves assets · Defines terms"]
+        MV["🔐 Margin Vault\nHolds collateral\nIssues USDx credit\nBase L2 · USDC"]
+        SE["⚡ Settlement Engine\nbatchSettle()"]
+        KP["🤖 Keeper\nMonitors · Liquidates"]
+        MT["📈 Monitoring\n& Telemetry"]
+    end
+
+    subgraph INF["Infrastructure"]
+        CL["📡 Chainlink Oracle\nPrice feeds ~10s"]
+        IF["🛡 Insurance Fund\nOn-chain backstop"]
+    end
 
     UW -- "① deposit collateral" --> MV
-    CL -- "② price feeds" --> MV
-    EX -- "③ check USDx credit" --> MV
-    EX -- "④ push net PnL" --> SE
-    SE -- "⑤ batchSettle()" --> MV
-    KP -- "⑥ liquidate if needed" --> MV
+    EX -. "signed contract" .-> ESC
+    ESC -- "② reserves assets" --> MV
+    CL -- "③ price feeds" --> MV
+    EX -- "④ check USDx credit" --> MV
+    EX -- "⑤ push net PnL" --> SE
+    SE -- "⑥ batchSettle()" --> MV
+    KP -- "⑦ liquidate" --> MV
     IF -. "backstop" .-> MV
+    MT -. "monitors" .-> MV
+    MT -. "monitors" .-> KP
+    MT -. "monitors" .-> SE
 
     style MV fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#0D0820
-    style UW fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
-    style EX fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
-    style SE fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
-    style KP fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
-    style CL fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
+    style ESC fill:#F0F9FF,stroke:#0EA5E9,stroke-width:2px,color:#0D0820
+    style MT fill:#FFF7ED,stroke:#FCD34D,color:#0D0820
     style IF fill:#ECFDF5,stroke:#A7F3D0,color:#059669
+    style UW fill:#F9FAFB,stroke:#D1D5DB,color:#374151
+    style EX fill:#F9FAFB,stroke:#D1D5DB,color:#374151
+    style SE fill:#F9FAFB,stroke:#D1D5DB,color:#374151
+    style KP fill:#F9FAFB,stroke:#D1D5DB,color:#374151
+    style CL fill:#F9FAFB,stroke:#D1D5DB,color:#374151
   </div>
 </div>
 

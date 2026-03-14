@@ -517,58 +517,82 @@ flowchart LR
 <!-- ═══════════════════════════════════════════════ S9 · YOUR UPSIDE -->
 <div class="slide slide-dark" id="s9">
   <div class="bg-blob" style="width:600px;height:600px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(16,185,129,.1) 0%,transparent 70%);"></div>
-  <div class="slide-hdr" style="text-align:center;">
-    <div class="eyebrow green">Revenue Upside</div>
-    <h2>What one integration actually puts on your P&amp;L</h2>
-    <p style="max-width:600px;margin:8px auto 0;">Mid-tier exchange. $500M monthly volume. Conservative assumptions on lending and issuance.</p>
+
+  <div style="margin-bottom:16px;">
+    <div class="eyebrow green">Your P&amp;L</div>
+    <h2>You pay 1–1.5% of trading revenue.<br><span class="grad-text">You unlock a segment worth multiples of that.</span></h2>
   </div>
-  <div class="grid-3" style="max-width:980px;margin:0 auto 20px;">
-    <div class="card">
-      <span class="card-tag">Settlement fee cost</span>
-      <span class="stat-val" style="font-size:1.8rem;">~$100K</span>
-      <span class="stat-label">per month at 2bps on $500M</span>
-      <hr>
-      <p style="font-size:.82rem;">The cost of running on Anduin. Everything below is net upside above this.</p>
+
+  <!-- Assumptions bar -->
+  <div style="padding:10px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;margin-bottom:16px;display:flex;gap:28px;flex-wrap:wrap;max-width:1020px;">
+    <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">Example venue: <strong style="color:#fff;">$4B/month volume</strong></span>
+    <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">User perp fee: <strong style="color:#fff;">5 bps per trade</strong></span>
+    <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">Exchange baseline revenue: <strong style="color:#fff;">$20M/month</strong></span>
+  </div>
+
+  <!-- Two-column P&L -->
+  <div class="grid-2" style="max-width:1020px;margin:0 auto 14px;gap:14px;">
+
+    <!-- COST -->
+    <div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(239,68,68,.35);border-radius:14px;padding:20px 22px;">
+      <div class="mono" style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#F87171;margin-bottom:10px;">What you pay Anduin</div>
+      <div style="font-size:2.1rem;font-weight:700;background:var(--danger);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:3px;">−$200–300K</div>
+      <div class="stat-label" style="margin-bottom:14px;">per month</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">Settlement fee rate</span>
+          <span style="font-weight:600;font-size:.85rem;color:#fff;">0.5–0.75 bps</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">= share of user's 5 bps fee</span>
+          <span style="font-weight:600;font-size:.85rem;color:#fff;">10–15%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">Monthly at $4B volume</span>
+          <span style="font-weight:700;font-size:.88rem;color:#F87171;">$200–300K</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">As % of your $20M/mo revenue</span>
+          <span style="font-weight:700;font-size:.92rem;color:#fff;">~1–1.5%</span>
+        </div>
+      </div>
     </div>
-    <div class="card green">
-      <span class="card-tag">Volume uplift (new users)</span>
-      <span class="stat-val green" style="font-size:1.8rem;">+15–30%</span>
-      <span class="stat-label">new monthly volume from self-custody users</span>
-      <hr>
-      <p style="font-size:.82rem;">Self-custody segment you currently have zero access to. At $500M base → $75–150M additional volume.</p>
-    </div>
-    <div class="card green">
-      <span class="card-tag">Lending spread share</span>
-      <span class="stat-val green" style="font-size:1.8rem;">~$25K</span>
-      <span class="stat-label">per month at $10M avg loans outstanding</span>
-      <hr>
-      <p style="font-size:.82rem;">You earn a share of the lending spread. Zero capital cost, zero credit risk on your books.</p>
+
+    <!-- GAIN -->
+    <div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(16,185,129,.35);border-radius:14px;padding:20px 22px;">
+      <div class="mono" style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#34D399;margin-bottom:10px;">What you gain</div>
+      <div style="font-size:2.1rem;font-weight:700;background:var(--success);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:3px;">+$300–600K</div>
+      <div class="stat-label" style="margin-bottom:14px;">est. additional fee revenue / month *</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">Est. DeFi volume unlocked</span>
+          <span style="font-weight:600;font-size:.85rem;color:#fff;">$600M–1.2B / mo</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">= est. 15–30% of base volume</span>
+          <span style="font-weight:600;font-size:.82rem;color:rgba(255,255,255,.35);">illustrative *</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">Fee revenue at 5 bps on uplift</span>
+          <span style="font-weight:700;font-size:.88rem;color:#34D399;">+$300–600K / mo</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">Lending (optional separate product)</span>
+          <span style="font-weight:600;font-size:.82rem;color:rgba(255,255,255,.35);">additive — own capitalisation</span>
+        </div>
+      </div>
     </div>
   </div>
-  <div style="max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-    <div class="card green">
-      <span class="card-tag">EU issuance flow (ADC)</span>
-      <h4 style="margin-bottom:6px;">New user segment, new geography</h4>
-      <p style="font-size:.83rem;">ADC distributes products backed by your perps to EU retail. You earn trading flow from users you couldn't serve before. Volume goes on your order book.</p>
+
+  <!-- Net + footnote -->
+  <div style="max-width:1020px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;">
+    <div style="padding:10px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;">
+      <p style="font-size:.76rem;color:rgba(255,255,255,.38);">* Illustrative. DeFi perps run $40B+/month globally. Capturing 1.5–3% of that flow = $600M–1.2B. Actual uplift depends on self-custody wallet adoption at your platform — no live data yet. Lending revenue requires Anduin to extend credit beyond user deposits — separate product, separate capital decision, not part of the base settlement integration.</p>
     </div>
-    <div style="padding:18px 20px;background:rgba(124,58,237,.12);border:1.5px solid rgba(124,58,237,.3);border-radius:14px;">
-      <div class="mono" style="font-size:.6rem;color:#C4B5FD;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Bottom line</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);">
-        <span style="font-size:.83rem;color:rgba(255,255,255,.6);">Monthly cost (settlement fee)</span>
-        <span style="font-weight:700;font-size:.88rem;color:#F87171;">−$100K</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);">
-        <span style="font-size:.83rem;color:rgba(255,255,255,.6);">Volume uplift revenue (conservative)</span>
-        <span style="font-weight:700;font-size:.88rem;color:#34D399;">+$500K–$1M</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);">
-        <span style="font-size:.83rem;color:rgba(255,255,255,.6);">Lending spread share</span>
-        <span style="font-weight:700;font-size:.88rem;color:#34D399;">+$25K</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;">
-        <span style="font-size:.9rem;font-weight:700;color:#fff;">Net monthly upside</span>
-        <span class="stat-val green" style="font-size:1.5rem;">+$425K+</span>
-      </div>
+    <div style="text-align:center;padding:16px 28px;background:rgba(16,185,129,.08);border:1.5px solid rgba(16,185,129,.3);border-radius:12px;flex-shrink:0;">
+      <div class="mono" style="font-size:.56rem;color:#34D399;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Net — base case</div>
+      <div style="font-size:2rem;font-weight:700;background:var(--success);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">+$0–400K</div>
+      <div style="font-size:.68rem;color:rgba(255,255,255,.35);margin-top:3px;">before a single new user</div>
     </div>
   </div>
 </div>

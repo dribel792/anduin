@@ -6,6 +6,7 @@
   <title>Anduin — Exchange & Broker Pitch</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
     :root {
       --purple:  #7C3AED; --violet: #5B21B6; --soft: #EDE9FE;
@@ -382,65 +383,32 @@
     <h2>Exactly how the money moves</h2>
     <p style="max-width:600px;margin-top:8px;">Five steps. Your users interact with your platform exactly as they do today. Anduin runs silently underneath.</p>
   </div>
-  <!-- 3-zone architecture diagram -->
-  <div style="display:grid;grid-template-columns:1fr 1.1fr 1fr;max-width:1020px;margin:0 auto 14px;align-items:start;">
+  <!-- Mermaid architecture flowchart -->
+  <div id="arch-diagram" class="mermaid" style="max-width:960px;margin:0 auto;background:#fff;border-radius:14px;padding:18px 24px;border:1.5px solid var(--border);">
+flowchart LR
+    UW["👛 User Wallet\nUSDC · ETH · WBTC"]
+    EX["📊 Exchange Platform\n2 API calls total"]
+    MV["🔐 Margin Vault\nHolds collateral\nIssues USDx credit\nBase L2 · USDC"]
+    SE["⚡ Settlement Engine\nbatchSettle()"]
+    KP["🤖 Keeper\nMonitors collateral ratio"]
+    CL["📡 Chainlink Oracle\nPrice feeds every ~10s"]
+    IF["🛡 Insurance Fund\nOn-chain backstop"]
 
-    <!-- Zone 1: Participants -->
-    <div style="padding-right:14px;">
-      <div class="mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;padding-bottom:5px;margin-bottom:10px;border-bottom:1.5px solid var(--border);">Participants</div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:9px;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">👛 User Wallet</div>
-        <p style="font-size:.74rem;">Deposits USDC / ETH / WBTC on Base L2. Never gives up custody. One-time setup.</p>
-      </div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">📊 Exchange Platform</div>
-        <p style="font-size:.74rem;">Checks USDx credit before orders. Pushes net PnL per user after each session close.</p>
-      </div>
-    </div>
+    UW -- "① deposit collateral" --> MV
+    CL -- "② price feeds" --> MV
+    EX -- "③ check USDx credit" --> MV
+    EX -- "④ push net PnL" --> SE
+    SE -- "⑤ batchSettle()" --> MV
+    KP -- "⑥ liquidate if needed" --> MV
+    IF -. "backstop" .-> MV
 
-    <!-- Zone 2: Anduin core (highlighted) -->
-    <div style="padding:0 14px;border-left:2px solid rgba(124,58,237,.15);border-right:2px solid rgba(124,58,237,.15);">
-      <div class="mono" style="font-size:.58rem;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;padding-bottom:5px;margin-bottom:10px;border-bottom:1.5px solid rgba(124,58,237,.25);">Anduin Layer</div>
-      <div style="border:2px solid var(--purple);border-radius:10px;padding:12px 14px;background:var(--soft);margin-bottom:9px;">
-        <div style="font-weight:700;font-size:.82rem;color:var(--purple);margin-bottom:3px;">🔐 Margin Vault</div>
-        <p style="font-size:.74rem;">Holds collateral. Issues USDx credit at LTV. Central hub — all settlements flow through here.</p>
-      </div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:9px;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">⚡ Settlement Engine</div>
-        <p style="font-size:.74rem;">Receives PnL batch. Calls batchSettle() on vault. Atomic on-chain record per trade.</p>
-      </div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">🤖 Keeper</div>
-        <p style="font-size:.74rem;">Monitors collateral ratio continuously. Liquidates undercollateralised positions before shortfalls hit the vault.</p>
-      </div>
-    </div>
-
-    <!-- Zone 3: Infrastructure -->
-    <div style="padding-left:14px;">
-      <div class="mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;padding-bottom:5px;margin-bottom:10px;border-bottom:1.5px solid var(--border);">Infrastructure</div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:9px;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">📡 Chainlink Oracle</div>
-        <p style="font-size:.74rem;">Pushes asset prices every ~10s. Vault revalues all USDx credit on each update.</p>
-      </div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:9px;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">🛡 Insurance Fund</div>
-        <p style="font-size:.74rem;">On-chain treasury. Absorbs failed liquidations and shortfalls. Auto-topped from settlement fees.</p>
-      </div>
-      <div style="border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;">
-        <div style="font-weight:700;font-size:.82rem;margin-bottom:3px;">🔗 Base L2 · USDC</div>
-        <p style="font-size:.74rem;">Sub-cent settlement fees. USDC as clearing currency. Ethereum-grade security.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Numbered info-flow legend -->
-  <div style="display:flex;flex-wrap:wrap;gap:6px;max-width:1020px;margin:0 auto;">
-    <div style="padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.7rem;"><span style="color:var(--purple);font-weight:700;">①</span> User deposits collateral → Margin Vault</div>
-    <div style="padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.7rem;"><span style="color:var(--purple);font-weight:700;">②</span> Chainlink pushes prices → Vault revalues USDx</div>
-    <div style="padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.7rem;"><span style="color:var(--purple);font-weight:700;">③</span> Exchange checks USDx credit before each order</div>
-    <div style="padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.7rem;"><span style="color:var(--purple);font-weight:700;">④</span> Exchange pushes net PnL → Settlement Engine</div>
-    <div style="padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.7rem;"><span style="color:var(--purple);font-weight:700;">⑤</span> Settlement Engine calls batchSettle() → Vault updates atomically</div>
-    <div style="padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.7rem;"><span style="color:var(--purple);font-weight:700;">⑥</span> Keeper monitors → liquidates undercollateralised positions</div>
+    style MV fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#0D0820
+    style UW fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
+    style EX fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
+    style SE fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
+    style KP fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
+    style CL fill:#F9FAFB,stroke:#D1D5DB,color:#0D0820
+    style IF fill:#ECFDF5,stroke:#A7F3D0,color:#059669
   </div>
 </div>
 
@@ -697,6 +665,26 @@
 </div>
 <div class="key-hint">← → · F fullscreen</div>
 <script>
+  // Mermaid init — render on demand when slide becomes visible
+  mermaid.initialize({
+    startOnLoad: false, theme: 'base',
+    flowchart: { curve: 'basis', padding: 18, htmlLabels: true },
+    themeVariables: {
+      primaryColor: '#EDE9FE', primaryTextColor: '#0D0820',
+      primaryBorderColor: '#7C3AED', lineColor: '#7C3AED',
+      edgeLabelBackground: '#ffffff', fontSize: '13px',
+      nodeBorder: '#D1D5DB', clusterBkg: '#F9FAFB'
+    }
+  });
+  let mermaidRendered = false;
+  function renderMermaidIfNeeded() {
+    const el = document.getElementById('arch-diagram');
+    if (el && !mermaidRendered) {
+      mermaidRendered = true;
+      mermaid.run({ nodes: [el] });
+    }
+  }
+
   const slides = document.querySelectorAll('.slide');
   const total  = slides.length;
   let current  = 0;
@@ -714,6 +702,7 @@
     slides[current].classList.add('active');
     dotsEl.children[current].classList.add('active');
     document.getElementById('counter').textContent = (current+1)+' / '+total;
+    if (slides[current].id === 's6') renderMermaidIfNeeded();
     const nb = document.getElementById('navBar');
     const dk = slides[current].classList.contains('slide-dark');
     nb.style.background  = dk ? '#0D0820' : '#fff';

@@ -163,9 +163,9 @@
     .dot.active { background:var(--purple); width:16px; border-radius:3px; }
     .key-hint { position:fixed; bottom:56px; right:20px; font-size:.66rem; color:var(--dim); font-family:'JetBrains Mono',monospace; opacity:.5; }
 
-    /* Mermaid diagram sizing */
-    #arch-diagram { flex:1; display:flex; align-items:center; justify-content:center; }
-    #arch-diagram svg { width:100% !important; height:auto !important; max-height:390px; }
+    /* Mermaid diagram sizing — fills remaining slide height */
+    #arch-diagram { flex:1; position:relative; min-height:0; }
+    #arch-diagram svg { position:absolute; top:0; left:0; width:100% !important; height:100% !important; }
     .mermaid .label { font-family:'Space Grotesk',sans-serif !important; }
   </style>
 </head>
@@ -388,8 +388,8 @@
     <h2 style="font-size:1.8rem;">How the system works — every component, every flow</h2>
   </div>
   <!-- Mermaid architecture flowchart -->
-  <div id="arch-diagram" class="mermaid" style="width:100%;background:#fff;border-radius:14px;padding:20px 28px;border:1.5px solid var(--border);">
-%%{init: {'flowchart': {'nodeSpacing': 40, 'rankSpacing': 70, 'curve': 'basis'}, 'themeVariables': {'fontSize': '13px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff', 'clusterBkg': '#F9FAFB', 'clusterBorder': '#E5E7EB'}}}%%
+  <div id="arch-diagram" class="mermaid" style="width:100%;background:#fff;border-radius:14px;padding:12px 16px;border:1.5px solid var(--border);">
+%%{init: {'flowchart': {'nodeSpacing': 28, 'rankSpacing': 55, 'curve': 'basis', 'padding': 12}, 'themeVariables': {'fontSize': '12px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff', 'clusterBkg': '#F9FAFB', 'clusterBorder': '#E5E7EB'}}}%%
 flowchart LR
     subgraph EXT["Participants"]
         UW["👛 User Wallet\nUSDC · ETH · WBTC"]

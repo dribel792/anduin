@@ -382,13 +382,14 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════ S6 · HOW IT WORKS -->
-<div class="slide slide-tint" id="s6" style="padding:40px 60px;justify-content:flex-start;">
-  <div style="margin-bottom:16px;display:flex;align-items:center;gap:16px;">
+<div class="slide slide-tint" id="s6" style="padding:36px 50px;justify-content:flex-start;">
+  <div style="margin-bottom:14px;display:flex;align-items:center;gap:16px;">
     <div class="eyebrow" style="margin-bottom:0;">Architecture</div>
-    <h2 style="font-size:1.8rem;">How the system works — every component, every flow</h2>
+    <h2 style="font-size:1.75rem;">How the system works — every component, every flow</h2>
   </div>
-  <!-- Mermaid architecture flowchart -->
-  <div id="arch-diagram" class="mermaid" style="width:100%;background:#fff;border-radius:14px;padding:12px 16px;border:1.5px solid var(--border);">
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;flex:1;min-height:0;">
+    <!-- Mermaid architecture flowchart -->
+    <div id="arch-diagram" class="mermaid" style="background:#fff;border-radius:14px;padding:12px 16px;border:1.5px solid var(--border);min-height:0;overflow:hidden;">
 %%{init: {'flowchart': {'nodeSpacing': 28, 'rankSpacing': 55, 'curve': 'basis', 'padding': 12}, 'themeVariables': {'fontSize': '12px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff', 'clusterBkg': '#F9FAFB', 'clusterBorder': '#E5E7EB'}}}%%
 flowchart LR
     subgraph EXT["Participants"]
@@ -431,6 +432,41 @@ flowchart LR
     style SE fill:#F9FAFB,stroke:#D1D5DB,color:#374151
     style KP fill:#F9FAFB,stroke:#D1D5DB,color:#374151
     style CL fill:#F9FAFB,stroke:#D1D5DB,color:#374151
+    </div>
+    <!-- Flow explanations -->
+    <div style="display:flex;flex-direction:column;gap:8px;overflow-y:auto;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;">How it works — step by step</div>
+
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--purple);background:var(--soft);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">①</span>
+        <div><div style="font-weight:600;font-size:.82rem;margin-bottom:2px;">User deposits collateral</div><p style="font-size:.77rem;">User sends USDC, ETH, or WBTC directly to the Margin Vault on Base L2. No CEX custody. No wire transfer.</p></div>
+      </div>
+
+      <div style="background:#F0F9FF;border:1.5px solid #BAE6FD;border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:#0284C7;background:#E0F2FE;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">②</span>
+        <div><div style="font-weight:600;font-size:.82rem;margin-bottom:2px;">Settlement Contract reserves assets</div><p style="font-size:.77rem;">When a trading session opens, the signed Settlement Contract locks the user's collateral for that session — assets can't be double-spent.</p></div>
+      </div>
+
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--muted);background:#F3F4F6;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">③</span>
+        <div><div style="font-weight:600;font-size:.82rem;margin-bottom:2px;">Chainlink reprices every ~10s</div><p style="font-size:.77rem;">Multi-asset collateral (ETH, WBTC) is revalued continuously. USDx credit updates in real time based on current collateral value × LTV.</p></div>
+      </div>
+
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--muted);background:#F3F4F6;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">④</span>
+        <div><div style="font-weight:600;font-size:.82rem;margin-bottom:2px;">Exchange checks USDx before each order</div><p style="font-size:.77rem;">One API call: <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;">GET /balance/{user}</span> → available USDx credit. No pre-funding. No capital locked in advance.</p></div>
+      </div>
+
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--muted);background:#F3F4F6;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">⑤⑥</span>
+        <div><div style="font-weight:600;font-size:.82rem;margin-bottom:2px;">Exchange pushes PnL → batchSettle()</div><p style="font-size:.77rem;">At session close, exchange calls <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;">POST /settle</span> with net PnL array. Settlement Engine executes atomically on-chain — all-or-nothing.</p></div>
+      </div>
+
+      <div style="background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:#059669;background:#D1FAE5;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">⑦</span>
+        <div><div style="font-weight:600;font-size:.82rem;margin-bottom:2px;">Keeper liquidates if margin drops</div><p style="font-size:.77rem;">Keeper monitors USDx credit continuously. If collateral value falls below reserved amount, it triggers liquidation before the vault goes underwater. Insurance Fund backstops any gap.</p></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -452,17 +488,17 @@ flowchart LR
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <div class="mono" style="font-size:.58rem;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;padding-bottom:5px;border-bottom:1.5px solid rgba(124,58,237,.2);">Entity structure</div>
-      <div id="eu-diagram" class="mermaid" style="background:#fff;border-radius:12px;padding:14px 12px;border:1.5px solid var(--border);flex:1;">
-%%{init: {'flowchart': {'nodeSpacing': 30, 'rankSpacing': 55, 'curve': 'basis', 'padding': 10}, 'themeVariables': {'fontSize': '12px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff'}}}%%
-flowchart LR
+      <div id="eu-diagram" class="mermaid" style="background:#fff;border-radius:12px;padding:14px 12px;border:1.5px solid var(--border);flex:1;display:flex;align-items:center;justify-content:center;">
+%%{init: {'flowchart': {'nodeSpacing': 38, 'rankSpacing': 60, 'curve': 'basis', 'padding': 14}, 'themeVariables': {'fontSize': '13px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff'}}}%%
+flowchart TD
     EX["📊 Exchange Platform\nLends branding\nProvides perp underlying"]
     AI["📋 Anduin Issuance\nIssues high-leverage perps\nHedges via exchange"]
-    AD["🏪 Anduin Distribution Co\nTied agent (FCA/MiFID)\nOnboards & distributes"]
+    AD["🏪 Anduin Distribution Co\nTied agent — FCA / MiFID\nOnboards & distributes"]
     U["👛 EU Retail User\n30×+ leverage perps"]
 
-    EX -. "lends brand" .-> AD
     EX -- "perp underlying\n(hedging venue)" --> AI
-    AI -- "issues products" --> AD
+    EX -. "lends brand" .-> AD
+    AI -- "issues\nproducts" --> AD
     AD -- "sells &\nonboards" --> U
 
     style AI fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#0D0820

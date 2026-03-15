@@ -641,42 +641,102 @@ flowchart LR
 </div>
 
 <!-- ═══════════════════════════════════════════════ S8 · EU DISTRIBUTION -->
-<div class="slide" id="s8">
-  <div class="bg-blob" style="width:500px;height:500px;top:-100px;right:-100px;background:radial-gradient(circle,rgba(14,165,233,.07) 0%,transparent 70%);"></div>
-  <div class="two-col-wide" style="max-width:1020px;margin:0 auto;">
-    <div>
-      <div class="eyebrow orange">EU Distribution</div>
-      <h2 style="margin-bottom:16px;">EU retail wants high-leverage perps.<br><span class="grad-text">We get them there — under your brand.</span></h2>
-      <p style="margin-bottom:18px;">EU retail is capped at 2× leverage on perps by ESMA. Anduin Issuance creates securitized products — listed ETNs and futures structures — that sit outside the retail cap and deliver <strong>30×+ legally in the EU.</strong> Backed by your perps. Distributed under your name.</p>
-      <ul class="check-list" style="margin-bottom:0;">
-        <li>Anduin Issuance securitizes your perps → regulated, listed EU product</li>
-        <li>Anduin Distribution Co (ADC) becomes a tied agent, licensed to advertise and sell</li>
-        <li>Co-branded site in your look and feel — EU users see your brand</li>
-        <li>Settlement on ADC products is the live proof-of-concept for your B2B integration</li>
-        <li>Launch ADC with 2 venues simultaneously → netting layer goes live immediately</li>
-      </ul>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div class="mono" style="font-size:.58rem;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;padding-bottom:5px;border-bottom:1.5px solid rgba(124,58,237,.2);">Entity structure</div>
-      <div id="eu-diagram" class="mermaid" style="background:#fff;border-radius:12px;padding:14px 12px;border:1.5px solid var(--border);flex:1;display:flex;align-items:center;justify-content:center;">
-%%{init: {'flowchart': {'nodeSpacing': 38, 'rankSpacing': 60, 'curve': 'basis', 'padding': 14}, 'themeVariables': {'fontSize': '13px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff'}}}%%
-flowchart TD
-    EX["📊 Exchange Platform\nLends branding\nProvides perp underlying"]
-    AI["📋 Anduin Issuance\nIssues high-leverage perps\nHedges via exchange"]
-    AD["🏪 Anduin Distribution Co\nTied agent — FCA / MiFID\nOnboards & distributes"]
-    U["👛 EU Retail User\n30×+ leverage perps"]
+<div class="slide slide-dark" id="s8" style="padding:44px 72px;">
+  <div class="bg-blob" style="width:700px;height:700px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(124,58,237,.14) 0%,transparent 70%);"></div>
 
-    EX -- "perp underlying\n(hedging venue)" --> AI
-    EX -. "lends brand" .-> AD
-    AI -- "issues\nproducts" --> AD
-    AD -- "sells &\nonboards" --> U
+  <div style="margin-bottom:20px;">
+    <div class="eyebrow orange" style="background:rgba(249,115,22,.15);border-color:rgba(249,115,22,.3);color:#FB923C;">Regulated Distribution</div>
+    <h2 style="margin-bottom:8px;">You can't run this ad in the UK.<br><span class="grad-text">We can — under your brand.</span></h2>
+    <p style="max-width:700px;">Most exchanges are banned from advertising derivatives to retail in UK, Germany, Netherlands, and across the EU. Anduin Distribution Co. is FCA/MiFID authorised. We run the campaigns. Your logo is on them.</p>
+  </div>
 
-    style AI fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#0D0820
-    style AD fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#0D0820
-    style EX fill:#F9FAFB,stroke:#D1D5DB,color:#374151
-    style U fill:#ECFDF5,stroke:#A7F3D0,color:#059669
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;max-width:1040px;">
+
+    <!-- LEFT — mock ad + jurisdictions -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+
+      <!-- Mock campaign ad -->
+      <div style="background:linear-gradient(135deg,#0F0A1E 0%,#1E1040 100%);border:1.5px solid rgba(124,58,237,.5);border-radius:16px;padding:22px 24px;position:relative;overflow:hidden;">
+        <!-- glow -->
+        <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.3) 0%,transparent 70%);pointer-events:none;"></div>
+        <!-- ad label -->
+        <div style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:2px 7px;margin-bottom:14px;">Sponsored · Anduin Distribution Co.</div>
+        <!-- exchange brand line -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#F97316,#EF4444);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;">B</div>
+          <span style="font-weight:700;font-size:1rem;color:#fff;">Bybit</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.3);">×</span>
+          <span style="font-size:.8rem;font-weight:600;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Anduin</span>
+        </div>
+        <div style="font-size:1.25rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">
+          Trade derivatives directly<br>from your MetaMask.
+        </div>
+        <div style="font-size:.83rem;color:rgba(255,255,255,.55);margin-bottom:16px;line-height:1.5;">
+          Bitcoin, ETH & 200+ markets · Up to 100× leverage<br>
+          <strong style="color:rgba(255,255,255,.75);">Wallet powered by Anduin — FCA authorised</strong>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="padding:9px 18px;background:var(--purple);border-radius:8px;font-weight:700;font-size:.82rem;color:#fff;cursor:pointer;">Connect MetaMask →</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.3);">Capital at risk. FCA reg. no. XXXXXX</div>
+        </div>
+      </div>
+
+      <!-- Why this matters -->
+      <div style="padding:13px 16px;background:rgba(249,115,22,.1);border:1.5px solid rgba(249,115,22,.3);border-radius:10px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#FB923C;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Why this matters</div>
+        <p style="font-size:.83rem;color:rgba(255,255,255,.8);line-height:1.6;">Bybit, OKX, Binance — all restricted from running derivatives ads in the UK and EU. That user segment is invisible to them. <strong style="color:#fff;">Anduin sees it, advertises to it, and delivers those users to you.</strong></p>
       </div>
     </div>
+
+    <!-- RIGHT — entity structure + jurisdictions -->
+    <div style="display:flex;flex-direction:column;gap:11px;">
+
+      <!-- Jurisdiction table -->
+      <div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;">
+        <div style="padding:10px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07);">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;">Advertising access by jurisdiction</span>
+        </div>
+        <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:0;">
+          <!-- header -->
+          <div style="padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.06);">Market</div>
+          <div style="padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#F87171;border-bottom:1px solid rgba(255,255,255,.06);">Exchange alone</div>
+          <div style="padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#34D399;border-bottom:1px solid rgba(255,255,255,.06);">Via Anduin ADC</div>
+          <!-- rows -->
+          <div style="padding:8px 14px;font-size:.8rem;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.04);">🇬🇧 UK</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#F87171;border-bottom:1px solid rgba(255,255,255,.04);">✗ FCA ban</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#34D399;border-bottom:1px solid rgba(255,255,255,.04);">✓ ADC authorised</div>
+          <div style="padding:8px 14px;font-size:.8rem;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.04);">🇩🇪 Germany</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#F87171;border-bottom:1px solid rgba(255,255,255,.04);">✗ BaFin restricted</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#34D399;border-bottom:1px solid rgba(255,255,255,.04);">✓ MiFID tied agent</div>
+          <div style="padding:8px 14px;font-size:.8rem;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.04);">🇳🇱 Netherlands</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#F87171;border-bottom:1px solid rgba(255,255,255,.04);">✗ AFM rules</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#34D399;border-bottom:1px solid rgba(255,255,255,.04);">✓ MiFID tied agent</div>
+          <div style="padding:8px 14px;font-size:.8rem;color:rgba(255,255,255,.7);">🇫🇷 France + EU</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#F87171;">✗ ESMA 2× cap</div>
+          <div style="padding:8px 14px;font-size:.78rem;color:#34D399;">✓ ETN products, 30×+</div>
+        </div>
+      </div>
+
+      <!-- How it connects to integration -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+        <div style="padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.56rem;color:#C4B5FD;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;">Product</div>
+          <div style="font-size:.82rem;color:#fff;font-weight:600;margin-bottom:4px;">Anduin Issuance</div>
+          <p style="font-size:.75rem;color:rgba(255,255,255,.5);">Securitizes your perps into listed ETNs. Delivers 30×+ legally. Hedged back to your order book.</p>
+        </div>
+        <div style="padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.56rem;color:#C4B5FD;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;">Distribution</div>
+          <div style="font-size:.82rem;color:#fff;font-weight:600;margin-bottom:4px;">Anduin ADC</div>
+          <p style="font-size:.75rem;color:rgba(255,255,255,.5);">FCA/MiFID tied agent. Runs co-branded campaigns. Onboards users. Delivers them to your platform.</p>
+        </div>
+      </div>
+
+      <!-- Connection to B2B -->
+      <div style="padding:11px 14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:9px;">
+        <p style="font-size:.8rem;color:rgba(255,255,255,.8);line-height:1.5;"><strong style="color:#C4B5FD;">ADC launches first.</strong> Settlement on ADC products is the live proof-of-concept for Anduin settlement — before your full B2B integration is even complete. Launch with 2 venues simultaneously and the netting layer goes live on day one.</p>
+      </div>
+    </div>
+
   </div>
 </div>
 

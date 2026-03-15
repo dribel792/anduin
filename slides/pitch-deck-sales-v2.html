@@ -450,30 +450,25 @@ flowchart LR
         <li>Launch ADC with 2 venues simultaneously → netting layer goes live immediately</li>
       </ul>
     </div>
-    <div>
-      <div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;">
-        <div style="padding:16px 20px;background:var(--bg-tint);border-bottom:1.5px solid var(--border);">
-          <div class="mono" style="font-size:.6rem;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">The ADC structure</div>
-          <h4>How the EU distribution entity works</h4>
-        </div>
-        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--purple);flex-shrink:0;">1</div>
-            <p style="font-size:.83rem;"><strong style="color:var(--text);">Anduin Issuance</strong> creates securitized leverage products backed by your perps. Listed on a recognised EU exchange.</p>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--purple);flex-shrink:0;">2</div>
-            <p style="font-size:.83rem;"><strong style="color:var(--text);">Anduin Distribution Co</strong> becomes a tied agent under an FCA/MiFID umbrella. Licensed to market and distribute.</p>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--purple);flex-shrink:0;">3</div>
-            <p style="font-size:.83rem;"><strong style="color:var(--text);">Co-branded website</strong> in your look and feel. EU users see your brand. Anduin runs the regulatory and infrastructure.</p>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:50%;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#059669;flex-shrink:0;">4</div>
-            <p style="font-size:.83rem;"><strong style="color:var(--text);">You earn the flow.</strong> EU users trading your products, settled instantly on-chain — live showcase of Anduin working at scale.</p>
-          </div>
-        </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="mono" style="font-size:.58rem;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;padding-bottom:5px;border-bottom:1.5px solid rgba(124,58,237,.2);">Entity structure</div>
+      <div id="eu-diagram" class="mermaid" style="background:#fff;border-radius:12px;padding:14px 12px;border:1.5px solid var(--border);flex:1;">
+%%{init: {'flowchart': {'nodeSpacing': 30, 'rankSpacing': 55, 'curve': 'basis', 'padding': 10}, 'themeVariables': {'fontSize': '12px', 'primaryColor': '#EDE9FE', 'primaryBorderColor': '#7C3AED', 'lineColor': '#7C3AED', 'edgeLabelBackground': '#ffffff'}}}%%
+flowchart LR
+    EX["📊 Exchange Platform\nLends branding\nProvides perp underlying"]
+    AI["📋 Anduin Issuance\nIssues high-leverage perps\nHedges via exchange"]
+    AD["🏪 Anduin Distribution Co\nTied agent (FCA/MiFID)\nOnboards & distributes"]
+    U["👛 EU Retail User\n30×+ leverage perps"]
+
+    EX -. "lends brand" .-> AD
+    EX -- "perp underlying\n(hedging venue)" --> AI
+    AI -- "issues products" --> AD
+    AD -- "sells &\nonboards" --> U
+
+    style AI fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#0D0820
+    style AD fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#0D0820
+    style EX fill:#F9FAFB,stroke:#D1D5DB,color:#374151
+    style U fill:#ECFDF5,stroke:#A7F3D0,color:#059669
       </div>
     </div>
   </div>
@@ -520,14 +515,14 @@ flowchart LR
 
   <div style="margin-bottom:16px;">
     <div class="eyebrow green">Your P&amp;L</div>
-    <h2>You pay 1–1.5% of trading revenue.<br><span class="grad-text">You unlock a segment worth multiples of that.</span></h2>
+    <h2>You pay 10–15% of your fee on each settled trade.<br><span class="grad-text">You unlock a segment worth multiples of that.</span></h2>
   </div>
 
   <!-- Assumptions bar -->
   <div style="padding:10px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;margin-bottom:16px;display:flex;gap:28px;flex-wrap:wrap;max-width:1020px;">
     <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">Example venue: <strong style="color:#fff;">$4B/month volume</strong></span>
     <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">User perp fee: <strong style="color:#fff;">5 bps per trade</strong></span>
-    <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">Exchange baseline revenue: <strong style="color:#fff;">$20M/month</strong></span>
+    <span class="mono" style="font-size:.74rem;color:rgba(255,255,255,.55);">Exchange baseline revenue: <strong style="color:#fff;">$2M/month</strong></span>
   </div>
 
   <!-- Two-column P&L -->
@@ -552,8 +547,8 @@ flowchart LR
           <span style="font-weight:700;font-size:.88rem;color:#F87171;">$200–300K</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:9px 0;">
-          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">As % of your $20M/mo revenue</span>
-          <span style="font-weight:700;font-size:.92rem;color:#fff;">~1–1.5%</span>
+          <span style="font-size:.82rem;color:rgba(255,255,255,.55);">As % of your $2M/mo revenue</span>
+          <span style="font-weight:700;font-size:.92rem;color:#fff;">~10–15%</span>
         </div>
       </div>
     </div>
@@ -722,13 +717,9 @@ flowchart LR
       nodeBorder: '#D1D5DB', clusterBkg: '#F9FAFB'
     }
   });
-  let mermaidRendered = false;
   function renderMermaidIfNeeded() {
-    const el = document.getElementById('arch-diagram');
-    if (el && !mermaidRendered) {
-      mermaidRendered = true;
-      mermaid.run({ nodes: [el] });
-    }
+    const pending = document.querySelectorAll('#s' + (current+1) + ' .mermaid:not([data-processed])');
+    if (pending.length > 0) mermaid.run({ nodes: Array.from(pending) });
   }
 
   const slides = document.querySelectorAll('.slide');
@@ -748,7 +739,7 @@ flowchart LR
     slides[current].classList.add('active');
     dotsEl.children[current].classList.add('active');
     document.getElementById('counter').textContent = (current+1)+' / '+total;
-    if (slides[current].id === 's6') renderMermaidIfNeeded();
+    renderMermaidIfNeeded();
     const nb = document.getElementById('navBar');
     const dk = slides[current].classList.contains('slide-dark');
     nb.style.background  = dk ? '#0D0820' : '#fff';

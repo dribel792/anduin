@@ -263,178 +263,8 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S4 · CROSS-VENUE NETTING — HOW IT WORKS -->
-<div class="slide slide-tint" id="s4" style="padding:36px 56px;justify-content:flex-start;">
-  <div style="margin-bottom:14px;display:flex;align-items:center;gap:16px;">
-    <div class="eyebrow" style="margin-bottom:0;">Cross-Venue Netting</div>
-    <h2 style="font-size:1.75rem;">One deposit. Two exchanges. <span class="grad-text">Half the capital.</span></h2>
-  </div>
-
-  <!-- scaled netting diagram — 1192×780 master, scaled to ~74% -->
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;">
-    <div style="position:relative;width:884px;height:580px;">
-      <div style="position:absolute;top:0;left:0;transform:scale(0.742);transform-origin:top left;width:1192px;height:780px;">
-
-        <!-- SVG arrows -->
-        <svg xmlns="http://www.w3.org/2000/svg"
-             style="position:absolute;top:0;left:0;width:1192px;height:780px;pointer-events:none;z-index:2;"
-             overflow="visible">
-          <defs>
-            <marker id="nd-ah" viewBox="0 0 10 10" refX="9" refY="5"
-              markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 Z" fill="#7C3AED"/>
-            </marker>
-            <marker id="nd-ahg" viewBox="0 0 10 10" refX="9" refY="5"
-              markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 Z" fill="#10B981"/>
-            </marker>
-          </defs>
-          <!-- ① User → Vault -->
-          <line x1="596" y1="72" x2="596" y2="124" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#nd-ah)"/>
-          <rect x="519" y="83" width="154" height="20" rx="5" fill="#EDE9FE"/>
-          <text x="596" y="97" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#7C3AED;font-weight:600;">① deposit once</text>
-          <!-- ② Vault → Exchange A -->
-          <line x1="350" y1="243" x2="350" y2="293" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#nd-ah)"/>
-          <rect x="252" y="252" width="196" height="20" rx="5" fill="#E0F2FE"/>
-          <text x="350" y="266" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#0284C7;font-weight:600;">② USDx credit · A session</text>
-          <!-- ② Vault → Exchange B -->
-          <line x1="843" y1="243" x2="843" y2="293" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#nd-ah)"/>
-          <rect x="744" y="252" width="196" height="20" rx="5" fill="#FEF3C7"/>
-          <text x="843" y="266" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#D97706;font-weight:600;">② USDx credit · B session</text>
-          <!-- ③ Exchange A → SE -->
-          <line x1="350" y1="482" x2="350" y2="532" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#nd-ah)"/>
-          <rect x="270" y="491" width="160" height="20" rx="5" fill="#ECFDF5"/>
-          <text x="350" y="505" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#059669;font-weight:600;">③ net PnL · +$500</text>
-          <!-- ③ Exchange B → SE -->
-          <line x1="843" y1="482" x2="843" y2="532" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#nd-ah)"/>
-          <rect x="762" y="491" width="162" height="20" rx="5" fill="#FEF2F2"/>
-          <text x="843" y="505" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#DC2626;font-weight:600;">③ net PnL · −$300</text>
-          <!-- ④ SE → Vault (right loop) -->
-          <path d="M 1152,645 L 1178,645 L 1178,183 L 1152,183"
-            fill="none" stroke="#10B981" stroke-width="2.5" stroke-dasharray="7,4"
-            marker-end="url(#nd-ahg)"/>
-          <rect x="1156" y="397" width="128" height="36" rx="6" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5"/>
-          <text x="1220" y="412" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:10px;fill:#059669;font-weight:600;">④ vault balance</text>
-          <text x="1220" y="426" text-anchor="middle"
-            style="font-family:'JetBrains Mono',monospace;font-size:10px;fill:#059669;font-weight:600;">updated +$200</text>
-        </svg>
-
-        <!-- User Wallet -->
-        <div style="position:absolute;left:436px;top:0;width:320px;height:72px;
-          background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;
-          display:flex;align-items:center;justify-content:center;gap:10px;z-index:1;">
-          <span style="font-size:1.6rem;line-height:1;">👛</span>
-          <div>
-            <div style="font-weight:700;font-size:.93rem;color:#0D0820;">User Wallet</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#6B7280;">USDC · ETH · WBTC &nbsp;·&nbsp; self-custody</div>
-          </div>
-        </div>
-
-        <!-- Anduin Margin Vault -->
-        <div style="position:absolute;left:0;top:124px;width:1152px;height:119px;
-          background:#EDE9FE;border:2px solid #7C3AED;border-radius:14px;padding:16px 22px;z-index:1;">
-          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:24px;align-items:center;height:100%;">
-            <div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#7C3AED;margin-bottom:5px;">🔐 Anduin Margin Vault</div>
-              <div style="font-weight:700;font-size:.93rem;color:#0D0820;margin-bottom:3px;">Shared collateral pool — single deposit</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#6B7280;line-height:1.65;">
-                Deposited: <strong style="color:#0D0820;">$10,000</strong> &nbsp;·&nbsp;
-                USDx credit: <strong style="color:#0D0820;">$9,500</strong> &nbsp;·&nbsp;
-                Revalued every ~10s via Chainlink
-              </div>
-            </div>
-            <div style="padding:10px 14px;background:rgba(255,255,255,.55);border:1.5px solid rgba(124,58,237,.2);border-radius:10px;">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#EF4444;margin-bottom:4px;">Without Anduin</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#6B7280;line-height:1.6;">
-                User posts <strong style="color:#EF4444;">$10,000 to Exchange A</strong><br>
-                <strong style="color:#EF4444;">+ $10,000 to Exchange B</strong> = $20,000 locked
-              </div>
-            </div>
-            <div style="padding:10px 14px;background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:10px;text-align:center;">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#059669;margin-bottom:4px;">🛡 Insurance Fund</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#065F46;font-weight:600;">On-chain backstop</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Exchange A -->
-        <div style="position:absolute;left:0;top:293px;width:555px;height:189px;
-          background:#F0F9FF;border:2px solid #7DD3FC;border-radius:14px;padding:16px 22px;z-index:1;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#0284C7;margin-bottom:5px;">📊 Exchange A &nbsp;·&nbsp; Isolated margin pool</div>
-          <div style="font-weight:700;font-size:.93rem;color:#0D0820;margin-bottom:8px;">Your matching engine. Unchanged.</div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <div style="display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;background:rgba(224,242,254,.8);font-size:.72rem;color:#0D0820;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#7DD3FC;flex-shrink:0;"></div>
-              <span><strong>Reserved USDx: $5,000</strong> &nbsp;—&nbsp; ring-fenced for this session</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;background:rgba(224,242,254,.8);font-size:.72rem;color:#0D0820;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#0EA5E9;flex-shrink:0;"></div>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:.68rem;">GET /balance/{user} → usdxAvailable: 5000</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;background:rgba(224,242,254,.8);font-size:.72rem;color:#0D0820;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#059669;flex-shrink:0;"></div>
-              <span>Session close · net PnL calculated internally &nbsp;·&nbsp; <strong>POST /settle</strong></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Exchange B -->
-        <div style="position:absolute;left:637px;top:293px;width:515px;height:189px;
-          background:#FFF7ED;border:2px solid #FCD34D;border-radius:14px;padding:16px 22px;z-index:1;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#D97706;margin-bottom:5px;">📊 Exchange B &nbsp;·&nbsp; Isolated margin pool</div>
-          <div style="font-weight:700;font-size:.93rem;color:#0D0820;margin-bottom:8px;">Your matching engine. Unchanged.</div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <div style="display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;background:rgba(254,243,199,.8);font-size:.72rem;color:#0D0820;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#FCD34D;flex-shrink:0;"></div>
-              <span><strong>Reserved USDx: $4,500</strong> &nbsp;—&nbsp; ring-fenced for this session</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;background:rgba(254,243,199,.8);font-size:.72rem;color:#0D0820;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#F97316;flex-shrink:0;"></div>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:.68rem;">GET /balance/{user} → usdxAvailable: 4500</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;background:rgba(254,243,199,.8);font-size:.72rem;color:#0D0820;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#DC2626;flex-shrink:0;"></div>
-              <span>Session close · net PnL calculated internally &nbsp;·&nbsp; <strong>POST /settle</strong></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Settlement Engine -->
-        <div style="position:absolute;left:0;top:532px;width:1152px;height:118px;
-          background:#1E1B4B;border:2px solid #7C3AED;border-radius:14px;padding:16px 28px;z-index:1;">
-          <div style="display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;height:100%;">
-            <div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#C4B5FD;margin-bottom:5px;">⚡ Settlement Engine · batchSettle()</div>
-              <div style="font-weight:700;font-size:.93rem;color:#fff;margin-bottom:3px;">Atomic · on-chain · Base L2</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.6);line-height:1.5;">Both exchanges push net PnL independently.<br>Anduin nets and settles in one tx.</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-              <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;background:rgba(16,185,129,.18);color:#34D399;font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:600;">Exchange A &nbsp;+$500</span>
-              <span style="color:rgba(255,255,255,.3);font-size:1.2rem;">+</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;background:rgba(239,68,68,.18);color:#F87171;font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:600;">Exchange B &nbsp;−$300</span>
-              <span style="color:rgba(255,255,255,.3);font-size:1.2rem;">=</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;background:rgba(124,58,237,.3);color:#C4B5FD;font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:600;">Net vault update &nbsp;+$200</span>
-              <div style="padding:8px 14px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:8px;margin-left:6px;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:#34D399;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Capital efficiency</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:.86rem;font-weight:700;color:#6EE7B7;">$10,000 deposit · 2× capacity</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /scaled inner -->
-    </div><!-- /outer container -->
-  </div><!-- /flex centre -->
-</div>
-
-<!-- ═══════════════════════════════════════════════ S5 · SKIN IN THE GAME -->
-<div class="slide" id="s5">
+<!-- ═══════════════════════════════════════════════ S4 · SKIN IN THE GAME -->
+<div class="slide" id="s4">
   <div class="bg-blob" style="width:500px;height:500px;top:-150px;right:-50px;background:radial-gradient(circle,rgba(16,185,129,.07) 0%,transparent 70%);"></div>
   <div class="two-col" style="max-width:1020px;margin:0 auto;">
     <div>
@@ -487,72 +317,151 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S6 · NETTING — THE MATH -->
-<div class="slide slide-dark" id="s6">
+<!-- ═══════════════════════════════════════════════ S5 · NETTING — THE MATH -->
+<div class="slide slide-dark" id="s5" style="justify-content:flex-start;padding:36px 64px;">
   <div class="bg-blob" style="width:600px;height:600px;top:-150px;right:-100px;background:radial-gradient(circle,rgba(124,58,237,.14) 0%,transparent 70%);"></div>
-  <div class="slide-hdr">
+
+  <div style="margin-bottom:14px;">
     <div class="eyebrow">Cross-Venue Netting</div>
-    <h2>The same user. Half the capital.<br><span class="grad-text">Double the trading capacity.</span></h2>
-    <p style="max-width:640px;margin-top:8px;">This is the reason you can't build Anduin yourself. Netting only works across a shared neutral infrastructure that your competitors also use. Here's the math.</p>
+    <h2 style="font-size:2rem;">The same user. Half the capital. <span class="grad-text">Double the trading capacity.</span></h2>
+    <p style="margin-top:6px;max-width:800px;">Your competitors will never join your settlement layer — netting is mathematically zero with one venue. Anduin is neutral infrastructure. That's not a feature, it's the product.</p>
   </div>
 
-  <div class="grid-2" style="max-width:1020px;margin:0 auto;gap:20px;">
-    <!-- WITHOUT -->
-    <div>
-      <div style="padding:10px 16px;background:rgba(239,68,68,.22);border:1.5px solid rgba(239,68,68,.45);border-radius:8px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-        <span style="font-size:1rem;">✗</span>
-        <span style="font-weight:700;font-size:.9rem;color:#FCA5A5;">Without Anduin — Today</span>
-      </div>
-      <div class="net-box" style="background:#fff;">
-        <div class="net-box-hdr" style="background:rgba(239,68,68,.08);">User wants to trade on Exchange A <em>and</em> Exchange B</div>
-        <div class="net-row"><span class="lbl">Collateral posted to Exchange A</span><span class="val">$10,000</span></div>
-        <div class="net-row"><span class="lbl">Collateral posted to Exchange B</span><span class="val">$10,000</span></div>
-        <div class="net-row"><span class="lbl">Total capital locked</span><span class="val" style="color:var(--red);">$20,000</span></div>
-        <div class="net-row"><span class="lbl">Trading capacity</span><span class="val">$20,000 notional</span></div>
-        <div class="net-row" style="background:#FEF2F2;"><span class="lbl" style="font-weight:600;color:var(--text);">Capital efficiency</span><span class="val" style="color:var(--red);">1.0×</span></div>
-      </div>
-      <p style="font-size:.8rem;margin-top:10px;color:rgba(255,255,255,.55);">Users must pre-fund each venue separately. Capital is fragmented and idle — locked until the exchange releases it after each session.</p>
-    </div>
-    <!-- WITH -->
-    <div>
-      <div style="padding:10px 16px;background:rgba(16,185,129,.22);border:1.5px solid rgba(16,185,129,.45);border-radius:8px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-        <span style="font-size:1rem;">✓</span>
-        <span style="font-weight:700;font-size:.9rem;color:#6EE7B7;">With Anduin Netting</span>
-      </div>
-      <div class="net-box" style="background:#fff;">
-        <div class="net-box-hdr" style="background:rgba(16,185,129,.08);">Same user, same two exchanges — one Anduin vault</div>
-        <div class="net-row"><span class="lbl">Collateral posted (once, to Anduin vault)</span><span class="val" style="color:var(--green);">$10,000</span></div>
-        <div class="net-row"><span class="lbl">Trades on Exchange A</span><span class="val">✓ USDx credit</span></div>
-        <div class="net-row"><span class="lbl">Trades on Exchange B</span><span class="val">✓ Same USDx credit</span></div>
-        <div class="net-row"><span class="lbl">Total capital locked</span><span class="val" style="color:var(--green);">$10,000</span></div>
-        <div class="net-row" style="background:#ECFDF5;"><span class="lbl" style="font-weight:600;color:var(--text);">Capital efficiency</span><span class="val" style="color:var(--green);">2.0× <span style="font-weight:400;font-size:.78rem;">same notional</span></span></div>
-      </div>
-      <p style="font-size:.8rem;margin-top:10px;color:rgba(255,255,255,.55);">One deposit, revalued every 10s. No pre-funding per venue. Freed capital redeploys instantly — more trades, more volume on both exchanges.</p>
-    </div>
-  </div>
+  <!-- Main grid: compact diagram left + tables right -->
+  <div style="display:grid;grid-template-columns:296px 1fr;gap:20px;max-width:1020px;align-items:start;">
 
-  <div style="max-width:1020px;margin:16px auto 0;padding:16px 22px;background:rgba(124,58,237,.12);border:1.5px solid rgba(124,58,237,.3);border-radius:10px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:20px;align-items:start;">
+    <!-- ── LEFT: compact netting flow diagram ── -->
+    <div style="position:relative;height:340px;flex-shrink:0;">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           style="position:absolute;top:0;left:0;width:296px;height:340px;pointer-events:none;z-index:2;"
+           overflow="visible">
+        <defs>
+          <marker id="s5ah" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#7C3AED"/>
+          </marker>
+        </defs>
+        <!-- ① User → Vault -->
+        <line x1="148" y1="44" x2="148" y2="76" stroke="#7C3AED" stroke-width="2" marker-end="url(#s5ah)"/>
+        <rect x="100" y="51" width="96" height="16" rx="4" fill="#2D1B69"/>
+        <text x="148" y="63" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:9px;fill:#C4B5FD;font-weight:600;">① deposit once</text>
+        <!-- ② Vault → Exchanges -->
+        <line x1="74"  y1="148" x2="74"  y2="182" stroke="#7C3AED" stroke-width="2" marker-end="url(#s5ah)"/>
+        <line x1="222" y1="148" x2="222" y2="182" stroke="#7C3AED" stroke-width="2" marker-end="url(#s5ah)"/>
+        <text x="26" y="168" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:#C4B5FD;">② USDx</text>
+        <!-- ③ Exchanges → SE (converge) -->
+        <path d="M 74,250 L 74,262 L 148,262 L 148,268" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#s5ah)"/>
+        <path d="M 222,250 L 222,262 L 148,262"         fill="none" stroke="#7C3AED" stroke-width="2"/>
+        <text x="36" y="258" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:#C4B5FD;">③ PnL</text>
+      </svg>
+
+      <!-- User Wallet -->
+      <div style="position:absolute;left:58px;top:0;width:180px;height:44px;
+        background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);
+        border-radius:10px;display:flex;align-items:center;justify-content:center;gap:7px;z-index:1;">
+        <span style="font-size:1rem;">👛</span>
+        <div>
+          <div style="font-weight:600;font-size:.76rem;color:#fff;">User Wallet</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.4);">self-custody · $10,000</div>
+        </div>
+      </div>
+
+      <!-- Anduin Vault -->
+      <div style="position:absolute;left:0;top:76px;width:296px;height:72px;
+        background:#2D1B69;border:2px solid #7C3AED;border-radius:10px;padding:9px 13px;z-index:1;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.09em;text-transform:uppercase;color:#C4B5FD;margin-bottom:3px;">🔐 Anduin Margin Vault</div>
+        <div style="font-weight:700;font-size:.8rem;color:#fff;margin-bottom:2px;">Shared collateral pool</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.5);">USDx: $9,500 · revalued every ~10s</div>
+      </div>
+
+      <!-- Exchange A -->
+      <div style="position:absolute;left:0;top:182px;width:136px;height:68px;
+        background:rgba(14,165,233,.1);border:1.5px solid rgba(14,165,233,.4);
+        border-radius:9px;padding:7px 10px;z-index:1;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.53rem;color:#38BDF8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">Exchange A</div>
+        <div style="font-size:.76rem;font-weight:700;color:#fff;">$5,000 reserved</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.56rem;color:rgba(255,255,255,.4);">ring-fenced · session</div>
+      </div>
+
+      <!-- Exchange B -->
+      <div style="position:absolute;left:160px;top:182px;width:136px;height:68px;
+        background:rgba(245,158,11,.08);border:1.5px solid rgba(245,158,11,.35);
+        border-radius:9px;padding:7px 10px;z-index:1;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.53rem;color:#FCD34D;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">Exchange B</div>
+        <div style="font-size:.76rem;font-weight:700;color:#fff;">$4,500 reserved</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.56rem;color:rgba(255,255,255,.4);">ring-fenced · session</div>
+      </div>
+
+      <!-- Settlement Engine -->
+      <div style="position:absolute;left:0;top:268px;width:296px;height:60px;
+        background:#1E1B4B;border:2px solid #7C3AED;border-radius:10px;padding:8px 12px;z-index:1;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.53rem;color:#C4B5FD;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">⚡ Settlement Engine · batchSettle()</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#34D399;font-weight:700;">+$500</span>
+          <span style="color:rgba(255,255,255,.25);">+</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#F87171;font-weight:700;">−$300</span>
+          <span style="color:rgba(255,255,255,.25);">=</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#C4B5FD;font-weight:700;">+$200 net · atomic</span>
+        </div>
+      </div>
+    </div><!-- /diagram -->
+
+    <!-- ── RIGHT: before/after tables (compact) ── -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <!-- WITHOUT -->
+      <div>
+        <div style="padding:6px 12px;background:rgba(239,68,68,.22);border:1.5px solid rgba(239,68,68,.45);border-radius:7px;margin-bottom:7px;display:flex;align-items:center;gap:7px;">
+          <span style="font-size:.85rem;">✗</span>
+          <span style="font-weight:700;font-size:.82rem;color:#FCA5A5;">Without Anduin — Today</span>
+        </div>
+        <div class="net-box" style="background:#fff;">
+          <div class="net-box-hdr" style="background:rgba(239,68,68,.08);font-size:.74rem;padding:7px 14px;">User trades on Exchange A <em>and</em> B</div>
+          <div class="net-row" style="padding:5px 14px;"><span class="lbl">Collateral → Exchange A</span><span class="val">$10,000</span></div>
+          <div class="net-row" style="padding:5px 14px;"><span class="lbl">Collateral → Exchange B</span><span class="val">$10,000</span></div>
+          <div class="net-row" style="padding:5px 14px;"><span class="lbl">Total capital locked</span><span class="val" style="color:var(--red);">$20,000</span></div>
+          <div class="net-row" style="padding:5px 14px;background:#FEF2F2;"><span class="lbl" style="font-weight:600;color:var(--text);">Capital efficiency</span><span class="val" style="color:var(--red);">1.0×</span></div>
+        </div>
+      </div>
+      <!-- WITH -->
+      <div>
+        <div style="padding:6px 12px;background:rgba(16,185,129,.22);border:1.5px solid rgba(16,185,129,.45);border-radius:7px;margin-bottom:7px;display:flex;align-items:center;gap:7px;">
+          <span style="font-size:.85rem;">✓</span>
+          <span style="font-weight:700;font-size:.82rem;color:#6EE7B7;">With Anduin Netting</span>
+        </div>
+        <div class="net-box" style="background:#fff;">
+          <div class="net-box-hdr" style="background:rgba(16,185,129,.08);font-size:.74rem;padding:7px 14px;">Same two exchanges — one Anduin vault</div>
+          <div class="net-row" style="padding:5px 14px;"><span class="lbl">Collateral posted (once, to vault)</span><span class="val" style="color:var(--green);">$10,000</span></div>
+          <div class="net-row" style="padding:5px 14px;"><span class="lbl">Trades on Exchange A + B</span><span class="val">✓ USDx credit</span></div>
+          <div class="net-row" style="padding:5px 14px;"><span class="lbl">Total capital locked</span><span class="val" style="color:var(--green);">$10,000</span></div>
+          <div class="net-row" style="padding:5px 14px;background:#ECFDF5;"><span class="lbl" style="font-weight:600;color:var(--text);">Capital efficiency</span><span class="val" style="color:var(--green);">2.0× <span style="font-weight:400;font-size:.72rem;">same notional</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /main grid -->
+
+  <!-- Bottom bar -->
+  <div style="max-width:1020px;margin:12px auto 0;padding:13px 20px;background:rgba(124,58,237,.12);border:1.5px solid rgba(124,58,237,.3);border-radius:10px;display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:18px;align-items:start;">
     <div>
-      <div class="mono" style="font-size:.58rem;color:#C4B5FD;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Why neutral infrastructure matters</div>
-      <p style="font-size:.82rem;color:rgba(255,255,255,.8);">Your competitors will never join your settlement layer. Netting is <em>mathematically zero</em> with one venue. Anduin is neutral — that's not a feature, it's the product.</p>
+      <div class="mono" style="font-size:.56rem;color:#C4B5FD;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;">Why you can't build this alone</div>
+      <p style="font-size:.8rem;color:rgba(255,255,255,.8);">Competitors won't join your layer. Netting is <em>mathematically zero</em> with one venue. The neutral infrastructure <em>is</em> the moat.</p>
     </div>
-    <div style="padding:12px 14px;background:rgba(255,255,255,.06);border-radius:10px;text-align:center;">
-      <span class="stat-val" style="font-size:1.4rem;">Network effect</span>
-      <span class="stat-label">Each venue added compounds capital savings for all</span>
+    <div style="padding:10px 12px;background:rgba(255,255,255,.06);border-radius:9px;text-align:center;">
+      <span class="stat-val" style="font-size:1.3rem;">Network effect</span>
+      <span class="stat-label">Each venue compounds savings for all</span>
     </div>
-    <div style="padding:12px 14px;background:rgba(255,255,255,.06);border-radius:10px;">
-      <div class="mono" style="font-size:.58rem;color:#34D399;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Founding venue benefits</div>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;">
-        <li style="font-size:.77rem;color:rgba(255,255,255,.85);display:flex;gap:6px;"><span style="color:#34D399;flex-shrink:0;">→</span>Locked-in founding rate: 1 bps for life (vs 2–3 bps standard)</li>
-        <li style="font-size:.77rem;color:rgba(255,255,255,.85);display:flex;gap:6px;"><span style="color:#34D399;flex-shrink:0;">→</span>Earn a share of fees from every subsequent venue that joins</li>
-        <li style="font-size:.77rem;color:rgba(255,255,255,.85);display:flex;gap:6px;"><span style="color:#34D399;flex-shrink:0;">→</span>6-month exclusivity window before network opens</li>
+    <div style="padding:10px 12px;background:rgba(255,255,255,.06);border-radius:9px;">
+      <div class="mono" style="font-size:.56rem;color:#34D399;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Founding venue benefits</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:4px;">
+        <li style="font-size:.74rem;color:rgba(255,255,255,.85);display:flex;gap:5px;"><span style="color:#34D399;flex-shrink:0;">→</span>1 bps for life (vs 2–3 bps standard)</li>
+        <li style="font-size:.74rem;color:rgba(255,255,255,.85);display:flex;gap:5px;"><span style="color:#34D399;flex-shrink:0;">→</span>Share of fees from every venue that joins after you</li>
+        <li style="font-size:.74rem;color:rgba(255,255,255,.85);display:flex;gap:5px;"><span style="color:#34D399;flex-shrink:0;">→</span>6-month exclusivity on netting layer</li>
       </ul>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S7 · HOW IT WORKS -->
-<div class="slide slide-tint" id="s7" style="padding:36px 50px;justify-content:flex-start;">
+<!-- ═══════════════════════════════════════════════ S6 · HOW IT WORKS -->
+<div class="slide slide-tint" id="s6" style="padding:36px 50px;justify-content:flex-start;">
   <div style="margin-bottom:14px;display:flex;align-items:center;gap:16px;">
     <div class="eyebrow" style="margin-bottom:0;">Architecture</div>
     <h2 style="font-size:1.75rem;">How the system works — every component, every flow</h2>
@@ -640,8 +549,8 @@ flowchart LR
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S8 · EU DISTRIBUTION -->
-<div class="slide slide-dark" id="s8" style="padding:44px 72px;">
+<!-- ═══════════════════════════════════════════════ S7 · EU DISTRIBUTION -->
+<div class="slide slide-dark" id="s7" style="padding:44px 72px;">
   <div class="bg-blob" style="width:700px;height:700px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(124,58,237,.14) 0%,transparent 70%);"></div>
 
   <div style="margin-bottom:20px;">
@@ -740,8 +649,8 @@ flowchart LR
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S9 · WHY NOT BUILD IT YOURSELF -->
-<div class="slide slide-tint" id="s9">
+<!-- ═══════════════════════════════════════════════ S8 · WHY NOT BUILD IT YOURSELF -->
+<div class="slide slide-tint" id="s8">
   <div class="slide-hdr" style="text-align:center;">
     <div class="eyebrow red">The Build-vs-Buy Question</div>
     <h2>Yes, you can build the settlement layer.<br>You <span class="danger-text">cannot build the netting.</span></h2>
@@ -775,8 +684,8 @@ flowchart LR
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S10 · YOUR UPSIDE -->
-<div class="slide slide-dark" id="s10">
+<!-- ═══════════════════════════════════════════════ S9 · YOUR UPSIDE -->
+<div class="slide slide-dark" id="s9">
   <div class="bg-blob" style="width:600px;height:600px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(16,185,129,.1) 0%,transparent 70%);"></div>
 
   <div style="margin-bottom:16px;">
@@ -858,8 +767,8 @@ flowchart LR
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S11 · INTEGRATION -->
-<div class="slide slide-tint" id="s11">
+<!-- ═══════════════════════════════════════════════ S10 · INTEGRATION -->
+<div class="slide slide-tint" id="s10">
   <div class="two-col" style="max-width:1020px;margin:0 auto;">
     <div>
       <div class="eyebrow">Integration</div>
@@ -913,8 +822,8 @@ flowchart LR
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ S12 · CLOSE -->
-<div class="slide" id="s12">
+<!-- ═══════════════════════════════════════════════ S11 · CLOSE -->
+<div class="slide" id="s11">
   <div class="bg-blob" style="width:800px;height:800px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(124,58,237,.06) 0%,transparent 60%);"></div>
   <div style="max-width:720px;margin:0 auto;text-align:center;">
     <div class="eyebrow">The Decision</div>
@@ -961,7 +870,7 @@ flowchart LR
 <nav class="controls" id="navBar">
   <div style="display:flex;align-items:center;gap:13px;">
     <span class="nav-brand">anduin<span>.</span></span>
-    <span class="slide-counter" id="counter">1 / 12</span>
+    <span class="slide-counter" id="counter">1 / 11</span>
   </div>
   <div class="dots" id="dots"></div>
   <div class="nav-btns">
